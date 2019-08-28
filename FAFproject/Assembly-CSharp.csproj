@@ -60,7 +60,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />
     <Compile Include="Assets\Scripts\SenceJump.cs" />
+    <Compile Include="Assets\Scripts\TestScripts\Character.cs" />
+    <Compile Include="Assets\Scripts\TestScripts\Game.cs" />
+    <Compile Include="Assets\Scripts\TestScripts\SaveLoad.cs" />
+    <Compile Include="Assets\Scripts\TestScripts\TestStartSave.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>I:/Git/FAFproject/FAFproject/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

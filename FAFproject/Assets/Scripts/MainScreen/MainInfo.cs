@@ -8,6 +8,7 @@ public class MainInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         MainData.year = 191;
         MainData.month = 4;
         MainData.name = "Pochi";

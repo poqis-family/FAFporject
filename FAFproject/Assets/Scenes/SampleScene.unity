@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 85815618}
   - component: {fileID: 85815617}
   m_Layer: 5
-  m_Name: Year
+  m_Name: year
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,7 +1204,7 @@ GameObject:
   - component: {fileID: 1049603137}
   - component: {fileID: 1049603136}
   m_Layer: 5
-  m_Name: Name
+  m_Name: name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1797,7 +1797,7 @@ GameObject:
   - component: {fileID: 1584686334}
   - component: {fileID: 1584686333}
   m_Layer: 5
-  m_Name: Month
+  m_Name: month
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

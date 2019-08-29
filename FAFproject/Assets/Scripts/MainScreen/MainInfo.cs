@@ -8,12 +8,16 @@ public class MainInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        MainData.year = 191;
-        MainData.month = 4;
-        MainData.name = "Pochi";
-        MainData.age = 8;
-        transform.Find("Year").GetComponent<Text>().text = MainData.year.ToString();
+        MainData.year = 111;
+        MainData.month = 111;
+        MainData.name = "111";
+        MainData.age = 111;
+        MainData.LoadData();
+        transform.Find("year").GetComponent<Text>().text = MainData.year.ToString();
+        transform.Find("month").GetComponent<Text>().text = MainData.month.ToString();
+        transform.Find("name").GetComponent<Text>().text = MainData.name.ToString();
+        transform.Find("age").GetComponent<Text>().text = MainData.age.ToString();
+        //  MainData.SaveData();
     }
 
     // Update is called once per frame

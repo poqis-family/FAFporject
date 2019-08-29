@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{21B28EF5-FAA9-6A1D-8779-0E9BAD36B3DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -53,9 +52,6 @@
     <UnityVersion>2018.3.14f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>G:\2018.3.14f1\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -65,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Data\MainData.cs" />
+    <Compile Include="Assets\Scripts\Data\MainDataDeliver.cs" />
+    <Compile Include="Assets\Scripts\IOHelper.cs" />
     <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />
     <Compile Include="Assets\Scripts\MainScreen\Test.cs" />
     <Compile Include="Assets\Scripts\SenceJump.cs" />
@@ -296,6 +294,9 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>I:/Git/FAFproject/FAFproject/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>G:/2018.3.14f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -642,9 +643,6 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>G:/2018.3.14f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{21B28EF5-FAA9-6A1D-8779-0E9BAD36B3DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -297,6 +298,13 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>I:/Git/FAFproject/FAFproject/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib 1">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/ICSharpCode.SharpZipLib 1.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>G:/2018.3.14f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

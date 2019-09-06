@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{21B28EF5-FAA9-6A1D-8779-0E9BAD36B3DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -61,6 +60,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\ConfigReader\ConfigData.cs" />
+    <Compile Include="Assets\Scripts\ConfigReader\ConfigReader.cs" />
     <Compile Include="Assets\Scripts\Data\MainData.cs" />
     <Compile Include="Assets\Scripts\Data\MainDataDeliver.cs" />
     <Compile Include="Assets\Scripts\IOHelper.cs" />
@@ -287,6 +288,39 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>G:/2018.3.14f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N.CJK">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/I18N.CJK.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/I18N.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N.MidEast">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/I18N.MidEast.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N.Other">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/I18N.Other.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N.Rare">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/I18N.Rare.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N.West">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/I18N.West.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -298,13 +332,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>I:/Git/FAFproject/FAFproject/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
-    </Reference>
-    <Reference Include="Excel">
-      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/Excel.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib 1">
-      <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/ICSharpCode.SharpZipLib 1.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>G:/2018.3.14f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

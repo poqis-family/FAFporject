@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WJExcelDataManager;
+
+using WJExcelDataClass;
 
 public class MainInfo : MonoBehaviour
 {
@@ -13,6 +16,10 @@ public class MainInfo : MonoBehaviour
         MainData.name = "111";
         MainData.age = 111;
         MainData.LoadData();
+        DataManager dataManager = new DataManager();
+        dataManager.LoadAll();
+        Sheet1Item sheet1Item= dataManager.GetSheet1ItemByID("AAA1");
+        MainData.name =sheet1Item.name;
         transform.Find("year").GetComponent<Text>().text = MainData.year.ToString();
         transform.Find("month").GetComponent<Text>().text = MainData.month.ToString();
         transform.Find("name").GetComponent<Text>().text = MainData.name.ToString();

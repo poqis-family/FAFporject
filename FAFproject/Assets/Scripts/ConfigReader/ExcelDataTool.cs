@@ -26,6 +26,9 @@ namespace WJExcelDataManager
         [UnityEditor.MenuItem("开发工具/导表工具/导入全部数据")]
         public static void LoadAllExcelData()
         {
+            string ScriptDataPath = System.Environment.CurrentDirectory + "/Assets/Scripts/ExcelDataManager";
+            if (Directory.Exists(ScriptDataPath)) Directory.Delete(ScriptDataPath, true);//删除旧的脚本文件
+            Directory.CreateDirectory(ScriptDataPath);
             //if (!EditorUtility.DisplayDialog("注意！！！", "导表前要关闭打开的数据表，否则会失败，是否继续？", "继续", "取消")) return;
 
             INPUT_PATH = PlayerPrefs.GetString(System.Environment.CurrentDirectory + "ExcelDataInputPath", "");
@@ -78,6 +81,8 @@ namespace WJExcelDataManager
             string BinDataPath = System.Environment.CurrentDirectory + "/Assets/Resources/" + BinDataFolder;//序列化后的数据存放路径
             if (Directory.Exists(BinDataPath)) Directory.Delete(BinDataPath, true);//删除旧的数据文件
             Directory.CreateDirectory(BinDataPath);
+
+
             step = 1;
             foreach (KeyValuePair<string, List<ConfigData[]>> each in dataDict)
             {
@@ -144,7 +149,9 @@ namespace WJExcelDataManager
                         string[] datas = new string[excelReader.FieldCount];
                         for (int j = 0; j < excelReader.FieldCount; ++j)
                         {
-                            datas[j] = excelReader.GetString(j);
+                            object temp = excelReader.GetValue(j);
+                            if(temp!=null)datas[j] = temp.ToString();
+
                         }
 
                         //空行不处理
@@ -182,16 +189,19 @@ namespace WJExcelDataManager
                     }
                     if (names != null && types != null)
                     {
-                        //根据刚才的数据来生成C#脚本
-                        ScriptGenerator generator = new ScriptGenerator(inputPath, className, names, types);
-                        //所有生成的类的代码最终保存在这个链表中
-                        codeList.Add(generator.Generate());
-                        if (dataDict.ContainsKey(className))
+                        if (className != "表格配置说明")
                         {
-                            ProgressBar.HideBarWithFailInfo("\n类名重复:" + className + " ,路径: " + inputPath);
-                            throw new Exception("类名重复: " + className + " ,路径:  " + inputPath);
+                            //根据刚才的数据来生成C#脚本
+                            ScriptGenerator generator = new ScriptGenerator(inputPath, className, names, types);
+                            //所有生成的类的代码最终保存在这个链表中
+                            codeList.Add(generator.Generate());
+                            if (dataDict.ContainsKey(className))
+                            {
+                                ProgressBar.HideBarWithFailInfo("\n类名重复:" + className + " ,路径: " + inputPath);
+                                throw new Exception("类名重复: " + className + " ,路径:  " + inputPath);
+                            }
+                            else dataDict.Add(className, dataList);
                         }
-                        else dataDict.Add(className, dataList);
                     }
                 }
                 while (excelReader.NextResult());//excelReader.NextResult() Excel表下一个sheet页有没有数据

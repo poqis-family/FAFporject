@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\IOHelper.cs" />
     <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />
     <Compile Include="Assets\Scripts\MainScreen\Test.cs" />
+    <Compile Include="Assets\Scripts\Opera\StoryID.cs" />
     <Compile Include="Assets\Scripts\SenceJump.cs" />
     <Compile Include="Assets\Scripts\TestScripts\Character.cs" />
     <Compile Include="Assets\Scripts\TestScripts\Game.cs" />

@@ -13,19 +13,39 @@ using WJExcelDataClass;
 [Serializable]
 public class DataManager //: SingletonTemplate<DataManager>
 {
-	public Sheet1 p_Sheet1;
+	public sdftt p_sdftt;
+	public mmm p_mmm;
+	public adtttt p_adtttt;
 
-	public Sheet1Item GetSheet1ItemByID(String id)
+	public sdfttItem GetSdfttItemByID(Int32 id)
 	{
-		Sheet1Item t = null;
-		p_Sheet1.Dict.TryGetValue(id, out t);
-		if (t == null) Debug.LogError("can't find the id " + id + " in Sheet1");
+		sdfttItem t = null;
+		p_sdftt.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogError("can't find the id " + id + " in sdftt");
+		return t;
+	}
+
+	public mmmItem GetMmmItemByID(Int32 id)
+	{
+		mmmItem t = null;
+		p_mmm.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogError("can't find the id " + id + " in mmm");
+		return t;
+	}
+
+	public adttttItem GetAdttttItemByID(Int32 id)
+	{
+		adttttItem t = null;
+		p_adtttt.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogError("can't find the id " + id + " in adtttt");
 		return t;
 	}
 
 	public void LoadAll()
 	{
-		p_Sheet1 = Load("Sheet1") as Sheet1;
+		p_sdftt = Load("sdftt") as sdftt;
+		p_mmm = Load("mmm") as mmm;
+		p_adtttt = Load("adtttt") as adtttt;
 	}
 
 	private System.Object Load(string name)

@@ -16,6 +16,8 @@ public class DataManager //: SingletonTemplate<DataManager>
 	public sdftt p_sdftt;
 	public mmm p_mmm;
 	public adtttt p_adtttt;
+	public Dialog1 p_Dialog1;
+	public Characters p_Characters;
 
 	public sdfttItem GetSdfttItemByID(Int32 id)
 	{
@@ -41,11 +43,29 @@ public class DataManager //: SingletonTemplate<DataManager>
 		return t;
 	}
 
+	public Dialog1Item GetDialog1ItemByID(Int32 id)
+	{
+		Dialog1Item t = null;
+		p_Dialog1.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogError("can't find the id " + id + " in Dialog1");
+		return t;
+	}
+
+	public CharactersItem GetCharactersItemByID(Int32 id)
+	{
+		CharactersItem t = null;
+		p_Characters.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogError("can't find the id " + id + " in Characters");
+		return t;
+	}
+
 	public void LoadAll()
 	{
 		p_sdftt = Load("sdftt") as sdftt;
 		p_mmm = Load("mmm") as mmm;
 		p_adtttt = Load("adtttt") as adtttt;
+		p_Dialog1 = Load("Dialog1") as Dialog1;
+		p_Characters = Load("Characters") as Characters;
 	}
 
 	private System.Object Load(string name)

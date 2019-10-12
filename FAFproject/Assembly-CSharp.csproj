@@ -67,10 +67,12 @@
     <Compile Include="Assets\Scripts\Data\MainData.cs" />
     <Compile Include="Assets\Scripts\Data\MainDataDeliver.cs" />
     <Compile Include="Assets\Scripts\ExcelDataManager\DataManager.cs" />
+    <Compile Include="Assets\Scripts\FindChild.cs" />
     <Compile Include="Assets\Scripts\IOHelper.cs" />
     <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />
     <Compile Include="Assets\Scripts\MainScreen\Test.cs" />
-    <Compile Include="Assets\Scripts\Opera\StoryID.cs" />
+    <Compile Include="Assets\Scripts\Opera\DialogID.cs" />
+    <Compile Include="Assets\Scripts\Opera\MainDialog.cs" />
     <Compile Include="Assets\Scripts\SenceJump.cs" />
     <Compile Include="Assets\Scripts\TestScripts\Character.cs" />
     <Compile Include="Assets\Scripts\TestScripts\Game.cs" />

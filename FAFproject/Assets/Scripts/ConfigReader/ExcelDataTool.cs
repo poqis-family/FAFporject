@@ -295,7 +295,7 @@ namespace WJExcelDataManager
                         o = data;
                         break;
                     case SupportType.LIST_INT:
-                        data = data.Substring(1, data.Length - 2);//移除 '['   ']'
+                     //   data = data.Substring(1, data.Length - 2);//移除 '['   ']'
                         string[] ints = data.Split(',');//逗号分隔
                         List<int> list = new List<int>();
                         foreach (var item in ints)
@@ -305,7 +305,7 @@ namespace WJExcelDataManager
                         o = list;
                         break;
                     case SupportType.LIST_FLOAT:
-                        data = data.Substring(1, data.Length - 2);//移除 '['   ']'
+                     //   data = data.Substring(1, data.Length - 2);//移除 '['   ']'
                         string[] floats = data.Split(',');//逗号分隔
                         List<float> list2 = new List<float>();
                         foreach (var item in floats)
@@ -315,7 +315,7 @@ namespace WJExcelDataManager
                         o = list2;
                         break;
                     case SupportType.LIST_STRING:
-                        data = data.Substring(1, data.Length - 2);//移除 '['   ']'
+                     //   data = data.Substring(1, data.Length - 2);//移除 '['   ']'
                         string[] strs = data.Split(',');//逗号分隔
                         o = strs;
                         break;

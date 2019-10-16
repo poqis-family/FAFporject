@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EventTriggerListener.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\ExcelDataTool.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\PathWindow.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\ProgressBar.cs" />
@@ -71,13 +72,16 @@
     <Compile Include="Assets\Scripts\IOHelper.cs" />
     <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />
     <Compile Include="Assets\Scripts\MainScreen\Test.cs" />
-    <Compile Include="Assets\Scripts\Opera\DialogID.cs" />
+    <Compile Include="Assets\Scripts\Opera\DialogController.cs" />
     <Compile Include="Assets\Scripts\Opera\MainDialog.cs" />
+    <Compile Include="Assets\Scripts\Opera\ScreenAnimation.cs" />
     <Compile Include="Assets\Scripts\SenceJump.cs" />
     <Compile Include="Assets\Scripts\TestScripts\Character.cs" />
     <Compile Include="Assets\Scripts\TestScripts\Game.cs" />
     <Compile Include="Assets\Scripts\TestScripts\SaveLoad.cs" />
     <Compile Include="Assets\Scripts\TestScripts\TestStartSave.cs" />
+    <Compile Include="Assets\UIMain.cs" />
+    <None Include="Assets\DOTween\readme.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>I:/Git/FAFproject/FAFproject/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -293,6 +297,9 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>G:/2018.3.14f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/DOTween/DOTween.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/EPPlus.dll</HintPath>

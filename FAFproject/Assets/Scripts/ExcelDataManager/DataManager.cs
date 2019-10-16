@@ -23,7 +23,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	{
 		sdfttItem t = null;
 		p_sdftt.Dict.TryGetValue(id, out t);
-		if (t == null) Debug.LogError("can't find the id " + id + " in sdftt");
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in sdftt");
 		return t;
 	}
 
@@ -31,7 +31,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	{
 		mmmItem t = null;
 		p_mmm.Dict.TryGetValue(id, out t);
-		if (t == null) Debug.LogError("can't find the id " + id + " in mmm");
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in mmm");
 		return t;
 	}
 
@@ -39,7 +39,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	{
 		adttttItem t = null;
 		p_adtttt.Dict.TryGetValue(id, out t);
-		if (t == null) Debug.LogError("can't find the id " + id + " in adtttt");
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in adtttt");
 		return t;
 	}
 
@@ -47,7 +47,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	{
 		Dialog1Item t = null;
 		p_Dialog1.Dict.TryGetValue(id, out t);
-		if (t == null) Debug.LogError("can't find the id " + id + " in Dialog1");
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in Dialog1");
 		return t;
 	}
 
@@ -55,7 +55,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	{
 		CharactersItem t = null;
 		p_Characters.Dict.TryGetValue(id, out t);
-		if (t == null) Debug.LogError("can't find the id " + id + " in Characters");
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in Characters");
 		return t;
 	}
 

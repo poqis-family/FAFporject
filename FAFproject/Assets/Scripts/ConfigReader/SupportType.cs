@@ -228,7 +228,7 @@ namespace WJExcelDataManager
                 source.Append("\t{\n");
                 source.Append("\t\t" + typeName + " t = null;\n");
                 source.Append("\t\tp_" + t.Name + ".Dict.TryGetValue(id, out t);\n");
-                source.Append("\t\tif (t == null) Debug.LogError(" + '"' + "can't find the id " + '"' + " + id " + "+ " + '"' + " in " + t.Name + '"' + ");\n");
+                source.Append("\t\tif (t == null) Debug.LogWarning(" + '"' + "can't find the id " + '"' + " + id " + "+ " + '"' + " in " + t.Name + '"' + ");\n");
                 source.Append("\t\treturn t;\n");
                 source.Append("\t}\n\n");
             }
@@ -278,14 +278,14 @@ namespace WJExcelDataManager
 	                {
 		                testItem t = null;
 		                p_test.Dict.TryGetValue(id, out t);
-		                if (t == null) Debug.LogError("can't find the id " + id + " in test");
+		                if (t == null) Debug.LogWarning("can't find the id " + id + " in test");
 		                return t;
 	                }
 	                public test2Item GetTest2ItemByID(String id)
 	                {
 		                test2Item t = null;
 		                p_test2.Dict.TryGetValue(id, out t);
-		                if (t == null) Debug.LogError("can't find the id " + id + " in test2");
+		                if (t == null) Debug.LogWarning("can't find the id " + id + " in test2");
 		                return t;
 	                }
 	                public void LoadAll()

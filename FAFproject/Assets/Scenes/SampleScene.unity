@@ -164,8 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661214b4ec66ac8488148a6add568faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &40434594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -782,6 +780,7 @@ GameObject:
   - component: {fileID: 313353471}
   - component: {fileID: 313353470}
   - component: {fileID: 313353469}
+  - component: {fileID: 313353472}
   - component: {fileID: 313353468}
   m_Layer: 5
   m_Name: Opera
@@ -862,7 +861,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 313353468}
+      - m_Target: {fileID: 313353472}
         m_MethodName: Click
         m_Mode: 1
         m_Arguments:
@@ -912,6 +911,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313353466}
   m_CullTransparentMesh: 0
+--- !u!114 &313353472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313353466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd1f2bfeb3c2761449670ba60f6b869c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &321616118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,8 +2005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661214b4ec66ac8488148a6add568faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1169232143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2282,8 +2291,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 661214b4ec66ac8488148a6add568faf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1289479845

@@ -41,7 +41,7 @@ public static class ScreenAnimation
         mySequence.Append(DOTween.ToAlpha(() => color, x => color = x, 1, 0.3f));
         mySequence.Append(DOTween.ToAlpha(() => color, x => color = x, 0, 0.3f));
         //添加了由透明至不透明至透明的过程
-        mySequence.onUpdate = () => { targetGameObject.GetComponent<Image>().color = color; Debug.Log(color.a); };
+        mySequence.onUpdate = () => { targetGameObject.GetComponent<Image>().color = color; };
         //targetGameObject.GetComponent<Image>().color.a.
         Debug.Log("白闪事件" + targetGameObject);
         //设置这个Tween不受Time.scale影响
@@ -63,13 +63,16 @@ public static class ScreenAnimation
         color.g = 0;
         color.b = 0;
         color.a = 0;
-        //设置为白色全透明
+        //设置为黑色全透明
         mySequence.Append(DOTween.ToAlpha(() => color, x => color = x, 1, 0.3f));
         mySequence.Append(DOTween.ToAlpha(() => color, x => color = x, 0, 0.3f));
         //添加了由透明至不透明至透明的过程
-        mySequence.onUpdate = () => { targetGameObject.GetComponent<Image>().color = color; Debug.Log(color.a); };
+        mySequence.onUpdate = () => 
+        {
+            targetGameObject.GetComponent<Image>().color = color;
+        };
         //targetGameObject.GetComponent<Image>().color.a.
-        Debug.Log("白闪事件" + targetGameObject);
+        Debug.Log("黑闪事件" + targetGameObject);
         //设置这个Tween不受Time.scale影响
         mySequence.SetUpdate(true);
         //设置移动类型
@@ -77,7 +80,7 @@ public static class ScreenAnimation
         mySequence.SetEase(m_myEase);
         mySequence.onComplete = delegate ()
         {
-            Debug.Log("白闪事件完成" + targetGameObject);
+            Debug.Log("黑闪事件完成" + targetGameObject);
         };
     }
 }

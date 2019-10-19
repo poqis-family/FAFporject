@@ -20,8 +20,8 @@ public class MainDialog : MonoBehaviour
     public static DataManager dataManager;
     public static CharactersItem role1Data;
     public static CharactersItem role2Data;
+    Sequence textAnimation;
 
-    int i;
     //int dialogID;
     public void OperaSenceJumper(int getID)
     {
@@ -48,6 +48,17 @@ public class MainDialog : MonoBehaviour
         //更换了说话者的名字
         DialogText();
         //更改了文本内容与字号
+
+        if (nowDialogueData.CG != null)
+        {
+            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().texture=Resources.Load("Characters/" + nowDialogueData.CG, typeof(Texture)) as Texture;
+            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().DOColor(new Color(225, 225, 225, 1), 0.5f);
+        }
+        else
+        {
+            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().DOColor(new Color(225, 225, 225, 0), 0.5f);
+        }
+
 
         BGMController();
         //完成了BGM的播放
@@ -104,68 +115,17 @@ public class MainDialog : MonoBehaviour
 
     private void DialogText()
     {
-        FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>().text = nowDialogueData.dialogText;
+
+        Text text = FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>();
+        textAnimation = DOTween.Sequence();
+        textAnimation.SetUpdate(true);
+        //设置移动类型
+        textAnimation.SetEase(Ease.Linear);
+        textAnimation.AppendCallback(() => { text.text = null; });
+        textAnimation.Append(text.DOText(nowDialogueData.dialogText, nowDialogueData.dialogText.Length*0.2f));
+
         FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>().fontSize = nowDialogueData.textSize;
-    }
 
-    private void ReplaceRole2()
-    {
-        GameObject objRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2");
-        objRole2.GetComponent<RawImage>().texture = Resources.Load("Characters/" + role2Data.image + nowDialogueData.Imageface2, typeof(Texture)) as Texture;
-        //完成了Role2的加载
-
-        Quaternion rotationRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localRotation;
-        switch (nowDialogueData.ImageState2[0])
-        {
-            case 0:
-                rotationRole2.y = 0;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localRotation = rotationRole2;
-                break;
-
-            case 1:
-                rotationRole2.y = 180;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localRotation = rotationRole2;
-                break;
-        }//完成了role2的是否翻转读表
-
-        Vector3 posRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition;
-        switch (nowDialogueData.ImageState2[1])
-        {
-            case -3://左侧画面外
-                posRole2.x = -750;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
-                break;
-            case -2://左侧靠边
-                posRole2.x = -365;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
-                break;
-            case -1://左侧中间
-                posRole2.x = -250;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
-                break;
-            case 0://画面中间
-                posRole2.x = 0;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
-                break;
-            case 1://右侧中间
-                posRole2.x = 250;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
-                break;
-            case 2://右侧靠边
-                posRole2.x = 365;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
-                break;
-            case 3://右侧画面外
-                posRole2.x = 750;
-                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
-                break;
-        }//完成了role2的显示位置读表
-
-        Vector3 scaleRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localScale;
-        scaleRole2.x = (float)nowDialogueData.ImageState2[2] / 100;
-        scaleRole2.y = scaleRole2.x;
-        FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localScale = scaleRole2;
-//完成了role2的缩放
     }
 
     private void ReplaceRole1()
@@ -261,22 +221,6 @@ public class MainDialog : MonoBehaviour
                 FindChild.FindTheChild(CanvasGameObject, "Role1").transform.DOScale(scaleRole1, 0.5f);
             }
         }
-
-
-
-
-
-     
-
-
-
-
-
-
-
-
-
-
     }
 
     private void ScaleRole1()
@@ -339,6 +283,161 @@ public class MainDialog : MonoBehaviour
         objRole1.GetComponent<RawImage>().texture = Resources.Load("Characters/" + role1Data.image + nowDialogueData.Imageface1, typeof(Texture)) as Texture;
     }
 
+    private void ReplaceRole2()
+    {
+        if (nowDialogueID == originalDialogueID)
+        {
+            ChangeRole2Image();
+            //替换role1的图片
+
+            RotateRole2();//完成了role1的是否翻转读表
+
+
+
+            PostionRole2();//完成了role1的显示位置读表
+
+
+            ScaleRole2();
+            //完成了role1的缩放
+        }
+        else if (nowDialogueData.role2ID != LastDialogueData.role2ID)
+        {
+            Sequence mySequence = DOTween.Sequence();
+            Ease MyEase;
+            MyEase = Ease.Linear;
+            mySequence.SetEase(MyEase);            //设置移动类型
+
+            Color color = FindChild.FindTheChild(CanvasGameObject, "Role2").GetComponent<RawImage>().color;
+            mySequence.AppendCallback(() => { color.a = 1; });
+            mySequence.Append(DOTween.ToAlpha(() => color, x => color = x, 0, 0.4f));
+            mySequence.InsertCallback(0.4f, () => { ChangeRole2Image(); Debug.Log("role2替换图片"); });
+            mySequence.InsertCallback(0.4f, () => { RotateRole2(); Debug.Log("role2翻转读表"); });
+            mySequence.InsertCallback(0.4f, () => { PostionRole2(); Debug.Log("role2位置读表"); });
+            mySequence.InsertCallback(0.4f, () => { ScaleRole2(); Debug.Log("role2的缩放"); });
+            mySequence.Insert(0.4f, DOTween.ToAlpha(() => color, x => color = x, 1, 0.4f));
+            mySequence.onUpdate = () =>
+            {
+                FindChild.FindTheChild(CanvasGameObject, "Role2").GetComponent<RawImage>().color = color;
+                Debug.Log(color.a);
+            };
+            mySequence.SetUpdate(true);
+        }
+        else
+        {
+            ChangeRole2Image();
+            if (nowDialogueData.ImageState2[0] != LastDialogueData.ImageState2[0])
+            {
+                Vector3 role2Rotate = new Vector3(0, 0, 0);
+                switch (nowDialogueData.ImageState2[0])
+                {
+                    case 0:
+                        role2Rotate.y = 0;
+                        break;
+                    case 1:
+                        role2Rotate.y = 180;
+                        break;
+                }
+                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.DOLocalRotate(role2Rotate, 0.5f);
+            }
+            if (nowDialogueData.ImageState2[1] != LastDialogueData.ImageState2[1])
+            {
+                Vector3 posRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition;
+                switch (nowDialogueData.ImageState2[1])
+                {
+                    case -3://左侧画面外
+                        posRole2.x = -750;
+                        break;
+                    case -2://左侧靠边
+                        posRole2.x = -365;
+                        break;
+                    case -1://左侧中间
+                        posRole2.x = -250;
+                        break;
+                    case 0://画面中间
+                        posRole2.x = 0;
+                        break;
+                    case 1://右侧中间
+                        posRole2.x = 250;
+                        break;
+                    case 2://右侧靠边
+                        posRole2.x = 365;
+                        break;
+                    case 3://右侧画面外
+                        posRole2.x = 750;
+                        break;
+                }
+                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.DOLocalMoveX(posRole2.x, 0.5f);
+            }
+            if (nowDialogueData.ImageState2[2] != LastDialogueData.ImageState2[2])
+            {
+                Vector3 scaleRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localScale;
+                scaleRole2.x = (float)nowDialogueData.ImageState2[2] / 100;
+                scaleRole2.y = scaleRole2.x;
+                FindChild.FindTheChild(CanvasGameObject, "Role2").transform.DOScale(scaleRole2, 0.5f);
+            }
+        }
+    }
+
+    private void ScaleRole2()
+    {
+        Vector3 scaleRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localScale;
+        scaleRole2.x = (float)nowDialogueData.ImageState2[2] / 100;
+        scaleRole2.y = scaleRole2.x;
+        FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localScale = scaleRole2;
+    }
+
+    private void PostionRole2()
+    {
+        Vector3 posRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition;
+        switch (nowDialogueData.ImageState2[1])
+        {
+            case -3://左侧画面外
+                posRole2.x = -750;
+                break;
+            case -2://左侧靠边
+                posRole2.x = -365;
+                break;
+            case -1://左侧中间
+                posRole2.x = -250;
+                break;
+            case 0://画面中间
+                posRole2.x = 0;
+                break;
+            case 1://右侧中间
+                posRole2.x = 250;
+                break;
+            case 2://右侧靠边
+                posRole2.x = 365;
+                break;
+            case 3://右侧画面外
+                posRole2.x = 750;
+                break;
+        }
+        FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localPosition = posRole2;
+    }
+
+    private void RotateRole2()
+    {
+        Quaternion rotationRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localRotation;
+        switch (nowDialogueData.ImageState2[0])
+        {
+            case 0:
+                rotationRole2.y = 0;
+                break;
+
+            case 1:
+                rotationRole2.y = 180;
+                break;
+        }
+        FindChild.FindTheChild(CanvasGameObject, "Role2").transform.localRotation = rotationRole2;
+    }
+
+    private void ChangeRole2Image()
+    {
+        GameObject objRole2 = FindChild.FindTheChild(CanvasGameObject, "Role2");
+        objRole2.GetComponent<RawImage>().texture = Resources.Load("Characters/" + role2Data.image + nowDialogueData.Imageface2, typeof(Texture)) as Texture;
+    }
+
     public bool IsLastDialog(int nowDialogueID)
     {
         bool isLastDialog;
@@ -362,7 +461,6 @@ public class MainDialog : MonoBehaviour
         //运行时对Canvas的GameObject进行绑定
 
         //**** 可以在此处插入剧情开始流程****//
-        i = 1;
         DialogReduction(nowDialogueID);
         //加载第一句对话
     }
@@ -372,12 +470,13 @@ public class MainDialog : MonoBehaviour
     }
     public void nextSentence()
     {
-        if (IsLastDialog(nowDialogueID) == false)
+        if (textAnimation.IsPlaying())
+        {
+            textAnimation.Complete();
+        }
+        else if (IsLastDialog(nowDialogueID) == false)
         {
             Debug.Log("点击读取下一条");
-            i++;
-            if (i == 4)
-            { i += 100; }
             DialogReduction(++nowDialogueID);
 
         }

@@ -61,6 +61,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\EventTriggerListener.cs" />
+    <Compile Include="Assets\Modules\DOTweenModuleAudio.cs" />
+    <Compile Include="Assets\Modules\DOTweenModulePhysics.cs" />
+    <Compile Include="Assets\Modules\DOTweenModulePhysics2D.cs" />
+    <Compile Include="Assets\Modules\DOTweenModuleSprite.cs" />
+    <Compile Include="Assets\Modules\DOTweenModuleUI.cs" />
+    <Compile Include="Assets\Modules\DOTweenModuleUnityVersion.cs" />
+    <Compile Include="Assets\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\ExcelDataTool.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\PathWindow.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\ProgressBar.cs" />
@@ -68,7 +75,6 @@
     <Compile Include="Assets\Scripts\Data\MainData.cs" />
     <Compile Include="Assets\Scripts\Data\MainDataDeliver.cs" />
     <Compile Include="Assets\Scripts\DelayToInvoke.cs" />
-    <Compile Include="Assets\Scripts\ExcelDataManager\DataManager.cs" />
     <Compile Include="Assets\Scripts\FindChild.cs" />
     <Compile Include="Assets\Scripts\IOHelper.cs" />
     <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />
@@ -82,7 +88,7 @@
     <Compile Include="Assets\Scripts\TestScripts\SaveLoad.cs" />
     <Compile Include="Assets\Scripts\TestScripts\TestStartSave.cs" />
     <Compile Include="Assets\UIMain.cs" />
-    <None Include="Assets\DOTween\readme.txt" />
+    <None Include="Assets\readme.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>I:/Git/FAFproject/FAFproject/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -300,7 +306,7 @@
       <HintPath>G:/2018.3.14f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="DOTween">
-      <HintPath>I:/Git/FAFproject/FAFproject/Assets/DOTween/DOTween.dll</HintPath>
+      <HintPath>I:/Git/FAFproject/FAFproject/Assets/DOTween.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>I:/Git/FAFproject/FAFproject/Assets/Plugins/EPPlus.dll</HintPath>

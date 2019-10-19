@@ -36,33 +36,26 @@ public class MainDialog : MonoBehaviour
         dataManager.LoadAll();
 
         nowDialogueData = dataManager.GetDialog1ItemByID(dialogID);
-        LastDialogueData = dataManager.GetDialog1ItemByID(dialogID-1);
+        LastDialogueData = dataManager.GetDialog1ItemByID(dialogID - 1);
         role1Data = dataManager.GetCharactersItemByID(nowDialogueData.role1ID);
         role2Data = dataManager.GetCharactersItemByID(nowDialogueData.role2ID);
         //获取指定对话的数据、获取角色1、角色2数据
 
-        ReplaceRole1();
-        ReplaceRole2();
+        LoadRole1();
+        LoadRole2();
         //替换了两个角色的图片
-        SayerName();
+        LoadSayerName();
         //更换了说话者的名字
-        DialogText();
+        LoadDialogText();
         //更改了文本内容与字号
 
-        if (nowDialogueData.CG != null)
-        {
-            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().texture=Resources.Load("Characters/" + nowDialogueData.CG, typeof(Texture)) as Texture;
-            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().DOColor(new Color(225, 225, 225, 1), 0.5f);
-        }
-        else
-        {
-            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().DOColor(new Color(225, 225, 225, 0), 0.5f);
-        }
+        LoadCG();
 
+        LoadBG();
 
-        BGMController();
+        LoadBGM();
         //完成了BGM的播放
-        VoiceController();
+        LoadVoice();
         //完成了语音/音效的播放
 
         switch (nowDialogueData.ScreenAnimation)
@@ -81,7 +74,39 @@ public class MainDialog : MonoBehaviour
         //完成了全屏特效
     }
 
-    private void VoiceController()
+    private void LoadBG()
+    {
+        if (nowDialogueID == originalDialogueID)
+        {
+            FindChild.FindTheChild(CanvasGameObject, "BG").GetComponent<RawImage>().texture = Resources.Load("BG/" + nowDialogueData.backGround, typeof(Texture)) as Texture;
+        }
+        else if (nowDialogueData.backGround != LastDialogueData.backGround)
+        {
+            Sequence mySequence = DOTween.Sequence();
+            mySequence.AppendCallback(() =>
+            { FindChild.FindTheChild(CanvasGameObject, "BGAnimate").GetComponent<RawImage>().texture = Resources.Load("BG/" + nowDialogueData.backGround, typeof(Texture)) as Texture; });
+            mySequence.Append(FindChild.FindTheChild(CanvasGameObject, "BGAnimate").GetComponent<RawImage>().DOColor(new Color(255, 255, 255, 1), 0.5f));
+            mySequence.AppendCallback(() =>
+            { FindChild.FindTheChild(CanvasGameObject, "BG").GetComponent<RawImage>().texture = Resources.Load("BG/" + nowDialogueData.backGround, typeof(Texture)) as Texture; });
+            mySequence.Append(FindChild.FindTheChild(CanvasGameObject, "BGAnimate").GetComponent<RawImage>().DOColor(new Color(255, 255, 255, 0), 0.5f));
+            //bgAnimate变成新图、渐变显示，显示完成后bg换成新图，bganime变成透明
+        }
+    }
+
+    private void LoadCG()
+    {
+        if (nowDialogueData.CGImage != null)
+        {
+            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().texture = Resources.Load("CG/" + nowDialogueData.CGImage, typeof(Texture)) as Texture;
+            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().DOColor(new Color(225, 225, 225, 1), 0.5f);
+        }
+        else
+        {
+            FindChild.FindTheChild(CanvasGameObject, "CG").GetComponent<RawImage>().DOColor(new Color(225, 225, 225, 0), 0.5f);
+        }
+    }
+
+    private void LoadVoice()
     {
         if (nowDialogueData.sound != null)
         {
@@ -90,7 +115,7 @@ public class MainDialog : MonoBehaviour
         }
     }
 
-    private void BGMController()
+    private void LoadBGM()
     {
         if (nowDialogueID == originalDialogueID || nowDialogueData.Bgm != LastDialogueData.Bgm)//本句是第一句话或与上一句数据的BGM 不同时
         {
@@ -108,27 +133,47 @@ public class MainDialog : MonoBehaviour
 
     }//完成了BGM播放，如果要播放的bgm与上一句相同，则不作任何 改变
 
-    private void SayerName()
+    private void LoadSayerName()
     {
-        FindChild.FindTheChild(CanvasGameObject, "SayerName").GetComponent<Text>().text = dataManager.GetCharactersItemByID(nowDialogueData.sayerID).name;
+        if (nowDialogueData.sayerID == 0)
+            FindChild.FindTheChild(CanvasGameObject, "SayerName").GetComponent<Text>().text = null;
+        else 
+            FindChild.FindTheChild(CanvasGameObject, "SayerName").GetComponent<Text>().text = dataManager.GetCharactersItemByID(nowDialogueData.sayerID).name;
     }
 
-    private void DialogText()
+    private void LoadDialogText()
     {
+        if (nowDialogueData.textSize == 0 && nowDialogueData.dialogText == null)
+        {
+            FindChild.FindTheChild(CanvasGameObject, "Boxbg").SetActive(false);
+        }
+        else
+        {
+            FindChild.FindTheChild(CanvasGameObject, "Boxbg").SetActive(true);
+            Text text = FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>();
+            textAnimation = DOTween.Sequence();
+            textAnimation.SetUpdate(true);
+            //设置移动类型
+            textAnimation.SetEase(Ease.Linear);
+            textAnimation.AppendCallback(() => { text.text = null; });
+            textAnimation.Append(text.DOText(nowDialogueData.dialogText, nowDialogueData.dialogText.Length * 0.2f));
 
-        Text text = FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>();
-        textAnimation = DOTween.Sequence();
-        textAnimation.SetUpdate(true);
-        //设置移动类型
-        textAnimation.SetEase(Ease.Linear);
-        textAnimation.AppendCallback(() => { text.text = null; });
-        textAnimation.Append(text.DOText(nowDialogueData.dialogText, nowDialogueData.dialogText.Length*0.2f));
+            if (nowDialogueData.textPositon=="居中")
+            { 
+            FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+            }
+            else if(nowDialogueData.textPositon==null)
+            {
+                FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>().alignment = TextAnchor.UpperLeft;
+            }
 
-        FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>().fontSize = nowDialogueData.textSize;
+            FindChild.FindTheChild(CanvasGameObject, "DialogText").GetComponent<Text>().fontSize = nowDialogueData.textSize;
 
+
+        }
     }
 
-    private void ReplaceRole1()
+    private void LoadRole1()
     {
         if (nowDialogueID == originalDialogueID)
         {
@@ -283,7 +328,7 @@ public class MainDialog : MonoBehaviour
         objRole1.GetComponent<RawImage>().texture = Resources.Load("Characters/" + role1Data.image + nowDialogueData.Imageface1, typeof(Texture)) as Texture;
     }
 
-    private void ReplaceRole2()
+    private void LoadRole2()
     {
         if (nowDialogueID == originalDialogueID)
         {

@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Data\MainData.cs" />
     <Compile Include="Assets\Scripts\Data\MainDataDeliver.cs" />
     <Compile Include="Assets\Scripts\DelayToInvoke.cs" />
+    <Compile Include="Assets\Scripts\ExcelDataManager\DataManager.cs" />
     <Compile Include="Assets\Scripts\FindChild.cs" />
     <Compile Include="Assets\Scripts\IOHelper.cs" />
     <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />

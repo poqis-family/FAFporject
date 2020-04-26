@@ -35,12 +35,20 @@ public static class MainData
         {
             //读取数据
             MainDataDeliver t1 = (MainDataDeliver)IOHelper.GetData(filename, typeof(MainDataDeliver));
+
+
+
+
             //**每次增加需保存数据都要再次添加相应加载**
             year = t1.year;
             month = t1.month;
             name = t1.name;
             age = t1.age;
             //**每次增加需保存数据都要再次添加相应加载**
+
+
+
+
             return true;
         }
         else

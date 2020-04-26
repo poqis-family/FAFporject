@@ -68,6 +68,7 @@
     <Compile Include="Assets\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\Modules\DOTweenModuleUnityVersion.cs" />
     <Compile Include="Assets\Modules\DOTweenModuleUtils.cs" />
+    <Compile Include="Assets\player.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\ExcelDataTool.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\PathWindow.cs" />
     <Compile Include="Assets\Scripts\ConfigReader\ProgressBar.cs" />
@@ -77,9 +78,13 @@
     <Compile Include="Assets\Scripts\DelayToInvoke.cs" />
     <Compile Include="Assets\Scripts\ExcelDataManager\DataManager.cs" />
     <Compile Include="Assets\Scripts\FindChild.cs" />
+    <Compile Include="Assets\Scripts\GrasslandTest\GrasslandTest.cs" />
     <Compile Include="Assets\Scripts\IOHelper.cs" />
     <Compile Include="Assets\Scripts\MainScreen\MainInfo.cs" />
     <Compile Include="Assets\Scripts\MainScreen\Test.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\MapAttribute.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\MapEditor.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\MapEditorCell.cs" />
     <Compile Include="Assets\Scripts\Opera\DialogController.cs" />
     <Compile Include="Assets\Scripts\Opera\MainDialog.cs" />
     <Compile Include="Assets\Scripts\Opera\ScreenAnimation.cs" />

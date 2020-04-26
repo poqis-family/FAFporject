@@ -24,7 +24,7 @@ public class MainInfo : MonoBehaviour
         transform.Find("month").GetComponent<Text>().text = MainData.month.ToString();
         transform.Find("name").GetComponent<Text>().text = MainData.name.ToString();
         transform.Find("age").GetComponent<Text>().text = MainData.age.ToString();
-        //  MainData.SaveData();
+        MainData.SaveData();
     }
 
     // Update is called once per frame

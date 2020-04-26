@@ -526,4 +526,24 @@ public class MainDialog : MonoBehaviour
 
         }
     }
+
+    public void Skip()
+    {
+        Dialog1Item nextDialogueData;
+        int CheckDialogueID=nowDialogueID;
+        DataManager dataManager = new DataManager();
+        dataManager.LoadAll();
+        for (bool isLastID=false; isLastID== false;)
+        {
+            CheckDialogueID++;
+            nextDialogueData = dataManager.GetDialog1ItemByID(CheckDialogueID);
+            if (nextDialogueData == null)
+            {
+                isLastID = true;
+                nowDialogueID = CheckDialogueID - 1;
+                DOTween.CompleteAll();
+                DialogReduction(nowDialogueID);
+            }
+        }
+    }
 }

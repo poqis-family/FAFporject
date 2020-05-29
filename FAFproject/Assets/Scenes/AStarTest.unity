@@ -1478,7 +1478,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712115216}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -3.6900003, y: -0.665, z: -1.65}
+  m_LocalPosition: {x: -3.9, y: -0.665, z: -1.65}
   m_LocalScale: {x: 0.98800004, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 921263443}
@@ -1765,15 +1765,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966430138}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 372577809f1d42d4fb32729fb35ca787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPosition: {fileID: 502841972}
-  speed: 2
-  nextWaypointDistance: 3
-  reachedEndOfPath: 0
+  radius: 100
 --- !u!114 &966430143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1820,7 +1817,7 @@ MonoBehaviour:
   repathRate: 0.5
   canSearch: 1
   canMove: 1
-  maxSpeed: 7
+  maxSpeed: 15
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -1834,7 +1831,7 @@ MonoBehaviour:
   slowdownDistance: 0.6
   pickNextWaypointDist: 2
   endReachedDistance: 0.2
-  alwaysDrawGizmos: 0
+  alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
@@ -2620,7 +2617,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1806913573}
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 1.47, y: -0.665, z: -0.62999994}
+  m_LocalPosition: {x: 1.51, y: -0.665, z: -0.62999994}
   m_LocalScale: {x: 0.86350006, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 921263443}
@@ -3183,7 +3180,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006187067}
   m_LocalRotation: {x: -0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 3.8, y: 0, z: 52}
+  m_LocalPosition: {x: 3.8, y: 0, z: 54.3}
   m_LocalScale: {x: 13.1, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}

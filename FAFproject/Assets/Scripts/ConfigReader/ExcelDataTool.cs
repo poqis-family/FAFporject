@@ -26,11 +26,6 @@ namespace WJExcelDataManager
         [UnityEditor.MenuItem("开发工具/导表工具/导入全部数据")]
         public static void LoadAllExcelData()
         {
-            string ScriptDataPath = System.Environment.CurrentDirectory + "/Assets/Scripts/ExcelDataManager";
-            if (Directory.Exists(ScriptDataPath)) Directory.Delete(ScriptDataPath, true);//删除旧的脚本文件
-            Directory.CreateDirectory(ScriptDataPath);
-            //if (!EditorUtility.DisplayDialog("注意！！！", "导表前要关闭打开的数据表，否则会失败，是否继续？", "继续", "取消")) return;
-
             INPUT_PATH = PlayerPrefs.GetString(System.Environment.CurrentDirectory + "ExcelDataInputPath", "");
 
             if (string.IsNullOrEmpty(INPUT_PATH))
@@ -46,6 +41,14 @@ namespace WJExcelDataManager
                 EditorUtility.ClearProgressBar();
                 throw new Exception("暂无可以导入的数据表！");
             }
+
+
+            string ScriptDataPath = System.Environment.CurrentDirectory + "/Assets/Scripts/ExcelDataManager";
+            if (Directory.Exists(ScriptDataPath)) Directory.Delete(ScriptDataPath, true);//删除旧的脚本文件
+            Directory.CreateDirectory(ScriptDataPath);
+            //if (!EditorUtility.DisplayDialog("注意！！！", "导表前要关闭打开的数据表，否则会失败，是否继续？", "继续", "取消")) return;
+
+
             if (codeList == null)
             {
                 codeList = new List<string>();

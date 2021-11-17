@@ -835,12 +835,6 @@
      <Reference Include="UnityEngine.Advertisements.Editor">
      <HintPath>D:/FAFproject/FAFproject/Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.2D.Tilemap.Extras">
-     <HintPath>D:/FAFproject/FAFproject/Library/ScriptAssemblies/Unity.2D.Tilemap.Extras.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.2D.Tilemap.Extras.Editor">
-     <HintPath>D:/FAFproject/FAFproject/Library/ScriptAssemblies/Unity.2D.Tilemap.Extras.Editor.dll</HintPath>
-     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PackageToolsEditor.csproj">
@@ -854,6 +848,14 @@
     <ProjectReference Include="AstarPathfindingProjectEditor.csproj">
       <Project>{7d9aea5a-0b55-3643-d02e-fa8a9b18837d}</Project>
       <Name>AstarPathfindingProjectEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Tilemap.Extras.csproj">
+      <Project>{71ccbfb5-f846-0f15-bb7a-4ab0b9948e62}</Project>
+      <Name>Unity.2D.Tilemap.Extras</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Tilemap.Extras.Editor.csproj">
+      <Project>{76ee5a7f-66fc-5baf-0d1a-9a79806da82b}</Project>
+      <Name>Unity.2D.Tilemap.Extras.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

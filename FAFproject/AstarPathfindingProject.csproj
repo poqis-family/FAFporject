@@ -132,9 +132,9 @@
      <Compile Include="Assets\AstarPathfindingProject\RVO\RVOSimulator.cs" />
      <Compile Include="Assets\AstarPathfindingProject\Generators\NavmeshBase.cs" />
      <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example14_TurnBased_Hexagon\TurnBasedDoor.cs" />
-     <Compile Include="Assets\AstarPathfindingProject\Utilities\AstarMemory.cs" />
      <Compile Include="Assets\AstarPathfindingProject\Utilities\Funnel.cs" />
      <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\RecastMeshGatherer.cs" />
+     <Compile Include="Assets\AstarPathfindingProject\Utilities\AstarMemory.cs" />
      <Compile Include="Assets\AstarPathfindingProject\Utilities\DotNetReplacements.cs" />
      <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\RecastBBTree.cs" />
      <Compile Include="Assets\AstarPathfindingProject\Core\AI\NavmeshController.cs" />

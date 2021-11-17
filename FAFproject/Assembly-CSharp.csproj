@@ -346,6 +346,9 @@
      <Reference Include="I18N.Other">
      <HintPath>D:/FAFproject/FAFproject/Assets/Plugins/I18N.Other.dll</HintPath>
      </Reference>
+     <Reference Include="Newtonsoft.Json">
+     <HintPath>D:/FAFproject/FAFproject/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
+     </Reference>
      <Reference Include="WJExcelDataClass">
      <HintPath>D:/FAFproject/FAFproject/Assets/Plugins/WJExcelDataClass/WJExcelDataClass.dll</HintPath>
      </Reference>
@@ -357,9 +360,6 @@
      </Reference>
      <Reference Include="Unity.Analytics.Editor">
      <HintPath>D:/FAFproject/FAFproject/Library/PackageCache/com.unity.analytics@3.6.11/Unity.Analytics.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Newtonsoft.Json">
-     <HintPath>D:/FAFproject/FAFproject/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="ExcelDataReader">
      <HintPath>D:/FAFproject/FAFproject/Assets/Plugins/ExcelDataReader.dll</HintPath>
@@ -834,6 +834,12 @@
      </Reference>
      <Reference Include="UnityEngine.Advertisements.Editor">
      <HintPath>D:/FAFproject/FAFproject/Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.Tilemap.Extras">
+     <HintPath>D:/FAFproject/FAFproject/Library/ScriptAssemblies/Unity.2D.Tilemap.Extras.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.Tilemap.Extras.Editor">
+     <HintPath>D:/FAFproject/FAFproject/Library/ScriptAssemblies/Unity.2D.Tilemap.Extras.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

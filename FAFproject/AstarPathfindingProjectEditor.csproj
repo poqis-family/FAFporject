@@ -360,6 +360,9 @@
      <Reference Include="I18N.Other">
      <HintPath>D:/FAFproject/FAFproject/Assets/Plugins/I18N.Other.dll</HintPath>
      </Reference>
+     <Reference Include="Newtonsoft.Json">
+     <HintPath>D:/FAFproject/FAFproject/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Plastic.Newtonsoft.Json">
      <HintPath>D:/FAFproject/FAFproject/Library/PackageCache/com.unity.collab-proxy@1.13.5/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll</HintPath>
      </Reference>
@@ -380,9 +383,6 @@
      </Reference>
      <Reference Include="unityplastic">
      <HintPath>D:/FAFproject/FAFproject/Library/PackageCache/com.unity.collab-proxy@1.13.5/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
-     </Reference>
-     <Reference Include="Newtonsoft.Json">
-     <HintPath>D:/FAFproject/FAFproject/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="ExcelDataReader">
      <HintPath>D:/FAFproject/FAFproject/Assets/Plugins/ExcelDataReader.dll</HintPath>

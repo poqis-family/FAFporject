@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WJExcelDataClass;
 
 public class Backpack : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class Backpack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        DataManager dataManager = new DataManager();
+        dataManager.LoadAll();
     }
         
     // Update is called once per frame

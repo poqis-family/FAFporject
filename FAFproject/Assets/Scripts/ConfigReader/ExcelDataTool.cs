@@ -17,6 +17,8 @@ namespace WJExcelDataManager
     public class ExcelDataTool
     {
         //如果新增表出错，记得要把datamanger.cs和.meta文件用git复原，再用unity加载，再进行倒表
+        //Sheet名称内不可包含“Item”（数据转脚本的时候有一行检查，没有细看，将就先用）
+        
         private static string INPUT_PATH;
         public const string CODE_NAMESPACE = "WJExcelDataClass";//由表生成的数据类型均在此命名空间内
         public const string BinDataFolder = "BinConfigData";//序列化的数据文件都会放在此文件夹内,此文件夹位于Resources文件夹下用于读取数据

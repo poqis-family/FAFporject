@@ -19,7 +19,6 @@ public class DataManager //: SingletonTemplate<DataManager>
 	public Maps1 p_Maps1;
 	public Dialog1 p_Dialog1;
 	public Characters p_Characters;
-	public Sheet1 p_Sheet1;
 
 	public sdfttItem GetSdfttItemByID(Int32 id)
 	{
@@ -69,14 +68,6 @@ public class DataManager //: SingletonTemplate<DataManager>
 		return t;
 	}
 
-	public Sheet1Item GetSheet1ItemByID(Int32 id)
-	{
-		Sheet1Item t = null;
-		p_Sheet1.Dict.TryGetValue(id, out t);
-		if (t == null) Debug.LogWarning("can't find the id " + id + " in Sheet1");
-		return t;
-	}
-
 	public void LoadAll()
 	{
 		p_sdftt = Load("sdftt") as sdftt;
@@ -85,7 +76,6 @@ public class DataManager //: SingletonTemplate<DataManager>
 		p_Maps1 = Load("Maps1") as Maps1;
 		p_Dialog1 = Load("Dialog1") as Dialog1;
 		p_Characters = Load("Characters") as Characters;
-		p_Sheet1 = Load("Sheet1") as Sheet1;
 	}
 
 	private System.Object Load(string name)

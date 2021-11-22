@@ -10,6 +10,7 @@ public static class MainData
     public static int month;
     public static string name;
     public static int age;
+    public static List<int[]> ItemList = new List<int[]>();
     public static void SaveData()
     {
         // 定义存档路径
@@ -36,14 +37,12 @@ public static class MainData
             //读取数据
             MainDataDeliver t1 = (MainDataDeliver)IOHelper.GetData(filename, typeof(MainDataDeliver));
 
-
-
-
             //**每次增加需保存数据都要再次添加相应加载**
             year = t1.year;
             month = t1.month;
             name = t1.name;
             age = t1.age;
+            ItemList = t1.ItemList;
             //**每次增加需保存数据都要再次添加相应加载**
 
 

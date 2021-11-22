@@ -8,14 +8,14 @@ public class MainDataDeliver
     public  int month;
     public  string name;
     public  int age;
-    public  List<int[]> ItemList = new List<int[]>();
+    public  int[,,] ItemListArr = new int[3,12,2];
     public MainDataDeliver()
     {
         year = MainData.year;
         month = MainData.month;
         name = MainData.name;
-        age = MainData.age;
-        ItemList = MainData.ItemList;
+        age = MainData.age; 
+        ItemListArr = MainData.ItemListArr;
         
     }
 }

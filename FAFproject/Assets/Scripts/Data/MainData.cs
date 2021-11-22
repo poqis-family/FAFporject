@@ -10,7 +10,63 @@ public static class MainData
     public static int month;
     public static string name;
     public static int age;
-    public static List<int[]> ItemList = new List<int[]>();
+    public static List<List<int[]>> ItemList = new List<List<int[]>>();
+    public static int[,,] ItemListArr = new int[3,12,2];
+    
+    /// <summary>
+    /// 往ItemListArr中添加一个物品，成功返TRUE，失败返false
+    /// </summary>
+    /// <param name="id">拾取对象的ID</param>
+    /// <param name="num">拾取对象的数量</param>
+    /// <returns></returns>
+    public static bool ItemAdd(int id,int num)
+    {
+        //找是否有相同ID的物品，有就叠加数量
+        for (int i = 0;i<ItemListArr.GetLength(0);i++){
+            for (int k = 0;k<ItemListArr.GetLength(0);k++){
+                if (ItemListArr[i, k, 0] == id)
+                {
+                    ItemListArr[i, k, 1] += num;
+                    return true;
+                }
+            }
+        }
+
+        //找ItemListArr是否有空位,有就加进去
+        int[] SpareLocation = CheckItemListSpare();
+        if (SpareLocation!= null)
+        {
+            ItemListArr[SpareLocation[0], SpareLocation[1], 0] = id;
+            ItemListArr[SpareLocation[0], SpareLocation[1], 1] = num;
+            return true;
+        }
+
+        //即没空位又无相同ID
+        return false;
+    }
+    
+    /// <summary>
+    /// 寻找ItemListArr中的空位，找到返回一个int【】标记坐标,未找到返回null
+    /// </summary>
+    /// <returns></returns>
+    public static int[] CheckItemListSpare()
+    {
+        int[] SpareLocation = new int[2];
+        for (int i = 0;i<ItemListArr.GetLength(0);i++){
+
+            for (int k = 0;k<ItemListArr.GetLength(0);k++){
+                if (ItemListArr[i, k, 0] == 0)
+                {
+                    SpareLocation[0] = i;
+                    SpareLocation[1] = k;
+                    return SpareLocation;
+                }
+            }
+        }
+        return null;
+    }
+
+    
     public static void SaveData()
     {
         // 定义存档路径
@@ -42,7 +98,7 @@ public static class MainData
             month = t1.month;
             name = t1.name;
             age = t1.age;
-            ItemList = t1.ItemList;
+            ItemListArr = t1.ItemListArr;
             //**每次增加需保存数据都要再次添加相应加载**
 
 

@@ -5,13 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public static class MainData 
 {
+    public static DataManager dataManager = new DataManager();
     //每增加一条需保存的值都要在MainDataDeliver中添加，并在MainData.LoadData中添加相应加载
     public static int year;
     public static int month;
     public static string name;
     public static int age;
-    public static List<List<int[]>> ItemList = new List<List<int[]>>();
-    public static int[,,] ItemListArr = new int[3,12,2];
+    public static int[,,] itemListArr = new int[3,12,2];
     
     /// <summary>
     /// 往ItemListArr中添加一个物品，成功返TRUE，失败返false
@@ -22,11 +22,13 @@ public static class MainData
     public static bool ItemAdd(int id,int num)
     {
         //找是否有相同ID的物品，有就叠加数量
-        for (int i = 0;i<ItemListArr.GetLength(0);i++){
-            for (int k = 0;k<ItemListArr.GetLength(0);k++){
-                if (ItemListArr[i, k, 0] == id)
+        for (int i = 0;i<itemListArr.GetLength(0);i++){
+            for (int k = 0;k<itemListArr.GetLength(0);k++){
+                if (itemListArr[i, k, 0] == id)
                 {
-                    ItemListArr[i, k, 1] += num;
+                    itemListArr[i, k, 1] += num;
+                    BackpackController bk = new BackpackController();
+                    bk.RefreshItemUI();
                     return true;
                 }
             }
@@ -36,8 +38,10 @@ public static class MainData
         int[] SpareLocation = CheckItemListSpare();
         if (SpareLocation!= null)
         {
-            ItemListArr[SpareLocation[0], SpareLocation[1], 0] = id;
-            ItemListArr[SpareLocation[0], SpareLocation[1], 1] = num;
+            itemListArr[SpareLocation[0], SpareLocation[1], 0] = id;
+            itemListArr[SpareLocation[0], SpareLocation[1], 1] = num;
+            BackpackController bk = new BackpackController();
+            bk.RefreshItemUI();
             return true;
         }
 
@@ -52,10 +56,10 @@ public static class MainData
     public static int[] CheckItemListSpare()
     {
         int[] SpareLocation = new int[2];
-        for (int i = 0;i<ItemListArr.GetLength(0);i++){
+        for (int i = 0;i<itemListArr.GetLength(0);i++){
 
-            for (int k = 0;k<ItemListArr.GetLength(0);k++){
-                if (ItemListArr[i, k, 0] == 0)
+            for (int k = 0;k<itemListArr.GetLength(0);k++){
+                if (itemListArr[i, k, 0] == 0)
                 {
                     SpareLocation[0] = i;
                     SpareLocation[1] = k;
@@ -98,7 +102,7 @@ public static class MainData
             month = t1.month;
             name = t1.name;
             age = t1.age;
-            ItemListArr = t1.ItemListArr;
+            itemListArr = t1.ItemListArr;
             //**每次增加需保存数据都要再次添加相应加载**
 
 

@@ -15,7 +15,7 @@ public class MainDataDeliver
         month = MainData.month;
         name = MainData.name;
         age = MainData.age; 
-        ItemListArr = MainData.ItemListArr;
+        ItemListArr = MainData.itemListArr;
         
     }
 }

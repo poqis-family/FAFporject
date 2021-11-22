@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class player : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public Vector2 direction;
     private Rigidbody2D rb;
@@ -22,6 +23,17 @@ public class player : MonoBehaviour
         GetInput();
         AnimatorMovement(direction);
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Items"))
+        {
+            Debug.Log(other.name);
+            MainData.ItemAdd(10001, 1);
+        }
+
+    }
+
     public void AnimatorMovement(Vector2 derection)
     {
         animator.SetFloat("x", direction.x);

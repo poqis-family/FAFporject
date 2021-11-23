@@ -86,6 +86,7 @@ public static class FindChild
 
     public static GameObject[] FindTheChildren(GameObject parentObject, string targetName)
     {
+        
         childrenList = new List<GameObject>();
         if (parentObject.name == targetName)
         {

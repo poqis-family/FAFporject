@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using Tile = UnityEngine.WSA.Tile;
 
 public class Player : MonoBehaviour
 {
@@ -20,15 +22,18 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    
         GetInput();
         AnimatorMovement(direction);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+    
         if (other.CompareTag("Items"))
         {
             MainData.ItemAdd(10001, 1);
+            
         }
 
     }
@@ -42,7 +47,13 @@ public class Player : MonoBehaviour
     {
         rb.velocity = direction.normalized * speed; ;
     }
-    private void GetInput() {
+    private void GetInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            TileMapController tmc = new TileMapController();
+            tmc.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position));
+        }
         direction = Vector2.zero;
         if (Input.GetKey(KeyCode.W))
         {

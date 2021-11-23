@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Items"))
         {
-            Debug.Log(other.name);
             MainData.ItemAdd(10001, 1);
         }
 

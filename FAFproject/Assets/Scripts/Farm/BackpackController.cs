@@ -26,6 +26,10 @@ public class BackpackController : MonoBehaviour
                 Image img=itemImgArr[i].GetComponent<Image>();
                 img.sprite = 
                     Resources.Load("UI/ItemIMG/" + MainData.dataManager.GetPropsItemByID(MainData.itemListArr[BackpackData.nowBackpackPage,i,0]).img,typeof(Sprite))as Sprite;
+
+                FindChild.FindTheChild(itemImgArr[i], ("Text")).GetComponent<Text>().text =
+                    MainData.itemListArr[BackpackData.nowBackpackPage, i, 1].ToString();
+
             }
         }
     }

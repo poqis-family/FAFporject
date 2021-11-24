@@ -51,8 +51,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            TileMapController tmc = new TileMapController();
-            tmc.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position));
+            TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position));
         }
         direction = Vector2.zero;
         if (Input.GetKey(KeyCode.W))

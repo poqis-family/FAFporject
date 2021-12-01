@@ -10,7 +10,7 @@ public class TileMapController : MonoBehaviour
     private GameObject arableMap;
 
     public static TileMapController _Instance;
-    private TileBase basetemp;
+    public TileBase basetemp;
    // public TileBase ruleTile= tmpObj as TileBase;
    //public Object Obj;
 
@@ -23,7 +23,7 @@ public class TileMapController : MonoBehaviour
     {
         //ruleTile=Resources.Load("Tiles/test1/outside_A2_40",typeof())
       //  basetemp = Resources.Load("Tiles/test1/outside_A2_40", typeof(Asset)) as TileBase;
-        basetemp = Resources.Load<TileBase>("Tiles/test1/outside_A2_40");
+        //basetemp = Resources.Load<TileBase>("Tiles/test1/outside_A2_40");
         // ruleTile= Resources.Load("Tiles/test1/outside_A2_40", typeof(asset)as object);
     }
     
@@ -34,7 +34,7 @@ public class TileMapController : MonoBehaviour
 
     public void CheckArable(Vector3Int pos)
     {
-        arableMap= FindChild.FindTheChild(GameObject.Find("Map"), "Tilemap");
+        arableMap= FindChild.FindTheChild(GameObject.Find("Map"), "ArableLayer");
         Tilemap tm = arableMap.GetComponent<Tilemap>();
      //   Debug.Log(arableMap.name); 
         //Debug.Log("!!!!"+ruleTile.name);

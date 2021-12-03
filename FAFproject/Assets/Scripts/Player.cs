@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
         GetInput();
         AnimatorMovement(direction);
     }
@@ -51,7 +50,17 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position));
+            if (TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            {
+                TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position));
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (TileMapController._Instance.CheckWaterable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            {
+                TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
+            }
         }
         direction = Vector2.zero;
         if (Input.GetKey(KeyCode.W))

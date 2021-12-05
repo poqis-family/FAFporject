@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = 2f;
+
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);//初始位置向下

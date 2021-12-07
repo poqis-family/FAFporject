@@ -20,6 +20,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	public Dialog1 p_Dialog1;
 	public Characters p_Characters;
 	public Props p_Props;
+	public Crops p_Crops;
 
 	public sdfttItem GetSdfttItemByID(Int32 id)
 	{
@@ -77,6 +78,14 @@ public class DataManager //: SingletonTemplate<DataManager>
 		return t;
 	}
 
+	public CropsItem GetCropsItemByID(Int32 id)
+	{
+		CropsItem t = null;
+		p_Crops.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in Crops");
+		return t;
+	}
+
 	public void LoadAll()
 	{
 		p_sdftt = Load("sdftt") as sdftt;
@@ -86,6 +95,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 		p_Dialog1 = Load("Dialog1") as Dialog1;
 		p_Characters = Load("Characters") as Characters;
 		p_Props = Load("Props") as Props;
+		p_Crops = Load("Crops") as Crops;
 	}
 
 	private System.Object Load(string name)

@@ -323,8 +323,13 @@ namespace WJExcelDataManager
                     case SupportType.LIST_STRING:
                      //   data = data.Substring(1, data.Length - 2);//移除 '['   ']'
                         string[] strs = data.Split(',');//逗号分隔
-                        o = strs;
-                        break;
+                        List<string> list3 = new List<string>();
+                         foreach (var item in strs)
+                         {
+                             list3.Add(item.ToString());
+                     }
+                     o = list3;
+                     break;
                     case SupportType.LIST_LIST_INT:
                         break;
                     case SupportType.LIST_LIST_FLOAT:

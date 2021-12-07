@@ -40,7 +40,6 @@ public class MainDialog : MonoBehaviour
         role1Data = dataManager.GetCharactersItemByID(nowDialogueData.role1ID);
         role2Data = dataManager.GetCharactersItemByID(nowDialogueData.role2ID);
         //获取指定对话的数据、获取角色1、角色2数据
-
         LoadRole1();
         LoadRole2();
         //替换了两个角色的图片

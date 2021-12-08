@@ -69,7 +69,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -5974,14 +5974,13 @@ TextureImporter:
       crops._17: -329980666
       crops._145: -2036394835
       crops._101: -2046085342
-      crops._160: 1801195280
       crops._235: -955885135
+      crops._160: 1801195280
       crops._109: 834913240
       crops._163: -2075010897
-      crops._276: 1779523540
       crops._107: 1950245960
-      crops._48: 1341332445
       crops._263: 394964854
+      crops._48: 1341332445
       crops._164: -1219113085
       crops._190: -301053061
       crops._95: -125480620
@@ -5992,21 +5991,22 @@ TextureImporter:
       crops._52: -636756535
       crops._131: -330582513
       crops._156: -1363683510
-      crops._166: -4570243
-      crops._211: -1313092589
-      crops._244: -1797360746
       crops._233: -162957509
-      crops._179: 1273951463
+      crops._211: -1313092589
+      crops._166: -4570243
+      crops._276: 1779523540
       crops._285: 1090906211
+      crops._179: 1273951463
       crops._123: -361487052
       crops._138: 1568033780
       crops._38: 53049829
-      crops._218: 2121680379
       crops._251: 1855964943
       crops._266: 1320122534
+      crops._244: -1797360746
       crops._53: -1873946098
       crops._194: -454509489
       crops._236: -1728685752
+      crops._218: 2121680379
       crops._5: 611167516
       crops._267: -1692187650
       crops._10: -169756258

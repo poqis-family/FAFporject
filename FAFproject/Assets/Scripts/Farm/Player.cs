@@ -64,7 +64,6 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log(TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)));
             if (TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)))
             {
                 TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position));

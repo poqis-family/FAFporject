@@ -12,6 +12,9 @@ public static class MainData
     public static string name;
     public static int age;
     public static int[,,] itemListArr = new int[3,12,2];
+    public static List<Vector3Int> plowedData; //在某格子是否耕过田 的List，List内都是耕过的田的坐标
+    public static List<Vector3Int> wateredData;   //在某格子是否浇过水 的List，List内都是浇过的水的坐标
+    public static Dictionary<Vector3Int, int[]> cropsData;  //在某格子是否种过地，种的什么，长了几天  的List，List内都是作物们的坐标与状态
     
     /// <summary>
     /// 往ItemListArr中添加一个物品，成功返TRUE，失败返false
@@ -97,17 +100,21 @@ public static class MainData
             //读取数据
             MainDataDeliver t1 = (MainDataDeliver)IOHelper.GetData(filename, typeof(MainDataDeliver));
 
+            
             //**每次增加需保存数据都要再次添加相应加载**
             year = t1.year;
             month = t1.month;
             name = t1.name;
             age = t1.age;
             itemListArr = t1.ItemListArr;
+            plowedData = t1.plowedData;
+            wateredData = t1.wateredData;
+            cropsData = t1.cropsData;
+
             //**每次增加需保存数据都要再次添加相应加载**
 
 
-
-
+            
             return true;
         }
         else

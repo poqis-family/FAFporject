@@ -5,66 +5,88 @@ using DG.Tweening.Core.Easing;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using WJExcelDataClass;
+using Random = UnityEngine.Random;
 
 public class TileMapController : MonoBehaviour
 {
-    private GameObject arableCheckMap;
-    private GameObject PlowLayer;
-    private GameObject WateringLayer;
+    private GameObject arableCheckLayer;
+    private Tilemap arableTM;
+    private GameObject plowLayer;
+    private Tilemap plowTM;
+    private GameObject wateringLayer;
+    private Tilemap waterTM;
+    private GameObject cropsLayer;
+    private Tilemap cropsTM;
     public static TileMapController _Instance;
     public TileBase basetemp;
+
+    private DataManager dataManager;
    // public TileBase ruleTile= tmpObj as TileBase;
    //public Object Obj;
 
    private void Awake()
    {
+       dataManager = new DataManager();
+       dataManager.LoadAll();
        _Instance = this;
+       
+       
+       arableCheckLayer= FindChild.FindTheChild(GameObject.Find("Map"), "ArableCheckLayer");
+       plowLayer= FindChild.FindTheChild(GameObject.Find("Map"), "PlowLayer");
+       wateringLayer= FindChild.FindTheChild(GameObject.Find("Map"), "WateringLayer");
+       cropsLayer= FindChild.FindTheChild(GameObject.Find("Map"), "CropsLayer");
+       arableTM = arableCheckLayer.GetComponent<Tilemap>();
+       plowTM = plowLayer.GetComponent<Tilemap>();
+       waterTM = wateringLayer.GetComponent<Tilemap>();
+       cropsTM = cropsLayer.GetComponent<Tilemap>();
    }
    
     public bool CheckArable(Vector3Int pos)
     {
-        arableCheckMap= FindChild.FindTheChild(GameObject.Find("Map"), "ArableCheck");
-        Tilemap tm = arableCheckMap.GetComponent<Tilemap>();
-        TileBase tile = tm.GetTile(pos);
-        if (ReferenceEquals(tile,null))
+        TileBase arableTile = arableTM.GetTile(pos);
+        TileBase plowTile = plowTM.GetTile(pos);
+        if (ReferenceEquals(arableTile,null))
         {
-            
             Debug.LogError("arableMapTile is null");
             return false;
         }
-        if (tile.name=="arable")
+        if (!ReferenceEquals(plowTile,null))
+        {
+            Debug.Log("Tilemap is plowed");
+            return false;
+        }
+        if (arableTile.name=="arable")
         {
             Debug.Log("Tilemap is arable");
             return true;
         }
-        if (tile.name=="Unarable")
+        if (arableTile.name=="Unarable")
         {
             Debug.LogError("Tilemap is Unarable");
             return false;
         }
+
         
         return false;
     }
 
     public void PlowLand(Vector3Int pos)
     {
-        PlowLayer= FindChild.FindTheChild(GameObject.Find("Map"), "PlowLayer");
-        Tilemap tm = PlowLayer.GetComponent<Tilemap>();
         var basetemp = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
-        tm.SetTile(pos,basetemp as TileBase);
+        plowTM.SetTile(pos,basetemp as TileBase);
     }
 
     public bool CheckWaterable(Vector3Int pos)
     {
-        PlowLayer= FindChild.FindTheChild(GameObject.Find("Map"), "PlowLayer");
-        Tilemap tm = PlowLayer.GetComponent<Tilemap>();
-        TileBase tile = tm.GetTile(pos);
-        if (ReferenceEquals(tile,null))
+        
+        TileBase plowTile = plowTM.GetTile(pos);
+        if (ReferenceEquals(plowTile,null))
         {
             Debug.LogError("Tile didnt plowed");
             return false;
         }
-        if (!ReferenceEquals(tile,null))
+        if (!ReferenceEquals(plowTile,null))
         {
             return true;
         }
@@ -73,10 +95,40 @@ public class TileMapController : MonoBehaviour
 
     public void WateringLand(Vector3Int pos)
     {
-        WateringLayer= FindChild.FindTheChild(GameObject.Find("Map"), "WateringLayer");
-        Tilemap tm = WateringLayer.GetComponent<Tilemap>();
         var basetemp = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
-        tm.SetTile(pos,basetemp as TileBase);
+        waterTM.SetTile(pos,basetemp as TileBase);
     }
 
+    public bool CheckSownable(Vector3Int pos)
+    {
+        TileBase Plowtile = plowTM.GetTile(pos);
+        if (ReferenceEquals(Plowtile,null))//检查是不是没耕地
+        {
+            Debug.LogError("Tile didnt plowed");
+            return false;
+        }
+        
+
+        TileBase cropsTile = cropsTM.GetTile(pos);
+        if (!ReferenceEquals(cropsTile,null)) //检查是不是有作物
+        {
+                Debug.LogError("Tile had Crops");
+                return false;
+        }
+        
+        if ((!ReferenceEquals(Plowtile,null))&&ReferenceEquals(cropsTile,null))//既有耕地且无作物
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public void SowingSeed(Vector3Int pos)
+    {
+        
+        Debug.Log(dataManager.GetCropsItemByID(10001).Stage1Tile.Count);
+        Random.Range(1, dataManager.GetCropsItemByID(10001).Stage1Tile.Count);
+
+        return;
+    }
 }

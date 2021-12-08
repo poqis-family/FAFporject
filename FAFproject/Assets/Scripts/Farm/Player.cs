@@ -11,7 +11,12 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     public float speed;
     private Animator _animator;
+    public static Player _Player;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        _Player = this;
+    }
     void Start()
     {
 
@@ -57,6 +62,14 @@ public class Player : MonoBehaviour
                 TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
             }
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log(TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)));
+            if (TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            {
+                TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position));
+            }
+        }
         
 
         
@@ -83,7 +96,7 @@ public class Player : MonoBehaviour
             _animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Right);
         }
 
-        Debug.Log(direction);
+        //Debug.Log(direction);
         if (direction.Equals(Vector2.zero))
         {
             _animator.SetInteger("AnimStageEnum", (int) PlayerAnimEnum.PlayerAnimStage.Idle);

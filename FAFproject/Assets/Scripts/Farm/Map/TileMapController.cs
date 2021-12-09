@@ -78,6 +78,12 @@ public class TileMapController : MonoBehaviour
         plowTM.SetTile(pos,basetemp as TileBase);
     }
 
+    public void test(Vector3Int pos)
+    {
+        var basetemp = Resources.Load("Objects/3", typeof(GameObject));
+        cropsTM.SetTile(pos, basetemp as TileBase);
+    }
+
     public bool CheckWaterable(Vector3Int pos)
     {
         

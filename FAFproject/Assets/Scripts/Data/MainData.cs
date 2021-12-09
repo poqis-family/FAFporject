@@ -12,9 +12,9 @@ public static class MainData
     public static string name;
     public static int age;
     public static int[,,] itemListArr = new int[3,12,2];
-    public static List<Vector3Int> plowedData; //在某格子是否耕过田 的List，List内都是耕过的田的坐标
-    public static List<Vector3Int> wateredData;   //在某格子是否浇过水 的List，List内都是浇过的水的坐标
-    public static Dictionary<Vector3Int, int[]> cropsData;  //在某格子是否种过地，种的什么，长了几天  的List，List内都是作物们的坐标与状态
+    public static List<Vector3Int> plowedData=new List<Vector3Int>() ; //在某格子是否耕过田 的List，List内都是耕过的田的坐标
+    public static List<Vector3Int> wateredData=new List<Vector3Int>();   //在某格子是否浇过水 的List，List内都是浇过的水的坐标
+    public static Dictionary<Vector3Int, int[]> cropsData=new Dictionary<Vector3Int, int[]>();  //在某格子是否种过地，种的什么，长了几天  的List，List内都是作物们的坐标与状态
     
     /// <summary>
     /// 往ItemListArr中添加一个物品，成功返TRUE，失败返false

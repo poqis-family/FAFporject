@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Tile = UnityEngine.WSA.Tile;
@@ -70,7 +71,6 @@ public class Player : MonoBehaviour
             }
         }
         
-
         
         direction = Vector2.zero;
         if (Input.GetKey(KeyCode.W))

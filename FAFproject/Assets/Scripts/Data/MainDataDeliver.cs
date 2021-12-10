@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainDataDeliver
 {
     public  int year;
+    public int days;
     public  int month;
     public  string name;
     public  int age;
@@ -15,6 +16,7 @@ public class MainDataDeliver
     public MainDataDeliver()
     {
         year = MainData.year;
+        days = MainData.days;
         month = MainData.month;
         name = MainData.name;
         age = MainData.age; 

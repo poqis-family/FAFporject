@@ -9,6 +9,7 @@ public static class MainData
     //每增加一条需保存的值都要在MainDataDeliver中添加，并在MainData.LoadData中添加相应加载
     public static int year;
     public static int month;
+    public static int days;
     public static string name;
     public static int age;
     public static int[,,] itemListArr = new int[3,12,2];
@@ -26,7 +27,7 @@ public static class MainData
     {
         //找是否有相同ID的物品，有就叠加数量
         for (int i = 0;i<itemListArr.GetLength(0);i++){
-            for (int k = 0;k<itemListArr.GetLength(0);k++){
+            for (int k = 0;k<itemListArr.GetLength(1);k++){
                 if (itemListArr[i, k, 0] == id)
                 {
                     itemListArr[i, k, 1] += num;
@@ -103,6 +104,7 @@ public static class MainData
             
             //**每次增加需保存数据都要再次添加相应加载**
             year = t1.year;
+            days = t1.days;
             month = t1.month;
             name = t1.name;
             age = t1.age;

@@ -70,8 +70,8 @@ public class Player : MonoBehaviour
                 TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position));
             }
         }
-        
-        
+
+
         direction = Vector2.zero;
         if (Input.GetKey(KeyCode.W))
         {

@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Opera.unity
     guid: 6aa9c99095cfcb54595925873b12ae2d
+  - enabled: 1
+    path: Assets/Scenes/Farm.unity
+    guid: e94d48b5357e74f468131c7ae25da2f5
+  - enabled: 1
+    path: Assets/Scenes/FarmStart.unity
+    guid: d613bfa28cf6b5342bf8e06bd3be524f
   m_configObjects: {}

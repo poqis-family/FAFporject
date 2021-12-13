@@ -9,5 +9,4 @@ using WJExcelDataClass;
 public static class BackpackData 
 {
     public static int nowBackpackPage = 0;//当前玩家浏览的背包页
-
 }

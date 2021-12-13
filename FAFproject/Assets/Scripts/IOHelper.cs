@@ -132,7 +132,10 @@ public static class IOHelper
         //序列化后的字符串
         string serializedString = string.Empty;
         //使用Json.Net进行序列化
-        serializedString = JsonConvert.SerializeObject(pObject);
+        JsonSerializerSettings settings = new JsonSerializerSettings();
+        settings.NullValueHandling = NullValueHandling.Ignore;
+        settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        serializedString = JsonConvert.SerializeObject(pObject,settings);
         return serializedString;
     }
 

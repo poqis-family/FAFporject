@@ -8,7 +8,7 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.Find("Year").GetComponent<Text>().text = MainData.year.ToString();
+        transform.Find("Year").GetComponent<Text>().text = FarmDataManager._Instance.mainData.year.ToString();
     }
 
     // Update is called once per frame

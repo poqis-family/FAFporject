@@ -9,21 +9,21 @@ using Tile = UnityEngine.WSA.Tile;
 public class Player : MonoBehaviour
 {
     public Vector2 direction;
-    private Rigidbody2D _rigidbody2D;
+    private Rigidbody2D rigidbody2D;
     public float speed;
-    private Animator _animator;
-    public static Player _Player;
+    private Animator animator;
+    public static Player _Instance;
     // Start is called before the first frame update
     private void Awake()
     {
-        _Player = this;
+        _Instance = this;
     }
     void Start()
     {
 
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
-        _animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);//初始位置向下
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);//初始位置向下
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     
         if (other.CompareTag("Items"))
         {
-            MainData.ItemAdd(10001, 1);
+            FarmDataManager._Instance.ItemAdd(10001, 1);
             
         }
 
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
-        _rigidbody2D.velocity = direction.normalized * speed; ;
+        rigidbody2D.velocity = direction.normalized * speed; ;
     }
     private void GetInput()
     {
@@ -76,33 +76,33 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             direction += Vector2.up;
-            _animator.SetInteger("DirectionEnum", (int)PlayerAnimEnum.PlayerDirection.Up);
+            animator.SetInteger("DirectionEnum", (int)PlayerAnimEnum.PlayerDirection.Up);
         }
         
         if (Input.GetKey(KeyCode.S))
         {
             direction += Vector2.down;
-            _animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);
+            animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);
         }
         if (Input.GetKey(KeyCode.A))
         {
             direction += Vector2.left;
-            _animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Left);
+            animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Left);
         }
         if (Input.GetKey(KeyCode.D))
         {
             direction += Vector2.right;
-            _animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Right);
+            animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Right);
         }
 
         //Debug.Log(direction);
         if (direction.Equals(Vector2.zero))
         {
-            _animator.SetInteger("AnimStageEnum", (int) PlayerAnimEnum.PlayerAnimStage.Idle);
+            animator.SetInteger("AnimStageEnum", (int) PlayerAnimEnum.PlayerAnimStage.Idle);
         }   
         else if (!direction.Equals(Vector2.zero))
         {
-            _animator.SetInteger("AnimStageEnum", (int) PlayerAnimEnum.PlayerAnimStage.Walking);
+            animator.SetInteger("AnimStageEnum", (int) PlayerAnimEnum.PlayerAnimStage.Walking);
         }
         
     }

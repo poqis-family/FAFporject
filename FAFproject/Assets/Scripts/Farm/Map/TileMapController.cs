@@ -74,14 +74,12 @@ public class TileMapController : MonoBehaviour
     public void PlowLand(Vector3Int pos)
     {
         var basetemp = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
-        MainData.plowedData.Add(pos);//向MainData中添加了锄地的地块的信息
-        plowTM.SetTile(pos,basetemp as TileBase);
-    }
 
-    public void test(Vector3Int pos)
-    {
-        var basetemp = Resources.Load("Objects/3", typeof(GameObject));
-        cropsTM.SetTile(pos, basetemp as TileBase);
+        PlotData plotDataTemp=new PlotData();
+        FarmDataManager._Instance.plowPlot(pos);
+        
+        
+        plowTM.SetTile(pos,basetemp as TileBase);
     }
 
     public bool CheckWaterable(Vector3Int pos)
@@ -103,7 +101,11 @@ public class TileMapController : MonoBehaviour
     public void WateringLand(Vector3Int pos)
     {
         var basetemp = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
-        MainData.wateredData.Add(pos);//向MainData中添加了浇水的地块的信息
+        
+        PlotData plotDataTemp=new PlotData();
+        FarmDataManager._Instance.waterPlot(pos);
+        
+        
         waterTM.SetTile(pos,basetemp as TileBase);
     }
 
@@ -137,9 +139,7 @@ public class TileMapController : MonoBehaviour
         int randomIndex =Random.Range(0, dataManager.GetCropsItemByID(10001).Stage1Tile.Count);
         var basetemp = Resources.Load("Tiles/StardewValley/Crops/"+dataManager.GetCropsItemByID(cropID).Stage1Tile[randomIndex], typeof(TileBase));
 
-        int[] temp = {cropID, 0};
-        MainData.cropsData.Add(pos,temp);//向MainData中添加了当前坐标与种子与种子天数的信息
-        
+        FarmDataManager._Instance.sowingPlot(pos, cropID);
         cropsTM.SetTile(pos,basetemp as TileBase);
         return;
     }

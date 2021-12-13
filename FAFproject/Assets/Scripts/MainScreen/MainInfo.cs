@@ -10,21 +10,23 @@ public class MainInfo : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
-    {
-        MainData.year = 111;
-        MainData.month = 111;
-        MainData.name = "111";
-        MainData.age = 111;
-        MainData.LoadData();
-       //DataManager dataManager = new DataManager();
+    {        
+        FarmDataSaveLoad temp = new FarmDataSaveLoad();
+   //     FarmDataManager temp2 = new FarmDataManager();
+        FarmDataManager._Instance.mainData.year = 111;
+        FarmDataManager._Instance.mainData.month = 111;
+        FarmDataManager._Instance.mainData.name = "111";
+        FarmDataManager._Instance.mainData.age = 111;
+        temp.LoadData();
+        //DataManager dataManager = new DataManager();
       // dataManager.LoadAll();
       // Sheet1Item sheet1Item= dataManager.GetSheet1ItemByID(10006);
      //  MainData.name =sheet1Item.name;
-        transform.Find("year").GetComponent<Text>().text = MainData.year.ToString();
-        transform.Find("month").GetComponent<Text>().text = MainData.month.ToString();
-        transform.Find("name").GetComponent<Text>().text = MainData.name.ToString();
-        transform.Find("age").GetComponent<Text>().text = MainData.age.ToString();
-        MainData.SaveData();
+        transform.Find("year").GetComponent<Text>().text = FarmDataManager._Instance.mainData.year.ToString();
+        transform.Find("month").GetComponent<Text>().text = FarmDataManager._Instance.mainData.month.ToString();
+        transform.Find("name").GetComponent<Text>().text = FarmDataManager._Instance.mainData.name.ToString();
+        transform.Find("age").GetComponent<Text>().text = FarmDataManager._Instance.mainData.age.ToString();
+        temp.SaveData();
     }
 
     // Update is called once per frame

@@ -10,14 +10,13 @@ public class MainInfo : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
-    {        
-        FarmDataSaveLoad temp = new FarmDataSaveLoad();
-   //     FarmDataManager temp2 = new FarmDataManager();
+    {
+        //     FarmDataManager temp2 = new FarmDataManager();
         FarmDataManager._Instance.mainData.year = 111;
         FarmDataManager._Instance.mainData.month = 111;
         FarmDataManager._Instance.mainData.name = "111";
         FarmDataManager._Instance.mainData.age = 111;
-        temp.LoadData();
+        FarmDataManager._Instance.LoadData();
         //DataManager dataManager = new DataManager();
       // dataManager.LoadAll();
       // Sheet1Item sheet1Item= dataManager.GetSheet1ItemByID(10006);
@@ -26,7 +25,11 @@ public class MainInfo : MonoBehaviour
         transform.Find("month").GetComponent<Text>().text = FarmDataManager._Instance.mainData.month.ToString();
         transform.Find("name").GetComponent<Text>().text = FarmDataManager._Instance.mainData.name.ToString();
         transform.Find("age").GetComponent<Text>().text = FarmDataManager._Instance.mainData.age.ToString();
-        temp.SaveData();
+        FarmDataManager._Instance.mainData.year = 122211;
+        FarmDataManager._Instance.mainData.month = 1222211;
+        FarmDataManager._Instance.mainData.name = "112221";
+        FarmDataManager._Instance.mainData.age = 2;
+        FarmDataManager._Instance.SaveData();
     }
 
     // Update is called once per frame

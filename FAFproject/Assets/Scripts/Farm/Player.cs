@@ -9,7 +9,7 @@ using Tile = UnityEngine.WSA.Tile;
 public class Player : MonoBehaviour
 {
     public Vector2 direction;
-    private Rigidbody2D rigidbody2D;
+    private Rigidbody2D _rigidbody2D;
     public float speed;
     private Animator animator;
     public static Player _Instance;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     void Start()
     {
 
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);//初始位置向下
     }
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
-        rigidbody2D.velocity = direction.normalized * speed; ;
+        _rigidbody2D.velocity = direction.normalized * speed; ;
     }
     private void GetInput()
     {

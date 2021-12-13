@@ -126,7 +126,7 @@ public class TileMapController : MonoBehaviour
     
     public  void SowingSeed(Vector3Int pos,int cropID)
     {
-        string tileName = Crops.GetCropTileName(cropID, 0);
+        string tileName = PlotData.GetCropTileName(cropID, 0);
         var basetemp = Resources.Load("Tiles/StardewValley/Crops/" + tileName, typeof(TileBase));
 
         FarmDataManager._Instance.AddSowingPlotData(pos, cropID);
@@ -152,16 +152,16 @@ public class TileMapController : MonoBehaviour
 
             if (plot.Value.isWatered)
             {
-                plowTM.SetTile(plot.Key, waterTileBase as TileBase);
+                waterTM.SetTile(plot.Key, waterTileBase as TileBase);
             }
             else
             {
-                plowTM.SetTile(plot.Key, null);
+                waterTM.SetTile(plot.Key, null);
             }
 
-            if (plot.Value.cropID != 0 && plot.Value.cropID != null)
+            if (plot.Value.cropID != 0)
             {
-                string tileName = Crops.GetCropTileName(plot.Value.cropID, plot.Value.cropDays);
+                string tileName = PlotData.GetCropTileName(plot.Value.cropID, plot.Value.cropDays);
                 var cropTileBase = Resources.Load("Tiles/StardewValley/Crops/" + tileName, typeof(TileBase));
                 cropsTM.SetTile(plot.Key,cropTileBase as TileBase);
             }

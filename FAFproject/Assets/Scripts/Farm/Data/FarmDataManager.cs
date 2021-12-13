@@ -11,6 +11,7 @@ public class FarmDataManager
     
     public FarmDataManager(){
         _Instance = this;
+        dataManager.LoadAll();
     }
     
     /// <summary>
@@ -164,12 +165,13 @@ public class FarmDataManager
     {
         int cropstage;
         mainData.days += 1;
+        Debug.Log(mainData.days);
         foreach (var plot in mainData.plotDataDic)
         {
             if (plot.Value.isWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
             {
-                cropstage = (int) Crops.GetCropStage(plot.Value.cropID, plot.Value.cropDays);
-                if ((bool) Crops.CheckCropMature(plot.Value.cropID, cropstage) == false)//种的东西的阶段非成熟阶段
+                cropstage = (int)plot.Value.GetCropStage();
+                if ((bool) plot.Value.CheckCropMature(cropstage) == false)//种的东西的阶段非成熟阶段
                 {
                     plot.Value.cropDays += 1;
                 }

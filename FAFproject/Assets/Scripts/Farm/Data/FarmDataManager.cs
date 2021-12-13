@@ -72,7 +72,7 @@ public class FarmDataManager
     /// 添加地块的浇水信息
     /// </summary>
     /// <param name="pos"></param>
-    public void waterPlot(Vector3Int pos)
+    public void AddWaterPlotData(Vector3Int pos)
     {
         PlotData plotDataTemp;
         if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
@@ -90,7 +90,7 @@ public class FarmDataManager
     /// 添加地块的锄地信息
     /// </summary>
     /// <param name="pos"></param>
-    public void plowPlot(Vector3Int pos)
+    public void AddPlowPlotData(Vector3Int pos)
     {
         PlotData plotDataTemp;
         if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
@@ -108,7 +108,7 @@ public class FarmDataManager
     /// 添加地块的作物信息
     /// </summary>
     /// <param name="pos"></param>
-    public void sowingPlot(Vector3Int pos,int cropID)
+    public void AddSowingPlotData(Vector3Int pos,int cropID)
     {
         PlotData plotDataTemp;
         if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
@@ -158,5 +158,25 @@ public class FarmDataManager
             return false;
         }
 
+    }
+
+    public void DayPass()
+    {
+        int cropstage;
+        mainData.days += 1;
+        foreach (var plot in mainData.plotDataDic)
+        {
+            if (plot.Value.isWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
+            {
+                cropstage = (int) Crops.GetCropStage(plot.Value.cropID, plot.Value.cropDays);
+                if ((bool) Crops.CheckCropMature(plot.Value.cropID, cropstage) == false)//种的东西的阶段非成熟阶段
+                {
+                    plot.Value.cropDays += 1;
+                }
+            }
+            plot.Value.isWatered = false;//清空浇水状态
+        }
+        TileMapController._Instance.RefreshTilemap();
+        SaveData();
     }
 }

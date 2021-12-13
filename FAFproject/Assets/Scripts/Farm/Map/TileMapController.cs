@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening.Core.Easing;
+using UnityEditor.SceneManagement;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -19,18 +20,13 @@ public class TileMapController : MonoBehaviour
     private GameObject cropsLayer;
     private Tilemap cropsTM;
     public static TileMapController _Instance;
-    public TileBase basetemp;
 
-    private DataManager dataManager;
-   // public TileBase ruleTile= tmpObj as TileBase;
+    // public TileBase ruleTile= tmpObj as TileBase;
    //public Object Obj;
 
    private void Awake()
    {
-       dataManager = new DataManager();
-       dataManager.LoadAll();
        _Instance = this;
-       
        
        arableCheckLayer= FindChild.FindTheChild(GameObject.Find("Map"), "ArableCheckLayer");
        plowLayer= FindChild.FindTheChild(GameObject.Find("Map"), "PlowLayer");
@@ -74,10 +70,7 @@ public class TileMapController : MonoBehaviour
     public void PlowLand(Vector3Int pos)
     {
         var basetemp = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
-
-        PlotData plotDataTemp=new PlotData();
-        FarmDataManager._Instance.plowPlot(pos);
-        
+        FarmDataManager._Instance.AddPlowPlotData(pos);
         
         plowTM.SetTile(pos,basetemp as TileBase);
     }
@@ -101,9 +94,7 @@ public class TileMapController : MonoBehaviour
     public void WateringLand(Vector3Int pos)
     {
         var basetemp = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
-        
-        PlotData plotDataTemp=new PlotData();
-        FarmDataManager._Instance.waterPlot(pos);
+        FarmDataManager._Instance.AddWaterPlotData(pos);
         
         
         waterTM.SetTile(pos,basetemp as TileBase);
@@ -133,14 +124,48 @@ public class TileMapController : MonoBehaviour
         return false;
     }
     
-    public void SowingSeed(Vector3Int pos)
+    public  void SowingSeed(Vector3Int pos,int cropID)
     {
-        int cropID = 10001;
-        int randomIndex =Random.Range(0, dataManager.GetCropsItemByID(10001).Stage1Tile.Count);
-        var basetemp = Resources.Load("Tiles/StardewValley/Crops/"+dataManager.GetCropsItemByID(cropID).Stage1Tile[randomIndex], typeof(TileBase));
+        string tileName = Crops.GetCropTileName(cropID, 0);
+        var basetemp = Resources.Load("Tiles/StardewValley/Crops/" + tileName, typeof(TileBase));
 
-        FarmDataManager._Instance.sowingPlot(pos, cropID);
+        FarmDataManager._Instance.AddSowingPlotData(pos, cropID);
         cropsTM.SetTile(pos,basetemp as TileBase);
         return;
+    }
+
+    public void RefreshTilemap()
+    {        
+        var plowTileBase = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
+        var waterTileBase = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
+
+        foreach (var plot in FarmDataManager._Instance.mainData.plotDataDic)
+        {
+            if (plot.Value.isPlowed)
+            {
+                plowTM.SetTile(plot.Key, plowTileBase as TileBase);
+            }
+            else
+            {
+                plowTM.SetTile(plot.Key, null);
+            }
+
+            if (plot.Value.isWatered)
+            {
+                plowTM.SetTile(plot.Key, waterTileBase as TileBase);
+            }
+            else
+            {
+                plowTM.SetTile(plot.Key, null);
+            }
+
+            if (plot.Value.cropID != 0 && plot.Value.cropID != null)
+            {
+                string tileName = Crops.GetCropTileName(plot.Value.cropID, plot.Value.cropDays);
+                var cropTileBase = Resources.Load("Tiles/StardewValley/Crops/" + tileName, typeof(TileBase));
+                cropsTM.SetTile(plot.Key,cropTileBase as TileBase);
+            }
+
+        }
     }
 }

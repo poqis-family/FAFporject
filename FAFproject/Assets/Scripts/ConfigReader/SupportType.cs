@@ -212,7 +212,7 @@ namespace WJExcelDataManager
             //定义变量
             foreach (Type t in types)
             {
-                source.Append("\tpublic " + t.Name + " p_" + t.Name + ";\n");
+                source.Append("\tpublic WJExcelDataClass." + t.Name + " p_" + t.Name + ";\n");
             }
             source.Append("\n");
 
@@ -238,7 +238,7 @@ namespace WJExcelDataManager
             source.Append("\t{\n");
             foreach (Type t in types)
             {
-                source.Append("\t\tp_" + t.Name + " = Load(" + '"' + t.Name + '"' + ") as " + t.Name + ";\n");
+                source.Append("\t\tp_" + t.Name + " = Load(" + '"' + t.Name + '"' + ") as WJExcelDataClass." + t.Name + ";\n");
             }
             source.Append("\t}\n\n");
 

@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
         {
             if (TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)))
             {
-                TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position));
+                TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position),10001);
             }
         }
 

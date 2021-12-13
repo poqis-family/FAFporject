@@ -13,14 +13,14 @@ using WJExcelDataClass;
 [Serializable]
 public class DataManager //: SingletonTemplate<DataManager>
 {
-	public sdftt p_sdftt;
-	public mmm p_mmm;
-	public adtttt p_adtttt;
-	public Maps1 p_Maps1;
-	public Dialog1 p_Dialog1;
-	public Characters p_Characters;
-	public Props p_Props;
-	public Crops p_Crops;
+	public WJExcelDataClass.sdftt p_sdftt;
+	public WJExcelDataClass.mmm p_mmm;
+	public WJExcelDataClass.adtttt p_adtttt;
+	public WJExcelDataClass.Maps1 p_Maps1;
+	public WJExcelDataClass.Dialog1 p_Dialog1;
+	public WJExcelDataClass.Characters p_Characters;
+	public WJExcelDataClass.Props p_Props;
+	public WJExcelDataClass.Crops p_Crops;
 
 	public sdfttItem GetSdfttItemByID(Int32 id)
 	{
@@ -88,14 +88,14 @@ public class DataManager //: SingletonTemplate<DataManager>
 
 	public void LoadAll()
 	{
-		p_sdftt = Load("sdftt") as sdftt;
-		p_mmm = Load("mmm") as mmm;
-		p_adtttt = Load("adtttt") as adtttt;
-		p_Maps1 = Load("Maps1") as Maps1;
-		p_Dialog1 = Load("Dialog1") as Dialog1;
-		p_Characters = Load("Characters") as Characters;
-		p_Props = Load("Props") as Props;
-		p_Crops = Load("Crops") as Crops;
+		p_sdftt = Load("sdftt") as WJExcelDataClass.sdftt;
+		p_mmm = Load("mmm") as WJExcelDataClass.mmm;
+		p_adtttt = Load("adtttt") as WJExcelDataClass.adtttt;
+		p_Maps1 = Load("Maps1") as WJExcelDataClass.Maps1;
+		p_Dialog1 = Load("Dialog1") as WJExcelDataClass.Dialog1;
+		p_Characters = Load("Characters") as WJExcelDataClass.Characters;
+		p_Props = Load("Props") as WJExcelDataClass.Props;
+		p_Crops = Load("Crops") as WJExcelDataClass.Crops;
 	}
 
 	private System.Object Load(string name)

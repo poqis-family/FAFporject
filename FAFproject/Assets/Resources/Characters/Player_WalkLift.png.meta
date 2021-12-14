@@ -128,337 +128,337 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player Put hands_0
+      name: Player_WalkLift_0
       rect:
         serializedVersion: 2
         x: 0
         y: 96
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b924341e9e23ac34bb5cd7b8a924d609
-      internalID: 1829018587
+      spriteID: 7f3caade45ed7d942a901fc36cc70aab
+      internalID: -1585638533
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_1
+      name: Player_WalkLift_1
       rect:
         serializedVersion: 2
         x: 16
         y: 96
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 40731bbd5040a3e40b2122135ec7306f
-      internalID: 2058310028
+      spriteID: 32bf9117e203d5f43a9e4fe72b0693d4
+      internalID: 2077497420
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_2
+      name: Player_WalkLift_2
       rect:
         serializedVersion: 2
         x: 32
         y: 96
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 360130244f1547d419ff86874cc1a025
-      internalID: -836257590
+      spriteID: a71a3e5eb509dd148bf66157a547e933
+      internalID: 441736275
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_3
+      name: Player_WalkLift_3
       rect:
         serializedVersion: 2
         x: 48
         y: 96
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb78f35f0f599f843bc28de36fdcd4dc
-      internalID: 70051122
+      spriteID: 4ddf104abaad8b1418b5cae174c47376
+      internalID: -2054740099
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_4
+      name: Player_WalkLift_4
       rect:
         serializedVersion: 2
         x: 0
         y: 64
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 599065b79fcd91645be55c40bec1afb8
-      internalID: 1625176626
+      spriteID: a4c4153a1294de241ad8252edc5fe7dc
+      internalID: 172346019
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_5
+      name: Player_WalkLift_5
       rect:
         serializedVersion: 2
         x: 16
         y: 64
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6bde03241b9ad748ace637ae8785918
-      internalID: 1294883024
+      spriteID: f65b80848c69acf4eaf6fab08f44196a
+      internalID: -758764619
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_6
+      name: Player_WalkLift_6
       rect:
         serializedVersion: 2
         x: 32
         y: 64
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9a77e4876b9ee84d8195347e9556757
-      internalID: 646530961
+      spriteID: fa088e896395747498509f320c035bb8
+      internalID: 1945218232
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_7
+      name: Player_WalkLift_7
       rect:
         serializedVersion: 2
         x: 48
         y: 64
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1cc30fd6d776cf942849368f38c3bcb8
-      internalID: 141218249
+      spriteID: af651ec6d4a22554cbeed6d7a1a25022
+      internalID: 1648971545
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_8
+      name: Player_WalkLift_8
       rect:
         serializedVersion: 2
         x: 0
         y: 32
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e501f5e0eee05614dbdd01aacd97fc57
-      internalID: 1248779629
+      spriteID: 9910c37e40519884cb97367eccbac383
+      internalID: -442351887
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_9
+      name: Player_WalkLift_9
       rect:
         serializedVersion: 2
         x: 16
         y: 32
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42200b777e206da469f0f57bd29ed165
-      internalID: 1144673312
+      spriteID: a1e720fb3f92de54796b0e76dc1c304e
+      internalID: -2124516801
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_10
+      name: Player_WalkLift_10
       rect:
         serializedVersion: 2
         x: 32
         y: 32
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 652abbc67fd7ddb49b4dcc1400b18943
-      internalID: -1426213444
+      spriteID: 43b71e53cec456a40ba2357fbb841cca
+      internalID: -1267254909
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_11
+      name: Player_WalkLift_11
       rect:
         serializedVersion: 2
         x: 48
         y: 32
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a87a3535accdc54e8cff8095f2bbe52
-      internalID: 552136460
+      spriteID: 8845d41de2c465b40a89950b0fa197fe
+      internalID: 99965990
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_12
+      name: Player_WalkLift_12
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3afe5dba4e7a1b47b9125c95e275993
-      internalID: -1392840890
+      spriteID: 95f38be633177214cbf37264f0236319
+      internalID: 1685512469
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_13
+      name: Player_WalkLift_13
       rect:
         serializedVersion: 2
         x: 16
         y: 0
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a52ef15512ada3046a99e6fc03906bee
-      internalID: 849183181
+      spriteID: e5ef24843eccdf3489763467d3c3df10
+      internalID: 1846929688
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_14
+      name: Player_WalkLift_14
       rect:
         serializedVersion: 2
         x: 32
         y: 0
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ad2e285d99790104f8e1faf72546d993
-      internalID: -1169314734
+      spriteID: 1933aa4fab54a6f4cb3767b09155f108
+      internalID: -15971902
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Put hands_15
+      name: Player_WalkLift_15
       rect:
         serializedVersion: 2
         x: 48
         y: 0
         width: 16
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d93f6f18cd951944da9112cf4d84eeea
-      internalID: -1201385464
+      spriteID: fad7beb069f3f754d9264d789a538d4e
+      internalID: -1127911723
       vertices: []
       indices: 
       edges: []
@@ -474,22 +474,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Player Put hands_4: 1625176626
-      Player Put hands_14: -1169314734
-      Player Put hands_15: -1201385464
-      Player Put hands_0: 1829018587
-      Player Put hands_9: 1144673312
-      Player Put hands_5: 1294883024
-      Player Put hands_2: -836257590
-      Player Put hands_11: 552136460
-      Player Put hands_13: 849183181
-      Player Put hands_12: -1392840890
-      Player Put hands_6: 646530961
-      Player Put hands_3: 70051122
-      Player Put hands_10: -1426213444
-      Player Put hands_7: 141218249
-      Player Put hands_8: 1248779629
-      Player Put hands_1: 2058310028
+      Player_WalkLift_15: -1127911723
+      Player_WalkLift_10: -1267254909
+      Player_WalkLift_11: 99965990
+      Player_WalkLift_0: -1585638533
+      Player_WalkLift_8: -442351887
+      Player_WalkLift_12: 1685512469
+      Player_WalkLift_9: -2124516801
+      Player_WalkLift_6: 1945218232
+      Player_WalkLift_13: 1846929688
+      Player_WalkLift_2: 441736275
+      Player_WalkLift_5: -758764619
+      Player_WalkLift_3: -2054740099
+      Player_WalkLift_7: 1648971545
+      Player_WalkLift_1: 2077497420
+      Player_WalkLift_4: 172346019
+      Player_WalkLift_14: -15971902
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

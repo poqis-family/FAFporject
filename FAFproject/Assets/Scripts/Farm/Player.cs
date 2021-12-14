@@ -60,11 +60,11 @@ public class Player : MonoBehaviour
                 TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
             }
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F))//后续所有道具交互类都放在这里了
         {
-            if (TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            if (BackpackData.nowItemID!=0)
             {
-                TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position),10001);
+             UseItem();   
             }
         }
 
@@ -114,6 +114,18 @@ public class Player : MonoBehaviour
         else if (FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).isLiftable==1)
         {
             animator.SetInteger("LiftableEnum", (int) PlayerAnimEnum.Liftable.enable);//可举起
+        }
+    }
+
+    private void UseItem()
+    {
+        if (FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).mainType==(int)ItemTypeEnum.MainItemType.tools)
+        {
+            
+        }
+        if (TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)))
+        {
+            TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position),10001);
         }
     }
 }

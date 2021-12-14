@@ -17,5 +17,10 @@ public class PlayerAnimEnum : MonoBehaviour
         Idle,//0
         Walking,//1
     } 
-    
+    public enum  Liftable
+    {
+
+        disable,//0
+        enable,//1
+    } 
 }

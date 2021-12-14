@@ -49,7 +49,7 @@ public class BackpackController : MonoBehaviour
                     FindChild.FindTheChild(itemImgArr[i], ("Text")).GetComponent<Text>().text = "0";
                 }
 
-                if (i == BackpackData.nowChooseItem) //刷新选中框
+                if (i == BackpackData.nowBackpackIndex) //刷新选中框
                 {
                     FindChild.FindTheChild(itemImgArr[i], "Choose").SetActive(true);
                 }

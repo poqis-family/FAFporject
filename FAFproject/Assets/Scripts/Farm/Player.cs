@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-
         _rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);//初始位置向下
@@ -34,13 +33,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-    
         if (other.CompareTag("Items"))
         {
             FarmDataManager._Instance.ItemAdd(10001, 1);
-            
+            CheckItemLiftable();
         }
-
     }
     
     private void FixedUpdate()
@@ -105,5 +102,18 @@ public class Player : MonoBehaviour
             animator.SetInteger("AnimStageEnum", (int) PlayerAnimEnum.PlayerAnimStage.Walking);
         }
         
+    }
+
+    public void CheckItemLiftable()
+    {
+        BackpackData.RefreshItemID();
+        if (BackpackData.nowItemID==0||FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).isLiftable==0)
+        {
+            animator.SetInteger("LiftableEnum", (int) PlayerAnimEnum.Liftable.disable);//不可举起
+        }
+        else if (FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).isLiftable==1)
+        {
+            animator.SetInteger("LiftableEnum", (int) PlayerAnimEnum.Liftable.enable);//可举起
+        }
     }
 }

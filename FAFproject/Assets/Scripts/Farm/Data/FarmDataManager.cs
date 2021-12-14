@@ -45,6 +45,7 @@ public class FarmDataManager
         }
 
         //即没空位又无相同ID
+        Debug.LogError("即没空位又无相同ID");
         return false;
     }
     /// <summary>

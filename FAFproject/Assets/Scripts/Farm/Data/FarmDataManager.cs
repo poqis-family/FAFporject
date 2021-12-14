@@ -28,8 +28,7 @@ public class FarmDataManager
                 if (mainData.itemListArr[i, k, 0] == id)
                 {
                     mainData.itemListArr[i, k, 1] += num;
-                    BackpackController bk = new BackpackController();
-                    bk.RefreshItemUI();
+                    BackpackController._Instance.RefreshItemUI();
                     return true;
                 }
             }
@@ -41,8 +40,7 @@ public class FarmDataManager
         {
             mainData.itemListArr[SpareLocation[0], SpareLocation[1], 0] = id;
             mainData.itemListArr[SpareLocation[0], SpareLocation[1], 1] = num;
-            BackpackController bk = new BackpackController();
-            bk.RefreshItemUI();
+            BackpackController._Instance.RefreshItemUI();
             return true;
         }
 
@@ -58,7 +56,7 @@ public class FarmDataManager
         int[] SpareLocation = new int[2];
         for (int i = 0;i<_Instance.mainData.itemListArr.GetLength(0);i++){
 
-            for (int k = 0;k<_Instance.mainData.itemListArr.GetLength(0);k++){
+            for (int k = 0;k<_Instance.mainData.itemListArr.GetLength(1);k++){
                 if (_Instance.mainData.itemListArr[i, k, 0] == 0)
                 {
                     SpareLocation[0] = i;

@@ -57,8 +57,6 @@ public class Player : MonoBehaviour
              UseItem();   
             }
         }
-
-
         direction = Vector2.zero;
         if (Input.GetKey(KeyCode.W))
         {
@@ -97,12 +95,17 @@ public class Player : MonoBehaviour
     public void CheckItemLiftable()
     {
         BackpackData.RefreshItemID();
+        SpriteRenderer itemImg = FindChild.FindTheChild(gameObject, "PropIMG").GetComponent<SpriteRenderer>();
+
         if (BackpackData.nowItemID==0||FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).isLiftable==0)
         {
+            itemImg.sprite = null;
             animator.SetInteger("LiftableEnum", (int) PlayerAnimEnum.Liftable.disable);//不可举起
         }
         else if (FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).isLiftable==1)
         {
+            Sprite temp= Resources.Load("UI/ItemIMG/" + FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).img,typeof(Sprite)) as Sprite;
+            itemImg.sprite = temp;
             animator.SetInteger("LiftableEnum", (int) PlayerAnimEnum.Liftable.enable);//可举起
         }
     }

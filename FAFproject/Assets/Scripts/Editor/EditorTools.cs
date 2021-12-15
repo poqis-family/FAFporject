@@ -12,9 +12,18 @@ public class EditorTools
     [MenuItem("Edit/Run _F5")]
     public static void OpenLaunchScene()
     {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "FarmStart")
         {
-            EditorSceneManager.OpenScene("Assets/Scenes/FarmStart.unity");
+            EditorApplication.isPlaying = true;
+            //EditorApplication.ExecuteMenuItem("Edit/Play");
+        }
+        else
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                EditorSceneManager.OpenScene("Assets/Scenes/FarmStart.unity");
+            }
         }
     }
     

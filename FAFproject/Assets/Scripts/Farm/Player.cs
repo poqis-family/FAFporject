@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using WJExcelDataClass;
 using Tile = UnityEngine.WSA.Tile;
 
 public class Player : MonoBehaviour
@@ -36,6 +37,9 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Items"))
         {
             FarmDataManager._Instance.ItemAdd(10001, 1);
+            FarmDataManager._Instance.ItemAdd(10002, 1);
+            FarmDataManager._Instance.ItemAdd(10003, 1);
+            FarmDataManager._Instance.ItemAdd(10004, 1);
             CheckItemLiftable();
         }
     }
@@ -46,20 +50,6 @@ public class Player : MonoBehaviour
     }
     private void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position)))
-            {
-                TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position));
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (TileMapController._Instance.CheckWaterable(Vector3Int.FloorToInt(gameObject.transform.position)))
-            {
-                TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
-            }
-        }
         if (Input.GetKeyDown(KeyCode.F))//后续所有道具交互类都放在这里了
         {
             if (BackpackData.nowItemID!=0)
@@ -119,13 +109,48 @@ public class Player : MonoBehaviour
 
     private void UseItem()
     {
-        if (FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).mainType==(int)ItemTypeEnum.MainItemType.tools)
+        PropsItem thisItemData = FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID);
+        UseItemIfTools(thisItemData);
+        UseItemIfSeeds(thisItemData);
+    }
+
+    private void UseItemIfTools(PropsItem thisItemData)
+    {
+        if (thisItemData.mainType==(int)ItemTypeEnum.MainItemType.tools)
         {
-            
-        }
-        if (TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)))
-        {
-            TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position),10001);
+            UseItemIfHoe(thisItemData);
+            UseItemIfWateringCan(thisItemData);
         }
     }
+    private void UseItemIfHoe(PropsItem thisItemData)
+    {
+        if (thisItemData.subType==(int)ItemTypeEnum.ToolsType.hoe)
+        {
+            if (TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            {
+                TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position));
+            }
+        }
+    }
+    private void UseItemIfWateringCan(PropsItem thisItemData)
+    {
+        if (thisItemData.subType==(int)ItemTypeEnum.ToolsType.wateringCan)
+        {
+            if (TileMapController._Instance.CheckWaterable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            {
+                TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
+            }
+        }
+    }
+    private void UseItemIfSeeds(PropsItem thisItemData)
+    {
+        if (thisItemData.mainType == (int) ItemTypeEnum.MainItemType.seeds)
+        {
+            if (TileMapController._Instance.CheckSownable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            {
+                TileMapController._Instance.SowingSeed(Vector3Int.FloorToInt(gameObject.transform.position), thisItemData.para1);
+            }
+        }
+    }
+    
 }

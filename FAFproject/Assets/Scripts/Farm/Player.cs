@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.LogError(other.name);
         if (other.CompareTag("Items"))
         {
             FarmDataManager._Instance.ItemAdd(10001, 1);

@@ -165,7 +165,6 @@ public class TileMapController : MonoBehaviour
                 var cropTileBase = Resources.Load("Tiles/StardewValley/Crops/" + tileName, typeof(TileBase));
                 cropsTM.SetTile(plot.Key,cropTileBase as TileBase);
             }
-
         }
     }
 }

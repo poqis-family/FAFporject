@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using DG.Tweening.Core.Easing;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -108,16 +110,18 @@ public class TileMapController : MonoBehaviour
             Debug.LogError("Tile didnt plowed");
             return false;
         }
-        
 
-        TileBase cropsTile = cropsTM.GetTile(pos);
-        if (!ReferenceEquals(cropsTile,null)) //检查是不是有作物
+        FarmDataManager._Instance.mainData.plotDataDic.TryGetValue(pos, out PlotData temp);
+        bool hadCrop;
+        if (temp.cropID == 0) hadCrop = false;
+        else hadCrop = true;
+        if (hadCrop)
         {
-                Debug.LogError("Tile had Crops");
-                return false;
+            Debug.LogError("Tile had Crops");
+            return false;
         }
-        
-        if ((!ReferenceEquals(Plowtile,null))&&ReferenceEquals(cropsTile,null))//既有耕地且无作物
+
+        if ((!ReferenceEquals(Plowtile,null))&&!hadCrop)//既有耕地且无作物
         {
             return true;
         }
@@ -126,11 +130,13 @@ public class TileMapController : MonoBehaviour
     
     public  void SowingSeed(Vector3Int pos,int cropID)
     {
-        string tileName = PlotData.GetCropTileName(cropID, 0);
-        var basetemp = Resources.Load("Tiles/StardewValley/Crops/" + tileName, typeof(TileBase));
 
-        FarmDataManager._Instance.AddSowingPlotData(pos, cropID);
-        cropsTM.SetTile(pos,basetemp as TileBase);
+        string tileName = PlotData.GetCropTileName(cropID, 0);
+        GameObject cropObject= creatCropObject();
+        changeCropObjectSprite(cropObject,tileName);
+        changeCropObjectPosTo(cropObject, pos);
+        setCropObjectCollider(cropObject,cropID);
+        FarmDataManager._Instance.AddSowingPlotData(pos,cropID,cropObject.GetInstanceID());//加数据
         return;
     }
 
@@ -161,10 +167,63 @@ public class TileMapController : MonoBehaviour
 
             if (plot.Value.cropID != 0)
             {
-                string tileName = PlotData.GetCropTileName(plot.Value.cropID, plot.Value.cropDays);
-                var cropTileBase = Resources.Load("Tiles/StardewValley/Crops/" + tileName, typeof(TileBase));
-                cropsTM.SetTile(plot.Key,cropTileBase as TileBase);
+                GameObject nowCropObject = EditorUtility.InstanceIDToObject(plot.Value.CropInstanceID) as GameObject;
+                if (nowCropObject!=null)//如果已有实例
+                {
+                    changeCropObjectSprite(nowCropObject,plot.Value.cropTileName);
+                    setCropObjectCollider(nowCropObject,plot.Value.cropID);
+                }
+                else
+                {
+                    GameObject cropObject= creatCropObject();
+                    changeCropObjectSprite(cropObject,plot.Value.cropTileName);
+                    changeCropObjectPosTo(cropObject,plot.Key);
+                    setCropObjectCollider(cropObject,plot.Value.cropID);
+                }
             }
+        }
+    }
+
+    private GameObject creatCropObject()
+    {
+        GameObject cropObject = (GameObject)Resources.Load("Prefabs/Objects/CropObject");
+        cropObject=Instantiate(cropObject);
+        cropObject.transform.parent=GameObject.Find("CropsLayer").transform;
+        return cropObject;
+    }
+
+    private void changeCropObjectSprite(GameObject cropObject,string tileName)
+    {
+        Sprite[] sprites = Resources.LoadAll<Sprite>("StardewValley/TileSheets21/Crops./");
+        Sprite sprite=null;
+        foreach (var VARIABLE in sprites)
+        {
+            if (VARIABLE.name==tileName)
+            {
+                sprite = VARIABLE;
+            }
+        }
+        cropObject.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
+    private void changeCropObjectPosTo(GameObject cropObject, Vector3Int pos)
+    {
+        Vector3 posVector3 = pos;
+        posVector3.x += 0.5f;
+        posVector3.y += 0.5f;
+        cropObject.transform.position = posVector3;
+    }
+    
+    private void setCropObjectCollider(GameObject cropObject,int cropID)
+    {
+        int hasCollider = PlotData.GetCropHasCollider(cropID);
+        if (hasCollider==0)
+        {
+            cropObject.GetComponent<BoxCollider2D>().enabled = false;
+        }
+        else
+        {
+            cropObject.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 }

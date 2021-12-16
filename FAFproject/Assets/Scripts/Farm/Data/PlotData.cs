@@ -7,9 +7,38 @@ public class PlotData
     public  int sceneEnum; //地块所在的场景
     public bool isPlowed;//是否锄过地
     public bool isWatered;//是否浇过水
-    public int cropID;//所种植的作物ID
-    public int cropDays;//作物生长的天数
-    
+    private int _cropID;//所种植的作物ID
+    public int cropID{
+        get
+        {
+            return _cropID;
+
+        }
+        set
+        {
+            _cropID = value;
+            GetCropTileName();
+            GetCropHasCollider();
+        }
+    }
+    private int _cropDays;//作物生长的天数
+    public int cropDays{
+        get
+        {
+            return _cropDays;
+
+        }
+        set
+        {
+            _cropDays = value;
+            GetCropTileName();
+            GetCropHasCollider();
+        }
+    }
+    public int CropInstanceID;//作物实例ID
+    public int hasCollider;
+    public string cropTileName;
+
     public object GetCropStage()
     {
         if (cropDays < FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).Stage1Days
@@ -83,8 +112,9 @@ public class PlotData
 
         return null;
     }
-    public object CheckCropMature(int cropStage)
+    public object CheckCropMature()
     {
+        int cropStage = (int) GetCropStage();
         switch (cropStage)
         {
             case 1:
@@ -145,7 +175,7 @@ public class PlotData
         }
         return null;
     }
-    public string GetCropTileName()
+    public void GetCropTileName()
     {
        int cropStage =(int)GetCropStage();
        List<string> tileList = new List<string>();
@@ -171,7 +201,7 @@ public class PlotData
                break;
        }
        int randomIndex =Random.Range(0,tileList.Count);
-       return tileList[randomIndex];
+       cropTileName= tileList[randomIndex];
     }
     public static string GetCropTileName(int cropID,int growDays)
     {
@@ -202,4 +232,12 @@ public class PlotData
         return tileList[randomIndex];
     }
 
+    private void GetCropHasCollider()
+    {
+        hasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
+    }
+    public static int GetCropHasCollider(int cropID)
+    {
+        return FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
+    }
 }

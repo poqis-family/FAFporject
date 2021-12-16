@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
             FarmDataManager._Instance.ItemAdd(10002, 1);
             FarmDataManager._Instance.ItemAdd(10003, 1);
             FarmDataManager._Instance.ItemAdd(10004, 1);
+            FarmDataManager._Instance.ItemAdd(10005, 1);
             CheckItemLiftable();
         }
     }

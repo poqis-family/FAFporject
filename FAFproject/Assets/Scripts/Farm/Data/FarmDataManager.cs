@@ -108,20 +108,26 @@ public class FarmDataManager
     /// 添加地块的作物信息
     /// </summary>
     /// <param name="pos"></param>
-    public void AddSowingPlotData(Vector3Int pos,int cropID)
+    public void AddSowingPlotData(Vector3Int pos,int cropID,int instanceID)
     {
         PlotData plotDataTemp;
-        if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
+        if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的plotDataTemp复个值，然后加进去
         { 
             plotDataTemp.cropID = cropID;
             plotDataTemp.cropDays = 0;
+            plotDataTemp.CropInstanceID = instanceID;
+            plotDataTemp.hasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
         }
         else
         {
             plotDataTemp = new PlotData();
             plotDataTemp.cropID = cropID;
             plotDataTemp.cropDays = 0;
+            plotDataTemp.CropInstanceID = instanceID;
+            plotDataTemp.hasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
+            
             mainData.plotDataDic.Add(pos,plotDataTemp);
+            
         }
     }
     
@@ -170,7 +176,7 @@ public class FarmDataManager
             if (plot.Value.isWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
             {
                 cropstage = (int)plot.Value.GetCropStage();
-                if ((bool) plot.Value.CheckCropMature(cropstage) == false)//种的东西的阶段非成熟阶段
+                if ((bool) plot.Value.CheckCropMature() == false)//种的东西的阶段非成熟阶段
                 {
                     plot.Value.cropDays += 1;
                 }

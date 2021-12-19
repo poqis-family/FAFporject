@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlotData
 {
-    public  int sceneEnum; //地块所在的场景
-    public bool isPlowed;//是否锄过地
-    public bool isWatered;//是否浇过水
+    public  int SceneEnum; //地块所在的场景
+    public bool IsPlowed;//是否锄过地
+    public bool IsWatered;//是否浇过水
     private int _cropID;//所种植的作物ID
     public int cropID{
         get
@@ -36,11 +36,16 @@ public class PlotData
         }
     }
     public int CropInstanceID;//作物实例ID
-    public int hasCollider;
-    public string cropTileName;
+    public int HasCollider;
+    public string CropTileName;
 
     public object GetCropStage()
     {
+        if (cropID==0)
+        {
+            return null;
+        }
+        
         if (cropDays < FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).Stage1Days
             || FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).Stage1Days==-1)
         {
@@ -78,6 +83,10 @@ public class PlotData
     
     public static object GetCropStage(int cropID,int cropDays)
     {
+        if (cropID==0)
+        {
+            return null;
+        }
         if (cropDays < FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).Stage1Days
             || FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).Stage1Days==-1)
         {
@@ -114,9 +123,14 @@ public class PlotData
     }
     public object CheckCropMature()
     {
+        if (cropID==0)
+        {
+            return null;
+        }
         int cropStage = (int) GetCropStage();
         switch (cropStage)
         {
+
             case 1:
                 if (FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).Stage1Days == -1)
                 {
@@ -177,7 +191,13 @@ public class PlotData
     }
     public void GetCropTileName()
     {
-       int cropStage =(int)GetCropStage();
+        if (cropID == 0)
+        {
+            CropTileName = null;
+            return;
+        }
+
+        int cropStage =(int)GetCropStage();
        List<string> tileList = new List<string>();
        switch (cropStage)
        {
@@ -201,10 +221,14 @@ public class PlotData
                break;
        }
        int randomIndex =Random.Range(0,tileList.Count);
-       cropTileName= tileList[randomIndex];
+       CropTileName= tileList[randomIndex];
     }
     public static string GetCropTileName(int cropID,int growDays)
     {
+        if (cropID == 0)
+        {
+            return null;
+        }
         int cropStage =(int)GetCropStage(cropID,growDays);
         List<string> tileList = new List<string>();
         switch (cropStage)
@@ -234,10 +258,19 @@ public class PlotData
 
     private void GetCropHasCollider()
     {
-        hasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
+        if (cropID==0)
+        {
+            HasCollider=0;
+            return;
+        }
+        HasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
     }
     public static int GetCropHasCollider(int cropID)
     {
+        if (cropID==0)
+        {
+            return 0;
+        }
         return FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
     }
 }

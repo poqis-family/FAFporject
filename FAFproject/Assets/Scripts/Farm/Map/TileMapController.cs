@@ -147,7 +147,7 @@ public class TileMapController : MonoBehaviour
 
         foreach (var plot in FarmDataManager._Instance.mainData.plotDataDic)
         {
-            if (plot.Value.isPlowed)
+            if (plot.Value.IsPlowed)
             {
                 plowTM.SetTile(plot.Key, plowTileBase as TileBase);
             }
@@ -156,7 +156,7 @@ public class TileMapController : MonoBehaviour
                 plowTM.SetTile(plot.Key, null);
             }
 
-            if (plot.Value.isWatered)
+            if (plot.Value.IsWatered)
             {
                 waterTM.SetTile(plot.Key, waterTileBase as TileBase);
             }
@@ -170,13 +170,13 @@ public class TileMapController : MonoBehaviour
                 GameObject nowCropObject = EditorUtility.InstanceIDToObject(plot.Value.CropInstanceID) as GameObject;
                 if (nowCropObject!=null)//如果已有实例
                 {
-                    changeCropObjectSprite(nowCropObject,plot.Value.cropTileName);
+                    changeCropObjectSprite(nowCropObject,plot.Value.CropTileName);
                     setCropObjectCollider(nowCropObject,plot.Value.cropID);
                 }
                 else
                 {
                     GameObject cropObject= creatCropObject();
-                    changeCropObjectSprite(cropObject,plot.Value.cropTileName);
+                    changeCropObjectSprite(cropObject,plot.Value.CropTileName);
                     changeCropObjectPosTo(cropObject,plot.Key);
                     setCropObjectCollider(cropObject,plot.Value.cropID);
                 }
@@ -192,7 +192,7 @@ public class TileMapController : MonoBehaviour
         return cropObject;
     }
 
-    private void changeCropObjectSprite(GameObject cropObject,string tileName)
+    public void changeCropObjectSprite(GameObject cropObject,string tileName)
     {
         Sprite[] sprites = Resources.LoadAll<Sprite>("StardewValley/TileSheets21/Crops./");
         Sprite sprite=null;

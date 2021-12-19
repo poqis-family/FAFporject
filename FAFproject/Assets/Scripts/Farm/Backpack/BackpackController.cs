@@ -29,18 +29,18 @@ public class BackpackController : MonoBehaviour
             if (i < itemImgArr.Count)
             {
                 Image img = itemImgArr[i].GetComponent<Image>();
-                if (FarmDataManager._Instance.mainData.itemListArr[BackpackData.nowBackpackPage, i, 0] != 0)
+                if (FarmDataManager._Instance.mainData.itemListArr[BackpackData.nowBackpackPage, i].ID != 0)
                 {
                     img.sprite =
                         Resources.Load("UI/ItemIMG/" +
                                        FarmDataManager._Instance.dataManager.GetPropsItemByID(
                                                FarmDataManager._Instance.mainData.itemListArr[
                                                    BackpackData.nowBackpackPage,
-                                                   i, 0])
+                                                   i].ID)
                                            .img, typeof(Sprite)) as Sprite; //刷新图片
 
                     FindChild.FindTheChild(itemImgArr[i], ("Text")).GetComponent<Text>().text =
-                        FarmDataManager._Instance.mainData.itemListArr[BackpackData.nowBackpackPage, i, 1]
+                        FarmDataManager._Instance.mainData.itemListArr[BackpackData.nowBackpackPage, i].Num
                             .ToString(); //刷新数量
                 }
                 else if (i < itemImgArr.Count)

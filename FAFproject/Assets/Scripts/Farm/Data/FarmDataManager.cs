@@ -25,9 +25,9 @@ public class FarmDataManager
         //找是否有相同ID的物品，有就叠加数量
         for (int i = 0;i<mainData.itemListArr.GetLength(0);i++){
             for (int k = 0;k<mainData.itemListArr.GetLength(1);k++){
-                if (mainData.itemListArr[i, k, 0] == id)
+                if (mainData.itemListArr[i, k].ID == id)
                 {
-                    mainData.itemListArr[i, k, 1] += num;
+                    mainData.itemListArr[i, k].Num += num;
                     BackpackController._Instance.RefreshItemUI();
                     return true;
                 }
@@ -38,9 +38,11 @@ public class FarmDataManager
         int[] SpareLocation = CheckItemListSpare();
         if (SpareLocation!= null)
         {
-            mainData.itemListArr[SpareLocation[0], SpareLocation[1], 0] = id;
-            mainData.itemListArr[SpareLocation[0], SpareLocation[1], 1] = num;
+            mainData.itemListArr[SpareLocation[0], SpareLocation[1]].ID = id;
+            mainData.itemListArr[SpareLocation[0], SpareLocation[1]].Num = num;
+            BackpackData.RefreshItemID();
             BackpackController._Instance.RefreshItemUI();
+            Player._Instance.CheckItemLiftable();
             return true;
         }
 
@@ -56,9 +58,8 @@ public class FarmDataManager
     {
         int[] SpareLocation = new int[2];
         for (int i = 0;i<_Instance.mainData.itemListArr.GetLength(0);i++){
-
             for (int k = 0;k<_Instance.mainData.itemListArr.GetLength(1);k++){
-                if (_Instance.mainData.itemListArr[i, k, 0] == 0)
+                if (_Instance.mainData.itemListArr[i, k].ID == 0)
                 {
                     SpareLocation[0] = i;
                     SpareLocation[1] = k;
@@ -77,12 +78,12 @@ public class FarmDataManager
         PlotData plotDataTemp;
         if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
         {
-            plotDataTemp.isWatered = true;
+            plotDataTemp.IsWatered = true;
         }
         else
         {
             plotDataTemp = new PlotData();
-            plotDataTemp.isWatered = true;
+            plotDataTemp.IsWatered = true;
             mainData.plotDataDic.Add(pos,plotDataTemp);
         }
     }
@@ -95,12 +96,12 @@ public class FarmDataManager
         PlotData plotDataTemp;
         if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
         {
-            plotDataTemp.isPlowed = true;
+            plotDataTemp.IsPlowed = true;
         }
         else
         {
             plotDataTemp = new PlotData();
-            plotDataTemp.isPlowed = true;
+            plotDataTemp.IsPlowed = true;
             mainData.plotDataDic.Add(pos,plotDataTemp);
         }
     }
@@ -116,7 +117,7 @@ public class FarmDataManager
             plotDataTemp.cropID = cropID;
             plotDataTemp.cropDays = 0;
             plotDataTemp.CropInstanceID = instanceID;
-            plotDataTemp.hasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
+            plotDataTemp.HasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
         }
         else
         {
@@ -124,7 +125,7 @@ public class FarmDataManager
             plotDataTemp.cropID = cropID;
             plotDataTemp.cropDays = 0;
             plotDataTemp.CropInstanceID = instanceID;
-            plotDataTemp.hasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
+            plotDataTemp.HasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
             
             mainData.plotDataDic.Add(pos,plotDataTemp);
             
@@ -173,7 +174,7 @@ public class FarmDataManager
         Debug.Log(mainData.days);
         foreach (var plot in mainData.plotDataDic)
         {
-            if (plot.Value.isWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
+            if (plot.Value.IsWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
             {
                 cropstage = (int)plot.Value.GetCropStage();
                 if ((bool) plot.Value.CheckCropMature() == false)//种的东西的阶段非成熟阶段
@@ -181,9 +182,19 @@ public class FarmDataManager
                     plot.Value.cropDays += 1;
                 }
             }
-            plot.Value.isWatered = false;//清空浇水状态
+            plot.Value.IsWatered = false;//清空浇水状态
         }
         TileMapController._Instance.RefreshTilemap();
         SaveData();
+    }
+
+    public void DeleteCropData(Vector3Int pos)
+    {
+        if (mainData.plotDataDic.TryGetValue(pos, out PlotData plot))
+        {
+            plot.cropID = 0;
+            plot.CropInstanceID = 0;
+            plot.cropDays = 0;
+        }
     }
 }

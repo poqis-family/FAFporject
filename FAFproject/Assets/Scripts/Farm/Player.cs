@@ -5,7 +5,6 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using WJExcelDataClass;
-using Tile = UnityEngine.WSA.Tile;
 
 public class Player : MonoBehaviour
 {
@@ -29,6 +28,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         GetInput();
     }
 
@@ -42,16 +42,28 @@ public class Player : MonoBehaviour
             FarmDataManager._Instance.ItemAdd(10003, 1);
             FarmDataManager._Instance.ItemAdd(10004, 1);
             FarmDataManager._Instance.ItemAdd(10005, 1);
-            CheckItemLiftable();
         }
     }
     
     private void FixedUpdate()
     {
-        _rigidbody2D.velocity = direction.normalized * speed; ;
+        _rigidbody2D.velocity = direction.normalized * speed;
+        
     }
     private void GetInput()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //判断是否是点击事件
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin,ray.direction*999999);
+            RaycastHit2D hitInfo =new RaycastHit2D();
+            hitInfo=Physics2D.GetRayIntersection(ray);
+            if (hitInfo.transform!=null && hitInfo.transform.CompareTag("Crops"))
+            {
+                ReapCorps(hitInfo.transform.gameObject);
+            }
+        }
         if (Input.GetKeyDown(KeyCode.F))//后续所有道具交互类都放在这里了
         {
             if (BackpackData.nowItemID!=0)
@@ -157,5 +169,33 @@ public class Player : MonoBehaviour
             }
         }
     }
-    
+
+    private void ReapCorps(GameObject hitInfo)
+    {
+        Vector3 pos = hitInfo.transform.position; 
+        pos.x -= 0.5f;
+        pos.y -= 0.5f;
+        if (FarmDataManager._Instance.mainData.plotDataDic.TryGetValue(Vector3Int.FloorToInt(pos),
+            out PlotData plot))
+        {
+            if ((bool) plot.CheckCropMature())
+            {
+                //清空sprite、播放收获动画、删除ganmeobject
+                hitInfo.GetComponent<SpriteRenderer>().sprite = null;
+                Animator animator = hitInfo.GetComponent<Animator>();
+                animator.enabled = true;
+                animator.Play("ReapCrop",0,0);
+                AnimationClip temp = Resources.Load("Animation/Farm/ReapCrop", typeof(AnimationClip)) as AnimationClip;
+                //清除Game Object（TileMapController)
+                Destroy(hitInfo, temp.length);
+                //Item++(FarmDataManager)
+                int fruitItemID = FarmDataManager._Instance.dataManager.GetCropsItemByID(plot.cropID).fruitItemID;
+                FarmDataManager._Instance.ItemAdd(fruitItemID, 1);
+                //清除plotData中的crop数据(FarmDataManager)
+                FarmDataManager._Instance.DeleteCropData(Vector3Int.FloorToInt(pos));
+
+
+            }
+        }
+    }
 }

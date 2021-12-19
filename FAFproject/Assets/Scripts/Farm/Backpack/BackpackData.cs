@@ -38,6 +38,6 @@ public static class BackpackData
 
     public static void RefreshItemID()//刷新当前玩家选中的Item的ID
     {
-        nowItemID = FarmDataManager._Instance.mainData.itemListArr[nowBackpackPage, nowBackpackIndex, 0];
+        nowItemID = FarmDataManager._Instance.mainData.itemListArr[nowBackpackPage, nowBackpackIndex].ID;
     }
 }

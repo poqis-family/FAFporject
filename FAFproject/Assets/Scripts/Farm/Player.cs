@@ -59,10 +59,13 @@ public class Player : MonoBehaviour
             Debug.DrawRay(ray.origin,ray.direction*999999);
             RaycastHit2D hitInfo =new RaycastHit2D();
             hitInfo=Physics2D.GetRayIntersection(ray);
+            
             if (hitInfo.transform!=null && hitInfo.transform.CompareTag("Crops"))
             {
                 ReapCorps(hitInfo.transform.gameObject);
             }
+            
+            
         }
         if (Input.GetKeyDown(KeyCode.F))//后续所有道具交互类都放在这里了
         {
@@ -108,7 +111,6 @@ public class Player : MonoBehaviour
 
     public void CheckItemLiftable()
     {
-        BackpackData.RefreshItemID();
         SpriteRenderer itemImg = FindChild.FindTheChild(gameObject, "PropIMG").GetComponent<SpriteRenderer>();
 
         if (BackpackData.nowItemID==0||FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID).isLiftable==0)
@@ -146,6 +148,7 @@ public class Player : MonoBehaviour
             if (TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position)))
             {
                 TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position));
+                FarmDataManager._Instance.VitalityConsume(thisItemData);
             }
         }
     }
@@ -156,6 +159,7 @@ public class Player : MonoBehaviour
             if (TileMapController._Instance.CheckWaterable(Vector3Int.FloorToInt(gameObject.transform.position)))
             {
                 TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
+                FarmDataManager._Instance.VitalityConsume(thisItemData);
             }
         }
     }
@@ -170,6 +174,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    
     private void ReapCorps(GameObject hitInfo)
     {
         Vector3 pos = hitInfo.transform.position; 

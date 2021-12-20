@@ -19,6 +19,8 @@ public static class BackpackData
         {
             _nowBackpackPage = value;
             RefreshItemID();
+            Player._Instance.CheckItemLiftable();
+            BackpackController._Instance.RefreshItemUI();
         }
     }
     private static int _nowBackpackIndex = 0;//当前玩家选中的Item格子
@@ -32,9 +34,26 @@ public static class BackpackData
         {
             _nowBackpackIndex = value;
             RefreshItemID();
+            Player._Instance.CheckItemLiftable();
+            BackpackController._Instance.RefreshItemUI();
         }
     }
-    public static int nowItemID = 0;//当前玩家选中的Item的ID
+
+    private static int _nowItemID = 0;//当前玩家选中的Item的ID
+
+    public static int nowItemID//当前玩家选中的Item的ID
+    {
+        get
+        {
+            RefreshItemID();
+            return _nowItemID;
+        }
+        set
+        {
+            _nowItemID = value; 
+        }
+
+    }
 
     public static void RefreshItemID()//刷新当前玩家选中的Item的ID
     {

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WJExcelDataClass;
+using Random = UnityEngine.Random;
 
 public class FarmDataManager
 {
@@ -194,6 +196,12 @@ public class FarmDataManager
     {
         playerData.nowVitality = playerData.maxVitality;
         playerData.nowHP = playerData.maxHP;
+    }
+
+    public void VitalityConsume(PropsItem itemData)
+    {
+        int vitalityCost =Random.Range(itemData.para1,itemData.para2+1);
+        FarmDataManager._Instance.playerData.nowVitality -= vitalityCost;
     }
 
     public void DeleteCropData(Vector3Int pos)

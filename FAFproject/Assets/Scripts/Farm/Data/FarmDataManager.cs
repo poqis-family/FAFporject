@@ -8,6 +8,7 @@ public class FarmDataManager
     public  DataManager dataManager = new DataManager();
     public MainData mainData = new MainData();
     public static FarmDataManager _Instance;
+    public PlayerData playerData = new PlayerData();
     
     public FarmDataManager(){
         _Instance = this;
@@ -185,7 +186,14 @@ public class FarmDataManager
             plot.Value.IsWatered = false;//清空浇水状态
         }
         TileMapController._Instance.RefreshTilemap();
+        ReplenishPlayerHPAndVitality();
         SaveData();
+    }
+
+    public void ReplenishPlayerHPAndVitality()
+    {
+        playerData.nowVitality = playerData.maxVitality;
+        playerData.nowHP = playerData.maxHP;
     }
 
     public void DeleteCropData(Vector3Int pos)

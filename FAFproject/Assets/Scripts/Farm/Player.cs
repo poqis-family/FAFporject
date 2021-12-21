@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
 {
     public Vector2 direction;
     private Rigidbody2D _rigidbody2D;
-    public float speed;
     private Animator animator;
     public static Player _Instance;
     // Start is called before the first frame update
@@ -47,7 +46,7 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
-        _rigidbody2D.velocity = direction.normalized * speed;
+        _rigidbody2D.velocity = direction.normalized * FarmDataManager._Instance.playerData.MoveSpeed;
         
     }
     private void GetInput()
@@ -147,8 +146,10 @@ public class Player : MonoBehaviour
         {
             if (TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position)))
             {
-                TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position));
-                FarmDataManager._Instance.VitalityConsume(thisItemData);
+                if (FarmDataManager._Instance.VitalityConsume(thisItemData))
+                {
+                    TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position));
+                }
             }
         }
     }
@@ -158,8 +159,10 @@ public class Player : MonoBehaviour
         {
             if (TileMapController._Instance.CheckWaterable(Vector3Int.FloorToInt(gameObject.transform.position)))
             {
-                TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
-                FarmDataManager._Instance.VitalityConsume(thisItemData);
+                if (FarmDataManager._Instance.VitalityConsume(thisItemData))
+                {
+                    TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
+                }
             }
         }
     }

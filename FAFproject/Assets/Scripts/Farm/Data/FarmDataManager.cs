@@ -198,10 +198,18 @@ public class FarmDataManager
         playerData.nowHP = playerData.maxHP;
     }
 
-    public void VitalityConsume(PropsItem itemData)
+    public bool VitalityConsume(PropsItem itemData)
     {
-        int vitalityCost =Random.Range(itemData.para1,itemData.para2+1);
-        FarmDataManager._Instance.playerData.nowVitality -= vitalityCost;
+        if (playerData.nowVitality > 0)
+        {
+            int vitalityCost = Random.Range(itemData.para1, itemData.para2 + 1);
+            playerData.nowVitality -= vitalityCost;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void DeleteCropData(Vector3Int pos)

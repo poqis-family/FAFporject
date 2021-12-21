@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerData
 {
+    public int MoveSpeed=10;
+    public int NormalMoveSpeed=10;//后续转表格
+    public int TiredMoveSpeed=3;//后续转表格
     private int _maxVitality=180;
 
     public int maxVitality
@@ -27,6 +30,15 @@ public class PlayerData
         set
         {
             _nowVitality = value;
+            if(_nowVitality<=0)
+            {
+                _nowVitality = 0;
+                MoveSpeed = TiredMoveSpeed;
+            }
+            if(_nowVitality>0)
+            {
+                MoveSpeed = NormalMoveSpeed;
+            }
             VitalityBarController._Instance.RefreshVitalityBar();
         }
     }

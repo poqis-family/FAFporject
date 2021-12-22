@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3064928514403477203}
   - component: {fileID: 6590330373553346584}
   - component: {fileID: 4850384401451930635}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CropObject
   m_TagString: Crops
   m_Icon: {fileID: 0}

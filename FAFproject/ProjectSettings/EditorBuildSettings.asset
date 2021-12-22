@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FarmStart.unity
     guid: d613bfa28cf6b5342bf8e06bd3be524f
+  - enabled: 1
+    path: Assets/Scenes/Home.unity
+    guid: 98aff2ac499d02446a1b601da966f5fd
   m_configObjects: {}

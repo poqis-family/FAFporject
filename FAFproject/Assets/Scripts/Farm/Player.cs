@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using WJExcelDataClass;
 
@@ -31,9 +32,23 @@ public class Player : MonoBehaviour
         GetInput();
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.name=="PlayersHome")
+        {
+            if (Input.GetMouseButton(0))
+            {
+                SceneJumper._Instance.SceneJump("Home");
+            }
+        } 
+        if (other.name=="ExitToFarm")
+        {
+            SceneJumper._Instance.SceneJump("Farm");
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.LogError(other.name);
         if (other.CompareTag("Items"))
         {
             FarmDataManager._Instance.ItemAdd(10001, 1);
@@ -56,15 +71,10 @@ public class Player : MonoBehaviour
             //判断是否是点击事件
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin,ray.direction*999999);
-            RaycastHit2D hitInfo =new RaycastHit2D();
-            hitInfo=Physics2D.GetRayIntersection(ray);
-            
-            if (hitInfo.transform!=null && hitInfo.transform.CompareTag("Crops"))
-            {
-                ReapCorps(hitInfo.transform.gameObject);
-            }
-            
-            
+
+            ReapCorps(ray);
+
+
         }
         if (Input.GetKeyDown(KeyCode.F))//后续所有道具交互类都放在这里了
         {
@@ -186,29 +196,37 @@ public class Player : MonoBehaviour
         }
     }
     
-    private void ReapCorps(GameObject hitInfo)
+    private void ReapCorps(Ray ray)
     {
-        Vector3 pos = hitInfo.transform.position; 
-        pos.x -= 0.5f;
-        pos.y -= 0.5f;
-        if (FarmDataManager._Instance.mainData.plotDataDic.TryGetValue(Vector3Int.FloorToInt(pos),
-            out PlotData plot))
+        RaycastHit2D hitInfo =new RaycastHit2D();
+        hitInfo=Physics2D.GetRayIntersection(ray,999999.0f,LayerMask.GetMask("Crops"));//有个返回数组的方法GetRayIntersectionAll，以后可以考考虑使用
+        
+        
+        if (hitInfo.transform != null && hitInfo.transform.CompareTag("Crops"))
         {
-            if ((bool) plot.CheckCropMature())
+            Vector3 pos = hitInfo.transform.position;
+            pos.x -= 0.5f;
+            pos.y -= 0.5f;
+            if (FarmDataManager._Instance.mainData.plotDataDic.TryGetValue(Vector3Int.FloorToInt(pos),
+                out PlotData plot))
             {
-                //清空sprite、播放收获动画、删除ganmeobject
-                hitInfo.GetComponent<SpriteRenderer>().sprite = null;
-                Animator animator = hitInfo.GetComponent<Animator>();
-                animator.enabled = true;
-                animator.Play("ReapCrop",0,0);
-                AnimationClip temp = Resources.Load("Animation/Farm/ReapCrop", typeof(AnimationClip)) as AnimationClip;
-                //清除Game Object（TileMapController)
-                Destroy(hitInfo, temp.length);
-                //Item++(FarmDataManager)
-                int fruitItemID = FarmDataManager._Instance.dataManager.GetCropsItemByID(plot.cropID).fruitItemID;
-                FarmDataManager._Instance.ItemAdd(fruitItemID, 1);
-                //清除plotData中的crop数据(FarmDataManager)
-                FarmDataManager._Instance.DeleteCropData(Vector3Int.FloorToInt(pos));
+                if ((bool) plot.CheckCropMature())
+                {
+                    //清空sprite、播放收获动画、删除ganmeobject
+                    hitInfo.transform.gameObject.GetComponent<SpriteRenderer>().sprite = null;
+                    Animator animator = hitInfo.transform.gameObject.GetComponent<Animator>();
+                    animator.enabled = true;
+                    animator.Play("ReapCrop", 0, 0);
+                    AnimationClip temp =
+                        Resources.Load("Animation/Farm/ReapCrop", typeof(AnimationClip)) as AnimationClip;
+                    //清除Game Object（TileMapController)
+                    Destroy(hitInfo.transform.gameObject, temp.length);
+                    //Item++(FarmDataManager)
+                    int fruitItemID = FarmDataManager._Instance.dataManager.GetCropsItemByID(plot.cropID).fruitItemID;
+                    FarmDataManager._Instance.ItemAdd(fruitItemID, 1);
+                    //清除plotData中的crop数据(FarmDataManager)
+                    FarmDataManager._Instance.DeleteCropData(Vector3Int.FloorToInt(pos));
+                }
             }
         }
     }

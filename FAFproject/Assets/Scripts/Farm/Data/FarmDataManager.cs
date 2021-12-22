@@ -85,12 +85,6 @@ public class FarmDataManager
         BackpackController._Instance.RefreshItemUI();
     }
 
-
-
-
-
-
-
     /// <summary>
     /// 添加地块的浇水信息
     /// </summary>
@@ -252,5 +246,9 @@ public class FarmDataManager
             plot.CropInstanceID = 0;
             plot.cropDays = 0;
         }
+    }
+
+    public void ChangeScene(string sceneName)
+    {
     }
 }

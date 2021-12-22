@@ -9,7 +9,7 @@ public class FarmDataManagerLauncher : MonoBehaviour
     void Awake()
     {
         FarmDataManager farmDataManager = new FarmDataManager();
-        
+        SceneJumper sceneJumper = new SceneJumper();
         for (int i = 0; i < FarmDataManager._Instance.mainData.itemListArr.GetLength(0); i++)
         {
             for (int j = 0; j < FarmDataManager._Instance.mainData.itemListArr.GetLength(1); j++)
@@ -20,6 +20,6 @@ public class FarmDataManagerLauncher : MonoBehaviour
     }
     public void Click()
     {
-        AsyncOperation test = SceneManager.LoadSceneAsync("Farm");
+        SceneJumper._Instance.SceneJump("Farm");
     }
 }

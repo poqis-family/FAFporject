@@ -57,7 +57,7 @@ public class FarmDataManager
     /// 寻找ItemListArr中的空位，找到返回一个int【】标记坐标,未找到返回null
     /// </summary>
     /// <returns></returns>
-    public int[] CheckItemListSpare()
+    private int[] CheckItemListSpare()
     {
         int[] SpareLocation = new int[2];
         for (int i = 0;i<_Instance.mainData.itemListArr.GetLength(0);i++){
@@ -72,6 +72,25 @@ public class FarmDataManager
         }
         return null;
     }
+
+    public void ItemReduce(int BackpackPage,int BackpackIndex)
+    {
+        BackpackItemSubData item = FarmDataManager._Instance.mainData.itemListArr[BackpackPage, BackpackIndex];
+        item.Num -= 1;
+        if (item.Num <= 0)
+        {
+            item.ID = 0;
+        }
+        BackpackData.RefreshItemID();
+        BackpackController._Instance.RefreshItemUI();
+    }
+
+
+
+
+
+
+
     /// <summary>
     /// 添加地块的浇水信息
     /// </summary>
@@ -198,17 +217,30 @@ public class FarmDataManager
         playerData.nowHP = playerData.maxHP;
     }
 
-    public bool VitalityConsume(PropsItem itemData)
+    public bool VitalityConsume(int minCost,int maxCost)
     {
         if (playerData.nowVitality > 0)
         {
-            int vitalityCost = Random.Range(itemData.para1, itemData.para2 + 1);
+            int vitalityCost = Random.Range(minCost, maxCost + 1);
             playerData.nowVitality -= vitalityCost;
             return true;
         }
         else
         {
             return false;
+        }
+    }
+
+    public void VitalittRegain(int minRegain,int maxRegain)
+    {
+        int vitalityRegain = Random.Range(minRegain, maxRegain + 1);
+        if (playerData.nowVitality+vitalityRegain<=playerData.maxVitality)
+        {
+            playerData.nowVitality += vitalityRegain;
+        }
+        else
+        {
+            playerData.nowVitality = playerData.maxVitality;
         }
     }
 

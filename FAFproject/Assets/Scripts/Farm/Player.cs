@@ -130,6 +130,7 @@ public class Player : MonoBehaviour
         PropsItem thisItemData = FarmDataManager._Instance.dataManager.GetPropsItemByID(BackpackData.nowItemID);
         UseItemIfTools(thisItemData);
         UseItemIfSeeds(thisItemData);
+        UseItemIfFoods(thisItemData);
     }
 
     private void UseItemIfTools(PropsItem thisItemData)
@@ -144,12 +145,12 @@ public class Player : MonoBehaviour
     {
         if (thisItemData.subType==(int)ItemTypeEnum.ToolsType.hoe)
         {
-            if (TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            if (FarmDataManager._Instance.VitalityConsume(thisItemData.para1,thisItemData.para2))
             {
-                if (FarmDataManager._Instance.VitalityConsume(thisItemData))
+                if (TileMapController._Instance.CheckArable(Vector3Int.FloorToInt(gameObject.transform.position)))
                 {
-                    TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position));
-                }
+                    TileMapController._Instance.PlowLand(Vector3Int.FloorToInt(gameObject.transform.position)); 
+                } 
             }
         }
     }
@@ -157,9 +158,9 @@ public class Player : MonoBehaviour
     {
         if (thisItemData.subType==(int)ItemTypeEnum.ToolsType.wateringCan)
         {
-            if (TileMapController._Instance.CheckWaterable(Vector3Int.FloorToInt(gameObject.transform.position)))
+            if (FarmDataManager._Instance.VitalityConsume(thisItemData.para1,thisItemData.para2))
             {
-                if (FarmDataManager._Instance.VitalityConsume(thisItemData))
+                if (TileMapController._Instance.CheckWaterable(Vector3Int.FloorToInt(gameObject.transform.position)))
                 {
                     TileMapController._Instance.WateringLand(Vector3Int.FloorToInt(gameObject.transform.position));
                 }
@@ -176,7 +177,14 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+    private void UseItemIfFoods(PropsItem thisItemData)
+    {
+        if (thisItemData.mainType == (int) ItemTypeEnum.MainItemType.foods)
+        {
+            FarmDataManager._Instance.VitalittRegain(thisItemData.para1,thisItemData.para1);//后续要做随机区间就配个para2再改一下这里
+            FarmDataManager._Instance.ItemReduce(BackpackData.nowBackpackPage,BackpackData.nowBackpackIndex);
+        }
+    }
     
     private void ReapCorps(GameObject hitInfo)
     {
@@ -201,8 +209,6 @@ public class Player : MonoBehaviour
                 FarmDataManager._Instance.ItemAdd(fruitItemID, 1);
                 //清除plotData中的crop数据(FarmDataManager)
                 FarmDataManager._Instance.DeleteCropData(Vector3Int.FloorToInt(pos));
-
-
             }
         }
     }

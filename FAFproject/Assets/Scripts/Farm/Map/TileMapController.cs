@@ -141,7 +141,16 @@ public class TileMapController : MonoBehaviour
     }
 
     public void RefreshTilemap()
-    {        
+    {
+        if (FarmDataManager._Instance.mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,out Dictionary<Vector3Int, PlotData> plotData))
+        {
+            if (plotData.Count==0)
+            {
+                return;
+            }
+        }
+        else return;
+
         var plowTileBase = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
         var waterTileBase = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
 
@@ -179,6 +188,7 @@ public class TileMapController : MonoBehaviour
                     changeCropObjectSprite(cropObject,plot.Value.CropTileName);
                     changeCropObjectPosTo(cropObject,plot.Key);
                     setCropObjectCollider(cropObject,plot.Value.cropID);
+                    plot.Value.CropInstanceID = cropObject.GetInstanceID();
                 }
             }
         }

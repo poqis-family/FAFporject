@@ -7,7 +7,6 @@ using UnityEngine;
 public class CropObjectScript : MonoBehaviour
 {
     private Animator animator;
-    private int i = 0;
 
     private void Start()
     {

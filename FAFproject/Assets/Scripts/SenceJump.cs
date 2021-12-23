@@ -15,7 +15,7 @@ public class SenceJump : MonoBehaviour
     public void Click()
     {
         string jumpSence = gameObject.name;
-        AsyncOperation test= SceneManager.LoadSceneAsync(jumpSence);
+        AsyncOperation test= UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(jumpSence);
     }
     // Update is called once per frame
     void Update()

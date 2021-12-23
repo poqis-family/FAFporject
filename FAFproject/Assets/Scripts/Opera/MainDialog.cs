@@ -27,7 +27,7 @@ public class MainDialog : MonoBehaviour
     {
         nowDialogueID = getID;
         originalDialogueID = getID;
-        AsyncOperation test = SceneManager.LoadSceneAsync("Opera");
+        AsyncOperation test = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Opera");
         //赋值ID并且跳转至剧情场景
     }
     public void DialogReduction(int dialogID)

@@ -28,23 +28,27 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         GetInput();
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.name=="PlayersHome")
+        if (FarmSceneManager._Instance.startLoaded == false)
         {
-            if (Input.GetMouseButton(0))
+            if (other.name=="PlayersHome")
             {
-                SceneJumper._Instance.SceneJump("Home");
+                if (Input.GetMouseButton(0))
+                {
+                    FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Home);
+                }
+            } 
+            if (other.name=="ExitToFarm")
+            {
+                FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Farm);
             }
-        } 
-        if (other.name=="ExitToFarm")
-        {
-            SceneJumper._Instance.SceneJump("Farm");
         }
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)

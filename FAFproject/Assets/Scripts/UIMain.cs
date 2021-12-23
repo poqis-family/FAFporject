@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 public class UIMain :UIBehaviour {
 
 
-	void Start () 
+	 void Start () 
 	{
 		//让TimeScale = 0
 		Time.timeScale = 0;

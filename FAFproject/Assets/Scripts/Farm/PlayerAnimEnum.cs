@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimEnum : MonoBehaviour
+public class PlayerAnimEnum
 {
     public enum  PlayerDirection
     {

@@ -147,9 +147,31 @@ public class FarmDataManager
             
         }
     }
-    
+
+    public void SavePlotDataToScene()
+    {
+        if (mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,out Dictionary<Vector3Int, PlotData> plotDataDic))
+        {
+            plotDataDic = mainData.plotDataDic;
+        }
+        else
+        {
+            mainData.ScenePlotDic.Add(FarmSceneManager._Instance.nowScene,mainData.plotDataDic);
+        }
+
+        mainData.plotDataDic = new Dictionary<Vector3Int, PlotData>();
+    }
+    public void LoadScenePlotData()
+    {
+        if (mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,out Dictionary<Vector3Int, PlotData> plotDataDic))
+        {
+            mainData.plotDataDic = plotDataDic;
+        }
+    } 
+
     public void SaveData()
     {
+        SavePlotDataToScene();
         // 定义存档路径
         string dirpath = Application.persistentDataPath + "/Save";
         //创建存档文件夹

@@ -12,7 +12,7 @@ public class EditorTools
     [MenuItem("Edit/Run _F5")]
     public static void OpenLaunchScene()
     {
-        Scene scene = SceneManager.GetActiveScene();
+        Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
         if (scene.name == "FarmStart")
         {
             EditorApplication.isPlaying = true;

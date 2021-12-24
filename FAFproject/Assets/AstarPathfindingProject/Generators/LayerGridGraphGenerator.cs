@@ -96,11 +96,11 @@ namespace Pathfinding {
 			var rect = GetRectFromBounds(b);
 
 			if (nodes == null || !rect.IsValid() || nodes.Length != width*depth*layerCount) {
-				return Pathfinding.Util.ListPool<GraphNode>.Claim ();
+				return Pathfinding.Util.ListPool<GraphNode>.Claim();
 			}
 
 			// Get a buffer we can use
-			var inArea = Pathfinding.Util.ListPool<GraphNode>.Claim (rect.Width*rect.Height*layerCount);
+			var inArea = Pathfinding.Util.ListPool<GraphNode>.Claim(rect.Width*rect.Height*layerCount);
 
 			// Loop through all nodes in the rectangle
 			for (int l = 0; l < layerCount; l++) {
@@ -125,7 +125,7 @@ namespace Pathfinding {
 
 		public override List<GraphNode> GetNodesInRegion (IntRect rect) {
 			// Get a buffer we can use
-			var inArea = Pathfinding.Util.ListPool<GraphNode>.Claim ();
+			var inArea = Pathfinding.Util.ListPool<GraphNode>.Claim();
 
 			// Rect which covers the whole grid
 			var gridRect = new IntRect(0, 0, width-1, depth-1);
@@ -1252,6 +1252,25 @@ namespace Pathfinding {
 #if !ASTAR_GRID_NO_CUSTOM_CONNECTIONS
 			base.Open(path, pathNode, handler);
 #endif
+		}
+
+		public override Vector3 ClosestPointOnNode (Vector3 p) {
+			var gg = GetGridGraph(GraphIndex);
+
+			// Convert to graph space
+			p = gg.transform.InverseTransform(p);
+
+			// Calculate graph position of this node
+			int x = this.XCoordinateInGrid;
+			int z = this.ZCoordinateInGrid;
+
+			// Handle the y coordinate separately
+			float y = gg.transform.InverseTransform((Vector3)position).y;
+
+			var closestInGraphSpace = new Vector3(Mathf.Clamp(p.x, x, x+1f), y, Mathf.Clamp(p.z, z, z+1f));
+
+			// Convert to world space
+			return gg.transform.Transform(closestInGraphSpace);
 		}
 
 		public override void SerializeNode (GraphSerializationContext ctx) {

@@ -69,7 +69,7 @@ namespace Pathfinding {
 		/// <summary>Random number generator</summary>
 		readonly System.Random rnd = new System.Random();
 
-		internal override bool FloodingPath {
+		public override bool FloodingPath {
 			get {
 				return true;
 			}

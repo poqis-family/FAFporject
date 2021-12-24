@@ -156,9 +156,9 @@ namespace Pathfinding {
 		/// The transformation will typically transform the vertices to graph space and this is used to
 		/// figure out which tiles the add intersects.
 		/// </summary>
-		internal override Rect GetBounds (Pathfinding.Util.GraphTransform inverseTransform) {
+		public override Rect GetBounds (Pathfinding.Util.GraphTransform inverseTransform) {
 			if (this.verts == null) RebuildMesh();
-			var verts = Pathfinding.Util.ArrayPool<Int3>.Claim (this.verts != null? this.verts.Length : 0);
+			var verts = Pathfinding.Util.ArrayPool<Int3>.Claim(this.verts != null? this.verts.Length : 0);
 			int[] tris;
 			GetMesh(ref verts, out tris, inverseTransform);
 
@@ -175,7 +175,7 @@ namespace Pathfinding {
 				}
 			}
 
-			Pathfinding.Util.ArrayPool<Int3>.Release (ref verts);
+			Pathfinding.Util.ArrayPool<Int3>.Release(ref verts);
 			return r;
 		}
 
@@ -190,13 +190,13 @@ namespace Pathfinding {
 			if (verts == null) RebuildMesh();
 
 			if (verts == null) {
-				tbuffer = Util.ArrayPool<int>.Claim (0);
+				tbuffer = Util.ArrayPool<int>.Claim(0);
 				return;
 			}
 
 			if (vbuffer == null || vbuffer.Length < verts.Length) {
-				if (vbuffer != null) Util.ArrayPool<Int3>.Release (ref vbuffer);
-				vbuffer = Util.ArrayPool<Int3>.Claim (verts.Length);
+				if (vbuffer != null) Util.ArrayPool<Int3>.Release(ref vbuffer);
+				vbuffer = Util.ArrayPool<Int3>.Claim(verts.Length);
 			}
 			tbuffer = tris;
 

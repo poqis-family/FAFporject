@@ -105,8 +105,17 @@ namespace Pathfinding.Examples {
 			anim.SetFloat("X", smoothedVelocity.x);
 			anim.SetFloat("Y", smoothedVelocity.z);
 
+			// The IAstarAI interface doesn't expose rotation speeds right now, so we have to do this ugly thing.
+			// In case this is an unknown movement script, we fall back to a reasonable value.
+			var rotationSpeed = 360f;
+			if (ai is AIPath aipath) {
+				rotationSpeed = aipath.rotationSpeed;
+			} else if (ai is RichAI richai) {
+				rotationSpeed = richai.rotationSpeed;
+			}
+
 			// Calculate how much the agent should rotate during this frame
-			var newRot = RotateTowards(desiredVelocityWithoutGrav, Time.deltaTime * (ai as AIPath).rotationSpeed);
+			var newRot = RotateTowards(desiredVelocityWithoutGrav, Time.deltaTime * rotationSpeed);
 			// Rotate the character around the currently grounded foot to prevent foot sliding
 			nextPosition = ai.position;
 			nextRotation = ai.rotation;

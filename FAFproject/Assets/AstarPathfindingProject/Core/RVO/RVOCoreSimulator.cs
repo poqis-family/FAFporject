@@ -97,7 +97,7 @@ namespace Pathfinding.RVO {
 		///      is on a collision trajectory towards this agent) the agent can move at this speed.
 		///      Should be at least as high as desiredSpeed, but it is recommended to use a slightly
 		///      higher value than desiredSpeed (for example desiredSpeed*1.2).</param>
-		void SetTarget (Vector2 targetPoint, float desiredSpeed, float maxSpeed);
+		void SetTarget(Vector2 targetPoint, float desiredSpeed, float maxSpeed);
 
 		/// <summary>Locked agents will be assumed not to move</summary>
 		bool Locked { get; set; }
@@ -200,7 +200,7 @@ namespace Pathfinding.RVO {
 		/// This value will be cleared after the next simulation step, normally it should be set every frame
 		/// when the collision is still happening.
 		/// </summary>
-		void SetCollisionNormal (Vector2 normal);
+		void SetCollisionNormal(Vector2 normal);
 
 		/// <summary>
 		/// Set the current velocity of the agent.
@@ -211,7 +211,7 @@ namespace Pathfinding.RVO {
 		/// Local avoidance calculations will be skipped for the next simulation step but will be resumed
 		/// after that unless this method is called again.
 		/// </summary>
-		void ForceSetVelocity (Vector2 velocity);
+		void ForceSetVelocity(Vector2 velocity);
 	}
 
 	/// <summary>Plane which movement is primarily happening in</summary>

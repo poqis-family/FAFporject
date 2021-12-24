@@ -49,7 +49,7 @@ namespace Pathfinding.RVO {
 		///
 		/// See: AddObstacle
 		/// </summary>
-		protected abstract void CreateObstacles ();
+		protected abstract void CreateObstacles();
 
 		/// <summary>
 		/// Enable executing in editor to draw gizmos.
@@ -74,7 +74,7 @@ namespace Pathfinding.RVO {
 		/// This function should return true if any variables which can change the shape or position of the obstacle
 		/// has changed since the last call to this function. Take a look at the RVOSquareObstacle for an example.
 		/// </summary>
-		protected abstract bool AreGizmosDirty ();
+		protected abstract bool AreGizmosDirty();
 
 		/// <summary>Enabled if currently in OnDrawGizmos</summary>
 		private bool gizmoDrawing = false;

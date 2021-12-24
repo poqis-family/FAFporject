@@ -85,6 +85,7 @@ namespace Pathfinding {
 					}
 				}
 
+				// TODO: Will this ever be called?
 				if (found) {
 					c.rect = ExpandToContain(c.c1.rect, c.c2.rect);
 				}

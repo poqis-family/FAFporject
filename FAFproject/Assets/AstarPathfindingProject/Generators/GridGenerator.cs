@@ -106,7 +106,9 @@ namespace Pathfinding {
 		}
 
 		void RemoveGridGraphFromStatic () {
-			GridNode.SetGridGraph(AstarPath.active.data.GetGraphIndex(this), null);
+			var graphIndex = active.data.GetGraphIndex(this);
+
+			GridNode.ClearGridGraph(graphIndex, this);
 		}
 
 		/// <summary>
@@ -148,6 +150,8 @@ namespace Pathfinding {
 		/// <summary>
 		/// Determines the layout of the grid graph inspector in the Unity Editor.
 		/// This field is only used in the editor, it has no effect on the rest of the game whatsoever.
+		///
+		/// If you want to change the grid shape like in the inspector you can use the <see cref="SetGridShape"/> method.
 		/// </summary>
 		[JsonMember]
 		public InspectorGridMode inspectorGridMode = InspectorGridMode.Grid;
@@ -193,6 +197,8 @@ namespace Pathfinding {
 		/// A top down view of an isometric graph. Note that the graph is entirely 2D, there is no perspective in this image.
 		/// [Open online documentation to see images]
 		///
+		/// For commonly used values see <see cref="StandardIsometricAngle"/> and <see cref="StandardDimetricAngle"/>.
+		///
 		/// Usually the angle that you want to use is either 30 degrees (alternatively 90-30 = 60 degrees) or atan(1/sqrt(2)) which is approximately 35.264 degrees (alternatively 90 - 35.264 = 54.736 degrees).
 		/// You might also want to rotate the graph plus or minus 45 degrees around the Y axis to get the oritientation required for your game.
 		///
@@ -204,6 +210,12 @@ namespace Pathfinding {
 		/// </summary>
 		[JsonMember]
 		public float isometricAngle;
+
+		/// <summary>Commonly used value for <see cref="isometricAngle"/></summary>
+		public static readonly float StandardIsometricAngle = 90-Mathf.Atan(1/Mathf.Sqrt(2))*Mathf.Rad2Deg;
+
+		/// <summary>Commonly used value for <see cref="isometricAngle"/></summary>
+		public static readonly float StandardDimetricAngle = Mathf.Acos(1/2f)*Mathf.Rad2Deg;
 
 		/// <summary>
 		/// If true, all edge costs will be set to the same value.
@@ -453,6 +465,24 @@ namespace Pathfinding {
 		/// </summary>
 		public GraphTransform transform { get; private set; }
 
+		/// <summary>
+		/// Get or set if the graph should be in 2D mode.
+		///
+		/// Note: This is just a convenience property, this property will actually read/modify the <see cref="rotation"/> of the graph. A rotation aligned with the 2D plane is what determines if the graph is 2D or not.
+		///
+		/// See: You can also set if the graph should use 2D physics using `this.collision.use2D` (\reflink{GraphCollision.use2D}).
+		/// </summary>
+		public bool is2D {
+			get {
+				return Quaternion.Euler(this.rotation) * Vector3.up == -Vector3.forward;
+			}
+			set {
+				if (value != is2D) {
+					this.rotation = value ? new Vector3(this.rotation.y - 90, 270, 90) : new Vector3(0, this.rotation.x + 90, 0);
+				}
+			}
+		}
+
 		/// <summary>Used for using a texture as a source for a grid graph.</summary>
 		public class TextureData {
 			public bool enabled;
@@ -687,6 +717,42 @@ namespace Pathfinding {
 			return true;
 		}
 
+		/// <summary>
+		/// Changes the grid shape.
+		/// This is equivalent to changing the 'shape' dropdown in the grid graph inspector.
+		///
+		/// Calling this method will set <see cref="isometricAngle"/>, <see cref="aspectRatio"/>, <see cref="uniformEdgeCosts"/> and <see cref="neighbours"/>
+		/// to appropriate values for that shape.
+		///
+		/// Note: Setting the shape to <see cref="InspectorGridMode.Advanced"/> does not do anything except set the <see cref="inspectorGridMode"/> field.
+		///
+		/// See: <see cref="inspectorHexagonSizeMode"/>
+		/// </summary>
+		public void SetGridShape (InspectorGridMode shape) {
+			switch (shape) {
+			case InspectorGridMode.Grid:
+				isometricAngle = 0;
+				aspectRatio = 1;
+				uniformEdgeCosts = false;
+				if (neighbours == NumNeighbours.Six) neighbours = NumNeighbours.Eight;
+				break;
+			case InspectorGridMode.Hexagonal:
+				isometricAngle = StandardIsometricAngle;
+				aspectRatio = 1;
+				uniformEdgeCosts = true;
+				neighbours = NumNeighbours.Six;
+				break;
+			case InspectorGridMode.IsometricGrid:
+				uniformEdgeCosts = false;
+				if (neighbours == NumNeighbours.Six) neighbours = NumNeighbours.Eight;
+				isometricAngle = StandardIsometricAngle;
+				break;
+			case InspectorGridMode.Advanced:
+			default:
+				break;
+			}
+			inspectorGridMode = shape;
+		}
 		/// <summary>
 		/// Updates <see cref="unclampedSize"/> from <see cref="width"/>, <see cref="depth"/> and <see cref="nodeSize"/> values.
 		/// Also \link UpdateTransform generates a new matrix \endlink.
@@ -1361,7 +1427,7 @@ namespace Pathfinding {
 			}
 
 			// Return the list to the pool
-			Pathfinding.Util.ListPool<GraphNode>.Release (ref nodesInRect);
+			Pathfinding.Util.ListPool<GraphNode>.Release(ref nodesInRect);
 		}
 
 		/// <summary>
@@ -1617,7 +1683,7 @@ namespace Pathfinding {
 			// for large graphs. However just checking if any mesh needs to be updated is relatively fast. So we just store
 			// a hash together with the mesh and rebuild the mesh when necessary.
 			const int chunkWidth = 32;
-			GridNodeBase[] allNodes = ArrayPool<GridNodeBase>.Claim (chunkWidth*chunkWidth*LayerCount);
+			GridNodeBase[] allNodes = ArrayPool<GridNodeBase>.Claim(chunkWidth*chunkWidth*LayerCount);
 			for (int cx = width/chunkWidth; cx >= 0; cx--) {
 				for (int cz = depth/chunkWidth; cz >= 0; cz--) {
 					Profiler.BeginSample("Hash");
@@ -1648,7 +1714,7 @@ namespace Pathfinding {
 					}
 				}
 			}
-			ArrayPool<GridNodeBase>.Release (ref allNodes);
+			ArrayPool<GridNodeBase>.Release(ref allNodes);
 
 			if (active.showUnwalkableNodes) DrawUnwalkableNodes(nodeSize * 0.3f);
 		}
@@ -1673,8 +1739,8 @@ namespace Pathfinding {
 			var verticesPerNode = 3*trianglesPerNode;
 
 			// Get arrays that have room for all vertices/colors (the array might be larger)
-			var vertices = ArrayPool<Vector3>.Claim (walkable*verticesPerNode);
-			var colors = ArrayPool<Color>.Claim (walkable*verticesPerNode);
+			var vertices = ArrayPool<Vector3>.Claim(walkable*verticesPerNode);
+			var colors = ArrayPool<Color>.Claim(walkable*verticesPerNode);
 			int baseIndex = 0;
 
 			for (int i = 0; i < nodeCount; i++) {
@@ -1762,16 +1828,18 @@ namespace Pathfinding {
 
 			if (showMeshSurface) helper.DrawTriangles(vertices, colors, baseIndex*trianglesPerNode/verticesPerNode);
 
-			ArrayPool<Vector3>.Release (ref vertices);
-			ArrayPool<Color>.Release (ref colors);
+			ArrayPool<Vector3>.Release(ref vertices);
+			ArrayPool<Color>.Release(ref colors);
 		}
 
 		/// <summary>
-		/// A rect with all nodes that the bounds could touch.
+		/// A rect that contains all nodes that the bounds could touch.
 		/// This correctly handles rotated graphs and other transformations.
 		/// The returned rect is guaranteed to not extend outside the graph bounds.
+		///
+		/// Note: The rect may contain nodes that are not contained in the bounding box.
 		/// </summary>
-		protected IntRect GetRectFromBounds (Bounds bounds) {
+		public IntRect GetRectFromBounds (Bounds bounds) {
 			// Take the bounds and transform it using the matrix
 			// Then convert that to a rectangle which contains
 			// all nodes that might be inside the bounds
@@ -1844,11 +1912,11 @@ namespace Pathfinding {
 			var rect = GetRectFromBounds(bounds);
 
 			if (nodes == null || !rect.IsValid() || nodes.Length != width*depth) {
-				return ListPool<GraphNode>.Claim ();
+				return ListPool<GraphNode>.Claim();
 			}
 
 			// Get a buffer we can use
-			var inArea = ListPool<GraphNode>.Claim (rect.Width*rect.Height);
+			var inArea = ListPool<GraphNode>.Claim(rect.Width*rect.Height);
 
 			// Loop through all nodes in the rectangle
 			for (int x = rect.xmin; x <= rect.xmax; x++) {
@@ -1868,7 +1936,11 @@ namespace Pathfinding {
 			return inArea;
 		}
 
-		/// <summary>Get all nodes in a rectangle.</summary>
+		/// <summary>
+		/// Get all nodes in a rectangle.
+		///
+		/// See: <see cref="GetRectFromBounds"/>
+		/// </summary>
 		/// <param name="rect">Region in which to return nodes. It will be clamped to the grid.</param>
 		public virtual List<GraphNode> GetNodesInRegion (IntRect rect) {
 			// Clamp the rect to the grid
@@ -1877,10 +1949,10 @@ namespace Pathfinding {
 
 			rect = IntRect.Intersection(rect, gridRect);
 
-			if (nodes == null || !rect.IsValid() || nodes.Length != width*depth) return ListPool<GraphNode>.Claim (0);
+			if (nodes == null || !rect.IsValid() || nodes.Length != width*depth) return ListPool<GraphNode>.Claim(0);
 
 			// Get a buffer we can use
-			var inArea = ListPool<GraphNode>.Claim (rect.Width*rect.Height);
+			var inArea = ListPool<GraphNode>.Claim(rect.Width*rect.Height);
 
 
 			for (int z = rect.ymin; z <= rect.ymax; z++) {
@@ -1899,6 +1971,8 @@ namespace Pathfinding {
 		///
 		/// Note: This method is much faster than GetNodesInRegion(IntRect) which returns a list because this method can make use of the highly optimized
 		///  System.Array.Copy method.
+		///
+		/// See: <see cref="GetRectFromBounds"/>
 		/// </summary>
 		/// <param name="rect">Region in which to return nodes. It will be clamped to the grid.</param>
 		/// <param name="buffer">Buffer in which the nodes will be stored. Should be at least as large as the number of nodes that can exist in that region.</param>
@@ -2300,10 +2374,6 @@ namespace Pathfinding {
 		/// bool anyObstaclesInTheWay = gg.Linecast(transform.position, enemy.position);
 		/// </code>
 		///
-		/// Version: In 3.6.8 this method was rewritten to improve accuracy and performance.
-		/// Previously it used a sampling approach which could cut corners of obstacles slightly
-		/// and was pretty inefficient.
-		///
 		/// [Open online documentation to see images]
 		/// </summary>
 		/// <param name="from">Point to linecast from</param>
@@ -2312,6 +2382,29 @@ namespace Pathfinding {
 		/// <param name="hint">This parameter is deprecated. It will be ignored.</param>
 		/// <param name="trace">If a list is passed, then it will be filled with all nodes the linecast traverses</param>
 		public bool Linecast (Vector3 from, Vector3 to, GraphNode hint, out GraphHitInfo hit, List<GraphNode> trace) {
+			return Linecast(from, to, out hit, trace, null);
+		}
+
+		/// <summary>
+		/// Returns if there is an obstacle between from and to on the graph.
+		///
+		/// This is not the same as Physics.Linecast, this function traverses the graph and looks for collisions.
+		///
+		/// <code>
+		/// var gg = AstarPath.active.data.gridGraph;
+		/// bool anyObstaclesInTheWay = gg.Linecast(transform.position, enemy.position);
+		/// </code>
+		///
+		/// [Open online documentation to see images]
+		/// </summary>
+		/// <param name="from">Point to linecast from</param>
+		/// <param name="to">Point to linecast to</param>
+		/// <param name="hit">Contains info on what was hit, see GraphHitInfo</param>
+		/// <param name="hint">This parameter is deprecated. It will be ignored.</param>
+		/// <param name="trace">If a list is passed, then it will be filled with all nodes the linecast traverses</param>
+		/// <param name="filter">If not null then the delegate will be called for each node and if it returns false the node will be treated as unwalkable and a hit will be returned.
+		///               Note that unwalkable nodes are always treated as unwalkable regardless of what this filter returns.</param>
+		public bool Linecast (Vector3 from, Vector3 to, out GraphHitInfo hit, List<GraphNode> trace, System.Func<GraphNode, bool> filter) {
 			hit = new GraphHitInfo();
 
 			hit.origin = from;
@@ -2331,7 +2424,7 @@ namespace Pathfinding {
 			var startNode = GetNearest(transform.Transform(fromInGraphSpace), NNConstraint.None).node as GridNodeBase;
 			var endNode = GetNearest(transform.Transform(toInGraphSpace), NNConstraint.None).node as GridNodeBase;
 
-			if (!startNode.Walkable) {
+			if (startNode != null && (!startNode.Walkable || (filter != null && !filter(startNode)))) {
 				hit.node = startNode;
 				// Hit point is the point where the segment intersects with the graph boundary
 				// or just #from if it starts inside the graph
@@ -2414,9 +2507,9 @@ namespace Pathfinding {
 				// and pick the appropriate direction to move in
 				int ndir = nerror < 0 ? directionToIncreaseError : directionToReduceError;
 
-				// Check we can move in that direction
+				// Check if we can move in that direction
 				var other = current.GetNeighbourAlongDirection(ndir);
-				if (other != null) {
+				if (other != null && (filter == null || filter(other))) {
 					current = other;
 				} else {
 					// Hit obstacle
@@ -2492,6 +2585,7 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// Returns if there is an obstacle between the two nodes on the graph.
+		///
 		/// This method is very similar to the other Linecast methods however it is much faster
 		/// due to being able to use only integer math and not having to look up which node is closest to a particular input point.
 		///
@@ -2502,7 +2596,11 @@ namespace Pathfinding {
 		/// bool anyObstaclesInTheWay = gg.Linecast(node1, node2);
 		/// </code>
 		/// </summary>
-		public bool Linecast (GridNodeBase fromNode, GridNodeBase toNode) {
+		/// <param name="fromNode">Node to start from.</param>
+		/// <param name="toNode">Node to try to reach using a straight line.</param>
+		/// <param name="filter">If not null then the delegate will be called for each node and if it returns false the node will be treated as unwalkable and a hit will be returned.
+		///               Note that unwalkable nodes are always treated as unwalkable regardless of what this filter returns.</param>
+		public bool Linecast (GridNodeBase fromNode, GridNodeBase toNode, System.Func<GraphNode, bool> filter = null) {
 			var dir = new Int2(toNode.XCoordinateInGrid - fromNode.XCoordinateInGrid, toNode.ZCoordinateInGrid - fromNode.ZCoordinateInGrid);
 
 			// How much further we move away from (or towards) the line when walking along the primary direction (e.g up and right or down and left).
@@ -2540,6 +2638,10 @@ namespace Pathfinding {
 			int directionToIncreaseError = (quadrant + 2) & 0x3;
 			int directionDiagonal = (dir.x != 0 && dir.y != 0) ? 4 + ((quadrant + 1) & 0x3) : -1;
 			Int2 offset = new Int2(0, 0);
+
+			// Use the filter
+			if (filter != null && fromNode != null && !filter(fromNode)) fromNode = null;
+
 			while (fromNode != null && fromNode.NodeInGridIndex != toNode.NodeInGridIndex) {
 				// This is proportional to the distance between the line and the node
 				var error = CrossMagnitude(dir, offset) * 2;
@@ -2553,6 +2655,10 @@ namespace Pathfinding {
 				if (nerror == 0 && directionDiagonal != -1) ndir = directionDiagonal;
 
 				fromNode = fromNode.GetNeighbourAlongDirection(ndir);
+
+				// Use the filter
+				if (filter != null && fromNode != null && !filter(fromNode)) fromNode = null;
+
 				offset += new Int2(neighbourXOffsets[ndir], neighbourZOffsets[ndir]);
 			}
 			return fromNode != toNode;

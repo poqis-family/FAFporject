@@ -408,7 +408,7 @@ namespace Pathfinding {
 
 			if (root == null) {
 				// If there is no root object, try to find nodes with the specified tag instead
-				GameObject[] gos = searchTag != null? GameObject.FindGameObjectsWithTag (searchTag) : null;
+				GameObject[] gos = searchTag != null? GameObject.FindGameObjectsWithTag(searchTag) : null;
 
 				if (gos == null) {
 					nodes = new PointNode[0];
@@ -619,7 +619,7 @@ namespace Pathfinding {
 				}
 
 				// Create a temporary list used for holding connection data
-				List<Connection> tmpList = Pathfinding.Util.ListPool<Connection>.Claim ();
+				List<Connection> tmpList = Pathfinding.Util.ListPool<Connection>.Claim();
 
 				for (int i = 0; i < nodeCount; i++) {
 					PointNode node = nodes[i];
@@ -671,7 +671,7 @@ namespace Pathfinding {
 				}
 
 				// Release buffers back to the pool
-				Pathfinding.Util.ListPool<Connection>.Release (ref tmpList);
+				Pathfinding.Util.ListPool<Connection>.Release(ref tmpList);
 			}
 		}
 

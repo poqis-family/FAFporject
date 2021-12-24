@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections.Generic;
 
 namespace Pathfinding {
+	using Pathfinding.Util;
+
 	/// <summary>Base class for the NavmeshCut and NavmeshAdd components</summary>
 	public abstract class NavmeshClipper : VersionedMonoBehaviour {
 		/// <summary>Called every time a NavmeshCut/NavmeshAdd component is enabled.</summary>
@@ -13,6 +15,19 @@ namespace Pathfinding {
 
 		static readonly List<NavmeshClipper> all = new List<NavmeshClipper>();
 		int listIndex = -1;
+
+		/// <summary>
+		/// Which graphs that are affected by this component.
+		///
+		/// You can use this to make a graph ignore a particular navmesh cut altogether.
+		///
+		/// Note that navmesh cuts can only affect navmesh/recast graphs.
+		///
+		/// If you change this field during runtime you must disable the component and enable it again for the changes to be detected.
+		///
+		/// See: \reflink{NavmeshBase.enableNavmeshCutting}
+		/// </summary>
+		public GraphMask graphMask = GraphMask.everything;
 
 		public static void AddEnableCallback (System.Action<NavmeshClipper> onEnable,  System.Action<NavmeshClipper> onDisable) {
 			OnEnableCallback += onEnable;
@@ -32,8 +47,8 @@ namespace Pathfinding {
 		public static List<NavmeshClipper> allEnabled { get { return all; } }
 
 		protected virtual void OnEnable () {
-			listIndex = all.Count;
 			if (OnEnableCallback != null) OnEnableCallback(this);
+			listIndex = all.Count;
 			all.Add(this);
 		}
 
@@ -48,10 +63,10 @@ namespace Pathfinding {
 			if (OnDisableCallback != null) OnDisableCallback(this);
 		}
 
-		internal abstract void NotifyUpdated ();
-		internal abstract Rect GetBounds (Pathfinding.Util.GraphTransform transform);
-		public abstract bool RequiresUpdate ();
-		public abstract void ForceUpdate ();
+		internal abstract void NotifyUpdated();
+		public abstract Rect GetBounds(GraphTransform transform);
+		public abstract bool RequiresUpdate();
+		public abstract void ForceUpdate();
 	}
 
 	/// <summary>
@@ -306,7 +321,7 @@ namespace Pathfinding {
 
 			var contourBuffer = new List<Vector3[]>();
 
-			List<Vector3> buffer = Pathfinding.Util.ListPool<Vector3>.Claim ();
+			List<Vector3> buffer = Pathfinding.Util.ListPool<Vector3>.Claim();
 
 			// Follow edge pointers to generate the contours
 			for (int i = 0; i < verts.Length; i++) {
@@ -335,7 +350,7 @@ namespace Pathfinding {
 			}
 
 			// Return lists to the pool
-			Pathfinding.Util.ListPool<Vector3>.Release (ref buffer);
+			Pathfinding.Util.ListPool<Vector3>.Release(ref buffer);
 
 			contours = contourBuffer.ToArray();
 		}
@@ -345,8 +360,8 @@ namespace Pathfinding {
 		/// The transformation will typically transform the vertices to graph space and this is used to
 		/// figure out which tiles the cut intersects.
 		/// </summary>
-		internal override Rect GetBounds (Pathfinding.Util.GraphTransform inverseTransform) {
-			var buffers = Pathfinding.Util.ListPool<List<Vector3> >.Claim ();
+		public override Rect GetBounds (GraphTransform inverseTransform) {
+			var buffers = Pathfinding.Util.ListPool<List<Vector3> >.Claim();
 
 			GetContour(buffers);
 
@@ -366,7 +381,7 @@ namespace Pathfinding {
 				}
 			}
 
-			Pathfinding.Util.ListPool<List<Vector3> >.Release (ref buffers);
+			Pathfinding.Util.ListPool<List<Vector3> >.Release(ref buffers);
 			return r;
 		}
 
@@ -381,7 +396,7 @@ namespace Pathfinding {
 			bool reverse;
 			switch (type) {
 			case MeshType.Rectangle:
-				List<Vector3> buffer0 = Pathfinding.Util.ListPool<Vector3>.Claim ();
+				List<Vector3> buffer0 = Pathfinding.Util.ListPool<Vector3>.Claim();
 
 				buffer0.Add(new Vector3(-rectangleSize.x, 0, -rectangleSize.y)*0.5f);
 				buffer0.Add(new Vector3(rectangleSize.x, 0, -rectangleSize.y)*0.5f);
@@ -393,7 +408,7 @@ namespace Pathfinding {
 				buffer.Add(buffer0);
 				break;
 			case MeshType.Circle:
-				buffer0 = Pathfinding.Util.ListPool<Vector3>.Claim (circleResolution);
+				buffer0 = Pathfinding.Util.ListPool<Vector3>.Claim(circleResolution);
 
 				for (int i = 0; i < circleResolution; i++) {
 					buffer0.Add(new Vector3(Mathf.Cos((i*2*Mathf.PI)/circleResolution), 0, Mathf.Sin((i*2*Mathf.PI)/circleResolution))*circleRadius);
@@ -415,7 +430,7 @@ namespace Pathfinding {
 					for (int i = 0; i < contours.Length; i++) {
 						Vector3[] contour = contours[i];
 
-						buffer0 = Pathfinding.Util.ListPool<Vector3>.Claim (contour.Length);
+						buffer0 = Pathfinding.Util.ListPool<Vector3>.Claim(contour.Length);
 						for (int x = 0; x < contour.Length; x++) {
 							buffer0.Add(contour[x]*meshScale);
 						}
@@ -449,7 +464,7 @@ namespace Pathfinding {
 		public void OnDrawGizmos () {
 			if (tr == null) tr = transform;
 
-			var buffer = Pathfinding.Util.ListPool<List<Vector3> >.Claim ();
+			var buffer = Pathfinding.Util.ListPool<List<Vector3> >.Claim();
 			GetContour(buffer);
 			Gizmos.color = GizmoColor;
 
@@ -463,7 +478,7 @@ namespace Pathfinding {
 				}
 			}
 
-			Pathfinding.Util.ListPool<List<Vector3> >.Release (ref buffer);
+			Pathfinding.Util.ListPool<List<Vector3> >.Release(ref buffer);
 		}
 
 		/// <summary>Y coordinate of the center of the bounding box in graph space</summary>
@@ -472,7 +487,7 @@ namespace Pathfinding {
 		}
 
 		public void OnDrawGizmosSelected () {
-			var buffer = Pathfinding.Util.ListPool<List<Vector3> >.Claim ();
+			var buffer = Pathfinding.Util.ListPool<List<Vector3> >.Claim();
 
 			GetContour(buffer);
 			var col = Color.Lerp(GizmoColor, Color.white, 0.5f);
@@ -502,7 +517,7 @@ namespace Pathfinding {
 				}
 			}
 
-			Pathfinding.Util.ListPool<List<Vector3> >.Release (ref buffer);
+			Pathfinding.Util.ListPool<List<Vector3> >.Release(ref buffer);
 		}
 	}
 }

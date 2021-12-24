@@ -52,8 +52,8 @@ namespace Pathfinding {
 			for (int i = 0; i < parts.Count; i++) {
 				var funnelPart = parts[i] as RichFunnel;
 				var specialPart = parts[i] as RichSpecial;
-				if (funnelPart != null) ObjectPool<RichFunnel>.Release (ref funnelPart);
-				else if (specialPart != null) ObjectPool<RichSpecial>.Release (ref specialPart);
+				if (funnelPart != null) ObjectPool<RichFunnel>.Release(ref funnelPart);
+				else if (specialPart != null) ObjectPool<RichSpecial>.Release(ref specialPart);
 			}
 
 			Clear();
@@ -67,7 +67,7 @@ namespace Pathfinding {
 					var graph = AstarData.GetGraph(nodes[i]) as NavmeshBase;
 					if (graph == null) throw new System.Exception("Found a TriangleMeshNode that was not in a NavmeshBase graph");
 
-					RichFunnel f = ObjectPool<RichFunnel>.Claim ().Initialize(this, graph);
+					RichFunnel f = ObjectPool<RichFunnel>.Claim().Initialize(this, graph);
 
 					f.funnelSimplification = simplificationMode;
 
@@ -117,8 +117,11 @@ namespace Pathfinding {
 						continue;
 					}
 
-					RichSpecial rps = ObjectPool<RichSpecial>.Claim ().Initialize(nl, nodes[sIndex]);
+					RichSpecial rps = ObjectPool<RichSpecial>.Claim().Initialize(nl, nodes[sIndex]);
 					parts.Add(rps);
+				} else if (!(nodes[i] is PointNode)) {
+					// Some other graph type which we do not have support for
+					throw new System.InvalidOperationException("The RichAI movment script can only be used on recast/navmesh graphs. A node of type " + nodes[i].GetType().Name + " was in the path.");
 				}
 			}
 		}
@@ -173,7 +176,7 @@ namespace Pathfinding {
 	}
 
 	public abstract class RichPathPart : Pathfinding.Util.IAstarPooledObject {
-		public abstract void OnEnterPool ();
+		public abstract void OnEnterPool();
 	}
 
 	public class RichFunnel : RichPathPart {
@@ -193,8 +196,8 @@ namespace Pathfinding {
 		public bool funnelSimplification = true;
 
 		public RichFunnel () {
-			left = Pathfinding.Util.ListPool<Vector3>.Claim ();
-			right = Pathfinding.Util.ListPool<Vector3>.Claim ();
+			left = Pathfinding.Util.ListPool<Vector3>.Claim();
+			right = Pathfinding.Util.ListPool<Vector3>.Claim();
 			nodes = new List<TriangleMeshNode>();
 			this.graph = null;
 		}
@@ -248,7 +251,7 @@ namespace Pathfinding {
 			this.nodes.Clear();
 
 			if (funnelSimplification) {
-				List<GraphNode> tmp = Pathfinding.Util.ListPool<GraphNode>.Claim (end-start);
+				List<GraphNode> tmp = Pathfinding.Util.ListPool<GraphNode>.Claim(end-start);
 
 				SimplifyPath(graph, nodes, start, end, tmp, exactStart, exactEnd);
 
@@ -260,7 +263,7 @@ namespace Pathfinding {
 					if (node != null) this.nodes.Add(node);
 				}
 
-				Pathfinding.Util.ListPool<GraphNode>.Release (ref tmp);
+				Pathfinding.Util.ListPool<GraphNode>.Release(ref tmp);
 			} else {
 				if (this.nodes.Capacity < end-start) this.nodes.Capacity = (end-start);
 				for (int i = start; i <= end; i++) {
@@ -445,7 +448,7 @@ namespace Pathfinding {
 		public float DistanceToEndOfPath {
 			get {
 				var currentNode = CurrentNode;
-				Vector3 closestOnNode = currentNode != null? currentNode.ClosestPointOnNode (currentPosition) : currentPosition;
+				Vector3 closestOnNode = currentNode != null? currentNode.ClosestPointOnNode(currentPosition) : currentPosition;
 				return (exactEnd - closestOnNode).magnitude;
 			}
 		}

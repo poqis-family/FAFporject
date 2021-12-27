@@ -20,7 +20,6 @@ public  class FarmSceneManager : MonoBehaviour
 
     public  void SceneJump(SceneEnum.Scenes sceneEnum)
     {
-        FarmDataManager._Instance.SavePlotDataToScene();
         startLoaded = true;
         lastScene = nowScene;
         nowScene = sceneEnum;
@@ -44,7 +43,6 @@ public  class FarmSceneManager : MonoBehaviour
     {
         if (asyncOperation.isDone)
         {
-            FarmDataManager._Instance.LoadScenePlotData();
             RefreshMap();
             startLoaded = false;
         }

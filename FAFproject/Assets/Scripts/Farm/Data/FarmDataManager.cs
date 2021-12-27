@@ -92,7 +92,7 @@ public class FarmDataManager
     public void AddWaterPlotData(Vector3Int pos)
     {
         PlotData plotDataTemp;
-        if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
+        if (TryGetNowPlotDataDic().TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
         {
             plotDataTemp.IsWatered = true;
         }
@@ -100,7 +100,7 @@ public class FarmDataManager
         {
             plotDataTemp = new PlotData();
             plotDataTemp.IsWatered = true;
-            mainData.plotDataDic.Add(pos,plotDataTemp);
+            TryGetNowPlotDataDic().Add(pos,plotDataTemp);
         }
     }
     /// <summary>
@@ -110,7 +110,7 @@ public class FarmDataManager
     public void AddPlowPlotData(Vector3Int pos)
     {
         PlotData plotDataTemp;
-        if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
+        if (TryGetNowPlotDataDic().TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的那个复个值，然后加进去
         {
             plotDataTemp.IsPlowed = true;
         }
@@ -118,7 +118,7 @@ public class FarmDataManager
         {
             plotDataTemp = new PlotData();
             plotDataTemp.IsPlowed = true;
-            mainData.plotDataDic.Add(pos,plotDataTemp);
+            TryGetNowPlotDataDic().Add(pos,plotDataTemp);
         }
     }
     /// <summary>
@@ -128,7 +128,7 @@ public class FarmDataManager
     public void AddSowingPlotData(Vector3Int pos,int cropID,int instanceID)
     {
         PlotData plotDataTemp;
-        if (mainData.plotDataDic.TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的plotDataTemp复个值，然后加进去
+        if (TryGetNowPlotDataDic().TryGetValue(pos, out plotDataTemp))//如果字典有该坐标的信息，就直接改了。没的话把之前新建的plotDataTemp复个值，然后加进去
         { 
             plotDataTemp.cropID = cropID;
             plotDataTemp.cropDays = 0;
@@ -143,35 +143,12 @@ public class FarmDataManager
             plotDataTemp.CropInstanceID = instanceID;
             plotDataTemp.HasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
             
-            mainData.plotDataDic.Add(pos,plotDataTemp);
+            TryGetNowPlotDataDic().Add(pos,plotDataTemp);
             
         }
     }
-
-    public void SavePlotDataToScene()
-    {
-        if (mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,out Dictionary<Vector3Int, PlotData> plotDataDic))
-        {
-            plotDataDic = mainData.plotDataDic;
-        }
-        else
-        {
-            mainData.ScenePlotDic.Add(FarmSceneManager._Instance.nowScene,mainData.plotDataDic);
-        }
-
-        mainData.plotDataDic = new Dictionary<Vector3Int, PlotData>();
-    }
-    public void LoadScenePlotData()
-    {
-        if (mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,out Dictionary<Vector3Int, PlotData> plotDataDic))
-        {
-            mainData.plotDataDic = plotDataDic;
-        }
-    } 
-
     public void SaveData()
     {
-        SavePlotDataToScene();
         // 定义存档路径
         string dirpath = Application.persistentDataPath + "/Save";
         //创建存档文件夹
@@ -210,11 +187,10 @@ public class FarmDataManager
         int cropstage;
         mainData.days += 1;
         Debug.Log(mainData.days);
-        foreach (var plot in mainData.plotDataDic)
+        foreach (var plot in TryGetNowPlotDataDic())
         {
             if (plot.Value.IsWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
             {
-                cropstage = (int)plot.Value.GetCropStage();
                 if ((bool) plot.Value.CheckCropMature() == false)//种的东西的阶段非成熟阶段
                 {
                     plot.Value.cropDays += 1;
@@ -262,7 +238,7 @@ public class FarmDataManager
 
     public void DeleteCropData(Vector3Int pos)
     {
-        if (mainData.plotDataDic.TryGetValue(pos, out PlotData plot))
+        if (TryGetNowPlotDataDic().TryGetValue(pos, out PlotData plot))
         {
             plot.cropID = 0;
             plot.CropInstanceID = 0;
@@ -270,7 +246,18 @@ public class FarmDataManager
         }
     }
 
-    public void ChangeScene(string sceneName)
+    public Dictionary<Vector3Int, PlotData>TryGetNowPlotDataDic()
     {
+        if (mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,
+            out Dictionary<Vector3Int, PlotData> plotDataDic))
+        {
+            return plotDataDic;
+        }
+        else
+        {
+            plotDataDic = new Dictionary<Vector3Int, PlotData>();
+            mainData.ScenePlotDic.Add(FarmSceneManager._Instance.nowScene,plotDataDic);
+            return plotDataDic;
+        }
     }
 }

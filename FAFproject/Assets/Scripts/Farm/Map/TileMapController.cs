@@ -111,7 +111,7 @@ public class TileMapController : MonoBehaviour
             return false;
         }
 
-        FarmDataManager._Instance.mainData.plotDataDic.TryGetValue(pos, out PlotData temp);
+        FarmDataManager._Instance.TryGetNowPlotDataDic().TryGetValue(pos, out PlotData temp);
         bool hadCrop;
         if (temp.cropID == 0) hadCrop = false;
         else hadCrop = true;
@@ -154,7 +154,7 @@ public class TileMapController : MonoBehaviour
         var plowTileBase = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
         var waterTileBase = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
 
-        foreach (var plot in FarmDataManager._Instance.mainData.plotDataDic)
+        foreach (var plot in FarmDataManager._Instance.TryGetNowPlotDataDic())
         {
             if (plot.Value.IsPlowed)
             {

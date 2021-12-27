@@ -24,7 +24,7 @@ public class CropObjectScript : MonoBehaviour
             Vector3 pos = transform.position; 
             pos.x -= 0.5f;
             pos.y -= 0.5f;
-            if (FarmDataManager._Instance.mainData.plotDataDic.TryGetValue(Vector3Int.FloorToInt(pos),
+            if (FarmDataManager._Instance.TryGetNowPlotDataDic().TryGetValue(Vector3Int.FloorToInt(pos),
                 out PlotData plot))
             {
                 TileMapController._Instance.changeCropObjectSprite(gameObject, plot.CropTileName);

@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        GameObject playerSprite= FindChild.FindTheChild(gameObject, "PlayerSprite");
+        animator = playerSprite.GetComponent<Animator>();
         animator.SetInteger("DirectionEnum", (int) PlayerAnimEnum.PlayerDirection.Down);//初始位置向下
     }
 
@@ -211,7 +212,7 @@ public class Player : MonoBehaviour
             Vector3 pos = hitInfo.transform.position;
             pos.x -= 0.5f;
             pos.y -= 0.5f;
-            if (FarmDataManager._Instance.mainData.plotDataDic.TryGetValue(Vector3Int.FloorToInt(pos),
+            if (FarmDataManager._Instance.TryGetNowPlotDataDic().TryGetValue(Vector3Int.FloorToInt(pos),
                 out PlotData plot))
             {
                 if ((bool) plot.CheckCropMature())

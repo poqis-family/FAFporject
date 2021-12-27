@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 {
     public Vector2 direction;
     private Rigidbody2D _rigidbody2D;
-    private Animator animator;
+    public Animator animator;
     public static Player _Instance;
     // Start is called before the first frame update
     private void Awake()

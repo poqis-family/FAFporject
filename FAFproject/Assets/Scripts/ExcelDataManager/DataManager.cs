@@ -16,6 +16,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	public WJExcelDataClass.sdftt p_sdftt;
 	public WJExcelDataClass.mmm p_mmm;
 	public WJExcelDataClass.adtttt p_adtttt;
+	public WJExcelDataClass.ScenesJump p_ScenesJump;
 	public WJExcelDataClass.Maps1 p_Maps1;
 	public WJExcelDataClass.Dialog1 p_Dialog1;
 	public WJExcelDataClass.Characters p_Characters;
@@ -43,6 +44,14 @@ public class DataManager //: SingletonTemplate<DataManager>
 		adttttItem t = null;
 		p_adtttt.Dict.TryGetValue(id, out t);
 		if (t == null) Debug.LogWarning("can't find the id " + id + " in adtttt");
+		return t;
+	}
+
+	public ScenesJumpItem GetScenesJumpItemByID(Int32 id)
+	{
+		ScenesJumpItem t = null;
+		p_ScenesJump.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in ScenesJump");
 		return t;
 	}
 
@@ -91,6 +100,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 		p_sdftt = Load("sdftt") as WJExcelDataClass.sdftt;
 		p_mmm = Load("mmm") as WJExcelDataClass.mmm;
 		p_adtttt = Load("adtttt") as WJExcelDataClass.adtttt;
+		p_ScenesJump = Load("ScenesJump") as WJExcelDataClass.ScenesJump;
 		p_Maps1 = Load("Maps1") as WJExcelDataClass.Maps1;
 		p_Dialog1 = Load("Dialog1") as WJExcelDataClass.Dialog1;
 		p_Characters = Load("Characters") as WJExcelDataClass.Characters;

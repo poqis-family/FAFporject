@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
+using WJExcelDataClass;
 
 public  class FarmSceneManager : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public  class FarmSceneManager : MonoBehaviour
     {
         if (asyncOperation.isDone)
         {
+            RefreshPlayerPos();
             RefreshMap();
             startLoaded = false;
         }
@@ -53,4 +55,21 @@ public  class FarmSceneManager : MonoBehaviour
         TileMapController._Instance.RefreshTilemap();
     }
 
+    public void RefreshPlayerPos()
+    {
+        Dictionary<int, ScenesJumpItem>.Enumerator itor =
+            FarmDataManager._Instance.dataManager.p_ScenesJump.Dict.GetEnumerator();
+        while (itor.MoveNext())
+        {
+            if (itor.Current.Value.fromScene == (int) FarmSceneManager._Instance.lastScene &&
+                itor.Current.Value.targetScene == (int) FarmSceneManager._Instance.nowScene)
+            {
+                Vector3 vector3 = new Vector3(itor.Current.Value.playerPos[0], itor.Current.Value.playerPos[1], itor.Current.Value.playerPos[2]);
+                Player._Instance.gameObject.transform.position = vector3;
+                Player._Instance.animator.SetInteger("DirectionEnum",itor.Current.Value.playerFaceTo);
+                return;
+            }
+        }
+        Debug.LogError("未能找到对应的From与Target场景，Playerpos和朝向赋值失败");
+    }
 }

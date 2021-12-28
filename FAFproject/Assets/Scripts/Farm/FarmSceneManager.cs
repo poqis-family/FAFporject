@@ -61,7 +61,7 @@ public  class FarmSceneManager : MonoBehaviour
             FarmDataManager._Instance.dataManager.p_ScenesJump.Dict.GetEnumerator();
         while (itor.MoveNext())
         {
-            if (itor.Current.Value.fromScene == (int) FarmSceneManager._Instance.lastScene &&
+            if ((itor.Current.Value.fromScene == (int) FarmSceneManager._Instance.lastScene||itor.Current.Value.fromScene == -1) &&
                 itor.Current.Value.targetScene == (int) FarmSceneManager._Instance.nowScene)
             {
                 Vector3 vector3 = new Vector3(itor.Current.Value.playerPos[0], itor.Current.Value.playerPos[1], itor.Current.Value.playerPos[2]);

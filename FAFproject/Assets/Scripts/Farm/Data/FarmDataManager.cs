@@ -198,8 +198,8 @@ public class FarmDataManager
             }
             plot.Value.IsWatered = false;//清空浇水状态
         }
-        TileMapController._Instance.RefreshTilemap();
         ReplenishPlayerHPAndVitality();
+        FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Home);
         SaveData();
     }
 

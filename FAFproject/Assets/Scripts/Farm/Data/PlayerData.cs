@@ -7,8 +7,8 @@ public class PlayerData
     public int MoveSpeed=10;
     public int NormalMoveSpeed=10;//后续转表格
     public int TiredMoveSpeed=3;//后续转表格
+    
     private int _maxVitality=180;
-
     public int maxVitality
     {
         get { return _maxVitality;}
@@ -18,9 +18,7 @@ public class PlayerData
             nowVitality = _maxVitality;
         }
     }
-
     private int _nowVitality=180;
-
     public int nowVitality
     {
         get
@@ -42,9 +40,8 @@ public class PlayerData
             VitalityBarController._Instance.RefreshVitalityBar();
         }
     }
-
+    
     private int _maxHP=200;
-
     public int maxHP
     {
         get
@@ -59,7 +56,6 @@ public class PlayerData
     
     }
     private int _nowHP=200;
-    
     public int nowHP
     {
         get

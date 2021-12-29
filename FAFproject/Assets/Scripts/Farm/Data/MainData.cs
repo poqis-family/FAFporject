@@ -13,4 +13,5 @@ public class MainData
     public  int age;
     public  BackpackItemSubData[,] itemListArr = new BackpackItemSubData[3,12];
     public  Dictionary<SceneEnum.Scenes,Dictionary<Vector3Int, PlotData>> ScenePlotDic=new Dictionary<SceneEnum.Scenes, Dictionary<Vector3Int, PlotData>>();
+    public  Dictionary<int, AnimalData> AnimalDataDic = new Dictionary<int, AnimalData>();
 }

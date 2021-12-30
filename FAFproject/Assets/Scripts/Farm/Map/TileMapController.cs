@@ -21,6 +21,8 @@ public class TileMapController : MonoBehaviour
     private Tilemap waterTM;
     private GameObject cropsLayer;
     private Tilemap cropsTM;
+    private bool inBuildingMode;
+    
     public static TileMapController _Instance;
 
     // public TileBase ruleTile= tmpObj as TileBase;
@@ -140,6 +142,9 @@ public class TileMapController : MonoBehaviour
         return;
     }
 
+    /// <summary>
+    /// 刷新地图（后续这里要加房屋和动物和树们）
+    /// </summary>
     public void RefreshTilemap()
     {
         if (FarmDataManager._Instance.mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,out Dictionary<Vector3Int, PlotData> plotData))
@@ -235,5 +240,14 @@ public class TileMapController : MonoBehaviour
         {
             cropObject.GetComponent<BoxCollider2D>().enabled = true;
         }
+    }
+
+    public void setBuilding(Vector3 pos, int buildingID)
+    {
+        // creatBuildingObject()
+        // changeBuildingSprite()
+        // changeBuildingPos()
+        // setBuildingCollider() 
+        // addBuildingData()
     }
 }

@@ -16,7 +16,8 @@ public class FarmDataManager
         _Instance = this;
         dataManager.LoadAll();
     }
-    
+
+    #region Item相关
     /// <summary>
     /// 往ItemListArr中添加一个物品，成功返TRUE，失败返false
     /// </summary>
@@ -84,7 +85,9 @@ public class FarmDataManager
         BackpackData.RefreshItemID();
         BackpackController._Instance.RefreshItemUI();
     }
-
+    #endregion
+    
+    #region 种地相关
     /// <summary>
     /// 添加地块的浇水信息
     /// </summary>
@@ -147,6 +150,88 @@ public class FarmDataManager
             
         }
     }
+    public void DeleteCropData(Vector3Int pos)
+    {
+        if (TryGetNowPlotDataDic().TryGetValue(pos, out PlotData plot))
+        {
+            plot.cropID = 0;
+            plot.CropInstanceID = 0;
+            plot.cropDays = 0;
+        }
+    }
+    public Dictionary<Vector3Int, PlotData>TryGetNowPlotDataDic()
+    {
+        if (mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,
+            out Dictionary<Vector3Int, PlotData> plotDataDic))
+        {
+            return plotDataDic;
+        }
+        else
+        {
+            plotDataDic = new Dictionary<Vector3Int, PlotData>();
+            mainData.ScenePlotDic.Add(FarmSceneManager._Instance.nowScene,plotDataDic);
+            return plotDataDic;
+        }
+    }
+    #endregion
+
+    #region 玩家相关-体力HP
+    public void ReplenishPlayerHPAndVitality()
+    {
+        playerData.nowVitality = playerData.maxVitality;
+        playerData.nowHP = playerData.maxHP;
+    }
+
+    public bool VitalityConsume(int minCost,int maxCost)
+    {
+        if (playerData.nowVitality > 0)
+        {
+            int vitalityCost = Random.Range(minCost, maxCost + 1);
+            playerData.nowVitality -= vitalityCost;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void VitalittRegain(int minRegain,int maxRegain)
+    {
+        int vitalityRegain = Random.Range(minRegain, maxRegain + 1);
+        if (playerData.nowVitality+vitalityRegain<=playerData.maxVitality)
+        {
+            playerData.nowVitality += vitalityRegain;
+        }
+        else
+        {
+            playerData.nowVitality = playerData.maxVitality;
+        }
+    }
+    #endregion
+    
+    public void DayPass()
+    {
+        int cropstage;
+        mainData.days += 1;
+        Debug.Log(mainData.days);
+        foreach (var plot in TryGetNowPlotDataDic())
+        {
+            if (plot.Value.IsWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
+            {
+                if ((bool) plot.Value.CheckCropMature() == false)//种的东西的阶段非成熟阶段
+                {
+                    plot.Value.cropDays += 1;
+                }
+            }
+            plot.Value.IsWatered = false;//清空浇水状态
+        }
+        ReplenishPlayerHPAndVitality();
+        FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Home);
+        SaveData();
+    }
+    
+    #region 存读档
     public void SaveData()
     {
         // 定义存档路径
@@ -181,83 +266,5 @@ public class FarmDataManager
         }
 
     }
-
-    public void DayPass()
-    {
-        int cropstage;
-        mainData.days += 1;
-        Debug.Log(mainData.days);
-        foreach (var plot in TryGetNowPlotDataDic())
-        {
-            if (plot.Value.IsWatered && plot.Value.cropID != 0)//如果浇过水且种了东西
-            {
-                if ((bool) plot.Value.CheckCropMature() == false)//种的东西的阶段非成熟阶段
-                {
-                    plot.Value.cropDays += 1;
-                }
-            }
-            plot.Value.IsWatered = false;//清空浇水状态
-        }
-        ReplenishPlayerHPAndVitality();
-        FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Home);
-        SaveData();
-    }
-
-    public void ReplenishPlayerHPAndVitality()
-    {
-        playerData.nowVitality = playerData.maxVitality;
-        playerData.nowHP = playerData.maxHP;
-    }
-
-    public bool VitalityConsume(int minCost,int maxCost)
-    {
-        if (playerData.nowVitality > 0)
-        {
-            int vitalityCost = Random.Range(minCost, maxCost + 1);
-            playerData.nowVitality -= vitalityCost;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void VitalittRegain(int minRegain,int maxRegain)
-    {
-        int vitalityRegain = Random.Range(minRegain, maxRegain + 1);
-        if (playerData.nowVitality+vitalityRegain<=playerData.maxVitality)
-        {
-            playerData.nowVitality += vitalityRegain;
-        }
-        else
-        {
-            playerData.nowVitality = playerData.maxVitality;
-        }
-    }
-
-    public void DeleteCropData(Vector3Int pos)
-    {
-        if (TryGetNowPlotDataDic().TryGetValue(pos, out PlotData plot))
-        {
-            plot.cropID = 0;
-            plot.CropInstanceID = 0;
-            plot.cropDays = 0;
-        }
-    }
-
-    public Dictionary<Vector3Int, PlotData>TryGetNowPlotDataDic()
-    {
-        if (mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,
-            out Dictionary<Vector3Int, PlotData> plotDataDic))
-        {
-            return plotDataDic;
-        }
-        else
-        {
-            plotDataDic = new Dictionary<Vector3Int, PlotData>();
-            mainData.ScenePlotDic.Add(FarmSceneManager._Instance.nowScene,plotDataDic);
-            return plotDataDic;
-        }
-    }
+    #endregion
 }

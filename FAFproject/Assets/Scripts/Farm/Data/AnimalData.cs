@@ -5,6 +5,7 @@ using UnityEngine;
 public class AnimalData
 {
     public int UID;
+    public int instanceID;
     public AnimalEnum.animalType animalType;
     public int animalAge_days;
     public bool isGrownUp;

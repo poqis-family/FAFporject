@@ -48,8 +48,6 @@ public class Player : MonoBehaviour
                 FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Farm);
             }
         }
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -67,7 +65,6 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         _rigidbody2D.velocity = direction.normalized * FarmDataManager._Instance.playerData.MoveSpeed;
-        
     }
     private void GetInput()
     {
@@ -94,7 +91,6 @@ public class Player : MonoBehaviour
             direction += Vector2.up;
             animator.SetInteger("DirectionEnum", (int)PlayerAnimEnum.PlayerDirection.Up);
         }
-        
         if (Input.GetKey(KeyCode.S))
         {
             direction += Vector2.down;

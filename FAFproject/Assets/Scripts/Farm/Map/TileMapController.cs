@@ -21,7 +21,7 @@ public class TileMapController : MonoBehaviour
     private Tilemap waterTM;
     private GameObject cropsLayer;
     private Tilemap cropsTM;
-    private bool inBuildingMode;
+    public bool inBuildMode;
     
     public static TileMapController _Instance;
 
@@ -242,6 +242,13 @@ public class TileMapController : MonoBehaviour
         }
     }
 
+    #region 建筑相关
+
+    public void buildCheck(Vector3 pos,int buildingID)
+    {
+        
+    }
+
     public void setBuilding(Vector3 pos, int buildingID)
     {
         // creatBuildingObject()
@@ -250,4 +257,6 @@ public class TileMapController : MonoBehaviour
         // setBuildingCollider() 
         // addBuildingData()
     }
+    #endregion
+
 }

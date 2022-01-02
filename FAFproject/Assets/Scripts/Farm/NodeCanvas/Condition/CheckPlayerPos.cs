@@ -24,7 +24,7 @@ namespace NodeCanvas.Tasks.Conditions
         protected override bool OnCheck()
         {
             dis = (agent.gameObject.transform.position - Player._Instance.transform.position).magnitude;
-            Debug.Log(dis);
+//            Debug.Log(dis);
             return OperationTools.Compare((float)dis, (float)distance.value, checkType,differenceThreshold);
         }
     }

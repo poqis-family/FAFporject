@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using WJExcelDataClass;
+using Tile = UnityEngine.WSA.Tile;
 
 public class Player : MonoBehaviour
 {
@@ -68,6 +69,26 @@ public class Player : MonoBehaviour
     }
     private void GetInput()
     {
+        var test = GameObject.Find("TestSprite");
+        Debug.Log("test.transform.position"+test.transform.position);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(test.transform.position);
+        Debug.Log("screenPos"+screenPos);
+        Vector3 mousePos = Input.mousePosition;
+        Debug.Log("mousePos"+mousePos);
+        mousePos.z = screenPos.z;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        Debug.Log("worldPos"+worldPos);
+        // Vector3 tmp=cam.GetComponent<Camera>().WorldToScreenPoint(Input.mousePosition);
+
+        test.transform.position = worldPos;
+            
+        if (TileMapController._Instance.inBuildMode)
+        {
+//            TileMapController._Instance.
+            
+        }
+
+
         if (Input.GetMouseButtonDown(0))
         {
             //判断是否是点击事件
@@ -75,8 +96,6 @@ public class Player : MonoBehaviour
             Debug.DrawRay(ray.origin,ray.direction*999999);
 
             ReapCorps(ray);
-
-
         }
         if (Input.GetKeyDown(KeyCode.F))//后续所有道具交互类都放在这里了
         {

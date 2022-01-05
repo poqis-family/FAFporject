@@ -19,6 +19,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 	public WJExcelDataClass.ScenesJump p_ScenesJump;
 	public WJExcelDataClass.Maps1 p_Maps1;
 	public WJExcelDataClass.Dialog1 p_Dialog1;
+	public WJExcelDataClass.Building p_Building;
 	public WJExcelDataClass.Characters p_Characters;
 	public WJExcelDataClass.Props p_Props;
 	public WJExcelDataClass.Crops p_Crops;
@@ -71,6 +72,14 @@ public class DataManager //: SingletonTemplate<DataManager>
 		return t;
 	}
 
+	public BuildingItem GetBuildingItemByID(Int32 id)
+	{
+		BuildingItem t = null;
+		p_Building.Dict.TryGetValue(id, out t);
+		if (t == null) Debug.LogWarning("can't find the id " + id + " in Building");
+		return t;
+	}
+
 	public CharactersItem GetCharactersItemByID(Int32 id)
 	{
 		CharactersItem t = null;
@@ -103,6 +112,7 @@ public class DataManager //: SingletonTemplate<DataManager>
 		p_ScenesJump = Load("ScenesJump") as WJExcelDataClass.ScenesJump;
 		p_Maps1 = Load("Maps1") as WJExcelDataClass.Maps1;
 		p_Dialog1 = Load("Dialog1") as WJExcelDataClass.Dialog1;
+		p_Building = Load("Building") as WJExcelDataClass.Building;
 		p_Characters = Load("Characters") as WJExcelDataClass.Characters;
 		p_Props = Load("Props") as WJExcelDataClass.Props;
 		p_Crops = Load("Crops") as WJExcelDataClass.Crops;

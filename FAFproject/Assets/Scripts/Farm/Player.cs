@@ -5,11 +5,14 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using WJExcelDataClass;
 using Tile = UnityEngine.WSA.Tile;
 
 public class Player : MonoBehaviour
 {
+    private List<GameObject> objects=new List<GameObject>();
+    
     public Vector2 direction;
     private Rigidbody2D _rigidbody2D;
     public Animator animator;
@@ -69,21 +72,44 @@ public class Player : MonoBehaviour
     }
     private void GetInput()
     {
-        var test = GameObject.Find("TestSprite");
-        Debug.Log("test.transform.position"+test.transform.position);
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(test.transform.position);
-        Debug.Log("screenPos"+screenPos);
-        Vector3 mousePos = Input.mousePosition;
-        Debug.Log("mousePos"+mousePos);
-        mousePos.z = screenPos.z;
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        Debug.Log("worldPos"+worldPos);
-        // Vector3 tmp=cam.GetComponent<Camera>().WorldToScreenPoint(Input.mousePosition);
+        GameObject buildSprite = GameObject.Find("BuildCell");
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(buildSprite.transform.position);//获取Screen坐标系Z的距离
+        Vector3 mousePos =Input.mousePosition;
+        mousePos.z = screenPos.z;//修改鼠标的屏幕坐标的Z的数值
+        Vector3 mouseWorldPos = Vector3Int.FloorToInt(Camera.main.ScreenToWorldPoint(mousePos));//获取鼠标的世界坐标
+        
+        GameObject buildCell = (GameObject)Resources.Load("Prefabs/Objects/BuildCell");
+        var temp = FarmDataManager._Instance.dataManager.GetBuildingItemByID(2);
 
-        test.transform.position = worldPos;
-            
-        if (TileMapController._Instance.inBuildMode)
+        if (FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell") != null)
         {
+            foreach (var VARIABLE in FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell"))
+            {
+                Destroy(VARIABLE);
+            }
+        }
+
+        for (int x = 0; x < temp.size[0]; x++) 
+        {
+           for (int y = 0; y < temp.size[1]; y++)
+           {
+               buildCell = Instantiate(buildCell);
+               buildCell.transform.parent = GameObject.Find("BuildingSub").transform;
+               Vector3 cellpos;
+               cellpos.x = mouseWorldPos.x + x + 0.5f;
+               cellpos.y = mouseWorldPos.y + y + 0.5f;
+               cellpos.z = mouseWorldPos.z;
+               buildCell.transform.name = "BuildCell";
+               buildCell.transform.position = cellpos;
+           }
+        }
+
+
+       //FarmDataManager._Instance.dataManager.
+        
+        
+        if (TileMapController._Instance.inBuildMode)
+        {   
 //            TileMapController._Instance.
             
         }

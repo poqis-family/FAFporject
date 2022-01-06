@@ -21,25 +21,89 @@ public class TileMapController : MonoBehaviour
     private Tilemap waterTM;
     private GameObject cropsLayer;
     private Tilemap cropsTM;
-    public bool inBuildMode;
+    private GameObject BuildableCheckLayer;
+    private Tilemap BuildableTM;
+    public bool inBuildMode=true;
+
+    private Sprite buildableSprite;
+    private Sprite unbuildableSprite;
+    
     
     public static TileMapController _Instance;
 
     // public TileBase ruleTile= tmpObj as TileBase;
    //public Object Obj;
 
+   private void Update()
+   {
+       if (inBuildMode)
+       {   
+           //删除上一帧的建筑区域
+           if (FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell") != null)
+           {
+               foreach (var VARIABLE in FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell"))
+               {
+                   Destroy(VARIABLE);
+               }
+           }
+           
+           GameObject buildSprite = GameObject.Find("Map");
+           Vector3 screenPos = Camera.main.WorldToScreenPoint(buildSprite.transform.position);//获取Screen坐标系Z的距离
+           Vector3 mousePos =Input.mousePosition;
+           mousePos.z = screenPos.z;//修改鼠标的屏幕坐标的Z的数值
+           Vector3 mouseWorldPos = Vector3Int.FloorToInt(Camera.main.ScreenToWorldPoint(mousePos));//获取鼠标的世界坐标
+            
+           GameObject buildCell = (GameObject)Resources.Load("Prefabs/Objects/BuildCell");
+           var temp = FarmDataManager._Instance.dataManager.GetBuildingItemByID(2);
+           Debug.LogError("================================");
+           //绘制建筑区域大小
+           for (int x = 0; x < temp.size[0]; x++) 
+           {
+               for (int y = 0; y < temp.size[1]; y++)
+               {
+                   buildCell = Instantiate(buildCell);
+                   buildCell.transform.parent = GameObject.Find("BuildingSub").transform;
+
+                   Vector3 cellpos;
+                   cellpos.x = mouseWorldPos.x + x + 0.5f;
+                   cellpos.y = mouseWorldPos.y - y + 0.5f;
+                   cellpos.z = mouseWorldPos.z;
+
+                   if (BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos))==null)
+                   {
+                       buildCell.GetComponent<SpriteRenderer>().sprite = unbuildableSprite;
+                   }
+                   else if(BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos)).name=="buildable")    
+                   {
+                       buildCell.GetComponent<SpriteRenderer>().sprite = buildableSprite;
+                   }
+                   
+                   buildCell.transform.position = cellpos;
+                   buildCell.transform.name = "BuildCell";
+               }
+           }
+       }
+   }
+
    private void Awake()
    {
+       buildableSprite = Resources.Load("Map/Buildings/Buildable", typeof(Sprite)) as Sprite; //刷新图片
+       unbuildableSprite = Resources.Load("Map/Buildings/Unbuildable", typeof(Sprite)) as Sprite; //刷新图片      
+       inBuildMode = true;
+       
        _Instance = this;
        
        arableCheckLayer= FindChild.FindTheChild(GameObject.Find("Map"), "ArableCheckLayer");
        plowLayer= FindChild.FindTheChild(GameObject.Find("Map"), "PlowLayer");
        wateringLayer= FindChild.FindTheChild(GameObject.Find("Map"), "WateringLayer");
        cropsLayer= FindChild.FindTheChild(GameObject.Find("Map"), "CropsLayer");
+       BuildableCheckLayer= FindChild.FindTheChild(GameObject.Find("Map"), "BuildableCheckLayer");
+
        arableTM = arableCheckLayer.GetComponent<Tilemap>();
        plowTM = plowLayer.GetComponent<Tilemap>();
        waterTM = wateringLayer.GetComponent<Tilemap>();
        cropsTM = cropsLayer.GetComponent<Tilemap>();
+       BuildableTM = BuildableCheckLayer.GetComponent<Tilemap>();
    }
    
     public bool CheckArable(Vector3Int pos)

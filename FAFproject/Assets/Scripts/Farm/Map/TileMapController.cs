@@ -1,15 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
-using DG.Tweening.Core.Easing;
 using UnityEditor;
-using UnityEditor.SceneManagement;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using WJExcelDataClass;
-using Random = UnityEngine.Random;
 
 public class TileMapController : MonoBehaviour
 {
@@ -23,11 +17,12 @@ public class TileMapController : MonoBehaviour
     private Tilemap cropsTM;
     private GameObject BuildableCheckLayer;
     private Tilemap BuildableTM;
-    public bool inBuildMode=true;
+    public bool inBuildMode;
 
     private Sprite buildableSprite;
     private Sprite unbuildableSprite;
     
+    bool noBuildBlock;
     
     public static TileMapController _Instance;
 
@@ -55,8 +50,8 @@ public class TileMapController : MonoBehaviour
             
            GameObject buildCell = (GameObject)Resources.Load("Prefabs/Objects/BuildCell");
            var temp = FarmDataManager._Instance.dataManager.GetBuildingItemByID(2);
-           Debug.LogError("================================");
            //绘制建筑区域大小
+           noBuildBlock = true;
            for (int x = 0; x < temp.size[0]; x++) 
            {
                for (int y = 0; y < temp.size[1]; y++)
@@ -69,9 +64,12 @@ public class TileMapController : MonoBehaviour
                    cellpos.y = mouseWorldPos.y - y + 0.5f;
                    cellpos.z = mouseWorldPos.z;
 
-                   if (BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos))==null)
+                   FarmDataManager._Instance.TryGetNowPlotDataDic()
+                       .TryGetValue(Vector3Int.FloorToInt(cellpos), out PlotData plotData);
+                   if (BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos))==null || (plotData!=null && plotData.cropID!=0)) //不可建造  或  plot上有数据且有植物
                    {
                        buildCell.GetComponent<SpriteRenderer>().sprite = unbuildableSprite;
+                       noBuildBlock = false;
                    }
                    else if(BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos)).name=="buildable")    
                    {

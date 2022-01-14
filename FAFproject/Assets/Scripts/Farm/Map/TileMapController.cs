@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using WJExcelDataClass;
 
 public class TileMapController : MonoBehaviour
 {
@@ -32,54 +33,8 @@ public class TileMapController : MonoBehaviour
    private void Update()
    {
        if (inBuildMode)
-       {   
-           //删除上一帧的建筑区域
-           if (FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell") != null)
-           {
-               foreach (var VARIABLE in FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell"))
-               {
-                   Destroy(VARIABLE);
-               }
-           }
-           
-           GameObject buildSprite = GameObject.Find("Map");
-           Vector3 screenPos = Camera.main.WorldToScreenPoint(buildSprite.transform.position);//获取Screen坐标系Z的距离
-           Vector3 mousePos =Input.mousePosition;
-           mousePos.z = screenPos.z;//修改鼠标的屏幕坐标的Z的数值
-           Vector3 mouseWorldPos = Vector3Int.FloorToInt(Camera.main.ScreenToWorldPoint(mousePos));//获取鼠标的世界坐标
-            
-           GameObject buildCell = (GameObject)Resources.Load("Prefabs/Objects/BuildCell");
-           var temp = FarmDataManager._Instance.dataManager.GetBuildingItemByID(2);
-           //绘制建筑区域大小
-           noBuildBlock = true;
-           for (int x = 0; x < temp.size[0]; x++) 
-           {
-               for (int y = 0; y < temp.size[1]; y++)
-               {
-                   buildCell = Instantiate(buildCell);
-                   buildCell.transform.parent = GameObject.Find("BuildingSub").transform;
-
-                   Vector3 cellpos;
-                   cellpos.x = mouseWorldPos.x + x + 0.5f;
-                   cellpos.y = mouseWorldPos.y - y + 0.5f;
-                   cellpos.z = mouseWorldPos.z;
-
-                   FarmDataManager._Instance.TryGetNowPlotDataDic()
-                       .TryGetValue(Vector3Int.FloorToInt(cellpos), out PlotData plotData);
-                   if (BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos))==null || (plotData!=null && plotData.cropID!=0)) //不可建造  或  plot上有数据且有植物
-                   {
-                       buildCell.GetComponent<SpriteRenderer>().sprite = unbuildableSprite;
-                       noBuildBlock = false;
-                   }
-                   else if(BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos)).name=="buildable")    
-                   {
-                       buildCell.GetComponent<SpriteRenderer>().sprite = buildableSprite;
-                   }
-                   
-                   buildCell.transform.position = cellpos;
-                   buildCell.transform.name = "BuildCell";
-               }
-           }
+       {
+           buildCheck(2);
        }
    }
 
@@ -306,19 +261,91 @@ public class TileMapController : MonoBehaviour
 
     #region 建筑相关
 
-    public void buildCheck(Vector3 pos,int buildingID)
+    public void buildCheck(int buildingID)
     {
-        
+        //删除上一帧的建筑区域
+        if (FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell") != null)
+        {
+            foreach (var VARIABLE in FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell"))
+            {
+                Destroy(VARIABLE);
+            }
+        }
+
+        GameObject buildSprite = GameObject.Find("Map");
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(buildSprite.transform.position); //获取Screen坐标系Z的距离
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = screenPos.z; //修改鼠标的屏幕坐标的Z的数值
+        Vector3 mouseWorldPos = Vector3Int.FloorToInt(Camera.main.ScreenToWorldPoint(mousePos)); //获取鼠标的世界坐标
+
+        GameObject buildCell = (GameObject) Resources.Load("Prefabs/Objects/BuildCell");
+        var temp = FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID);
+        //绘制建筑区域大小
+        noBuildBlock = true;
+        for (int x = 0; x < temp.size[0]; x++)
+        {
+            for (int y = 0; y < temp.size[1]; y++)
+            {
+                buildCell = Instantiate(buildCell);
+                buildCell.transform.parent = GameObject.Find("BuildingSub").transform;
+
+                Vector3 cellpos;
+                cellpos.x = mouseWorldPos.x + x + 0.5f;
+                cellpos.y = mouseWorldPos.y - y + 0.5f;
+                cellpos.z = mouseWorldPos.z;
+
+                FarmDataManager._Instance.TryGetNowPlotDataDic()
+                    .TryGetValue(Vector3Int.FloorToInt(cellpos), out PlotData plotData);
+                if (BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos)) == null ||
+                    (plotData != null && plotData.cropID != 0)) //不可建造  或  plot上有数据且有植物
+                {
+                    buildCell.GetComponent<SpriteRenderer>().sprite = unbuildableSprite;
+                    noBuildBlock = false;
+                }
+                else if (BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos)).name == "buildable")
+                {
+                    buildCell.GetComponent<SpriteRenderer>().sprite = buildableSprite;
+                }
+
+                buildCell.transform.position = cellpos;
+                buildCell.transform.name = "BuildCell";
+            }
+        }
     }
 
     public void setBuilding(Vector3 pos, int buildingID)
     {
-        // creatBuildingObject()
-        // changeBuildingSprite()
+        // addBuildingData()
+       GameObject gameObject= creatBuildingObject();
+        // changeBuildingSprite(gameObject)
         // changeBuildingPos()
         // setBuildingCollider() 
-        // addBuildingData()
+
     }
+    
+    private GameObject creatBuildingObject()
+    {
+        GameObject cropObject = (GameObject)Resources.Load("Prefabs/Objects/BuildingObject");
+        cropObject=Instantiate(cropObject);
+        cropObject.transform.parent=GameObject.Find("BuildingSub").transform;
+        return cropObject;
+    }
+    public void changeBuildingSprite(GameObject BuildingObject,int buildingID)
+    {
+        BuildingItem buildingItem = FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID);
+        string buildingName=buildingItem.
+        Sprite sprites = Resources.Load("StardewValley/TileSheets21/Crops./")
+        Sprite sprite=null;
+        foreach (var VARIABLE in sprites)
+        {
+            if (VARIABLE.name==tileName)
+            {
+                sprite = VARIABLE;
+            }
+        }
+        BuildingObject.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+    
     #endregion
 
 }

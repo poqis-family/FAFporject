@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BuildingData
 {
-    public int UID;
     public int instanceID;
     public BuildingEnum.buildingType buildingType;
     public SceneEnum.Scenes buildingScene;

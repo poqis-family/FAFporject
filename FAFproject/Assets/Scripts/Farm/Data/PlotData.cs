@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlotData
 {
     public  int SceneEnum; //地块所在的场景
+    public bool hasBuilding;
     public bool IsPlowed;//是否锄过地
     public bool IsWatered;//是否浇过水
     private int _cropID;//所种植的作物ID

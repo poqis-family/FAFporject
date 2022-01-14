@@ -175,6 +175,72 @@ public class FarmDataManager
     }
     #endregion
 
+    #region 建筑相关
+    public Dictionary<int, BuildingData>TryGetNowBuildingDataDic()
+    {
+        if (mainData.SceneBuildingDic.TryGetValue(FarmSceneManager._Instance.nowScene,
+            out Dictionary<int, BuildingData> buildingDataDic))
+        {
+            return buildingDataDic;
+        }
+        else
+        {
+            buildingDataDic = new Dictionary<int, BuildingData>();
+            mainData.SceneBuildingDic.Add(FarmSceneManager._Instance.nowScene,buildingDataDic);
+            return buildingDataDic;
+        }
+    }
+
+    public void addBuildingData(Vector3Int pos, int BuildingID, int instanceID)
+    {
+        int randomUID;
+        do
+        {
+            randomUID = CreatBuildingUID();
+        } while (randomUID == 0);
+        BuildingData BuildingDataTemp=new BuildingData();
+        BuildingDataTemp.nowLevel = 0;
+        BuildingDataTemp.pos = pos; 
+        BuildingDataTemp.buildingType = (BuildingEnum.buildingType) dataManager.GetBuildingItemByID(BuildingID).buildingTypeID;
+        
+        
+        
+        
+        
+        
+        
+        
+        TryGetNowBuildingDataDic().Add(randomUID,BuildingDataTemp);
+        
+
+        Random.BuildingDataTemp.UID =
+            plotDataTemp.cropID = cropID;
+        plotDataTemp.cropDays = 0;
+        plotDataTemp.CropInstanceID = instanceID;
+        plotDataTemp.HasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
+        TryGetNowBuildingDataDic().Add(pos, BuildingDataTemp);
+
+    }
+
+    private int CreatBuildingUID()
+    {
+        int RandomUID = Random.Range(10000, 99999);
+        foreach (var tempSceneBuildingDic in FarmDataManager._Instance.mainData.SceneBuildingDic)
+        {
+            foreach (var VARIABLE in tempSceneBuildingDic.Value)
+            {
+                if (VARIABLE.Key == RandomUID)
+                {
+                    return 0;
+                }
+            }
+        }
+
+        return RandomUID;
+    }
+
+    #endregion
+    
     #region 玩家相关-体力HP
     public void ReplenishPlayerHPAndVitality()
     {

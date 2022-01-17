@@ -191,7 +191,7 @@ public class FarmDataManager
         }
     }
 
-    public void addBuildingData(Vector3Int pos, int BuildingID, int instanceID)
+    public BuildingData addBuildingData(Vector3Int pos, int buildingID, int instanceID)
     {
         int randomUID;
         do
@@ -201,25 +201,38 @@ public class FarmDataManager
         BuildingData BuildingDataTemp=new BuildingData();
         BuildingDataTemp.nowLevel = 0;
         BuildingDataTemp.pos = pos; 
-        BuildingDataTemp.buildingType = (BuildingEnum.buildingType) dataManager.GetBuildingItemByID(BuildingID).buildingTypeID;
-        
-        
-        
-        
-        
-        
-        
+        BuildingDataTemp.buildingType = (BuildingEnum.buildingType) dataManager.GetBuildingItemByID(buildingID).buildingTypeID;
+        BuildingDataTemp.buildingScene = FarmSceneManager._Instance.nowScene;
+        BuildingDataTemp.isUpgrading=true;
+        BuildingDataTemp.upgradeDays = 0;
         
         TryGetNowBuildingDataDic().Add(randomUID,BuildingDataTemp);
         
+        for (int x = 0; x < dataManager.GetBuildingItemByID(buildingID).size[0]; x++)
+        {
+            for (int y = 0; y < dataManager.GetBuildingItemByID(buildingID).size[1]; y++)
+            {
+                
+                Vector3Int nowCellPos=new Vector3Int();
+                nowCellPos.x = pos.x + x;
+                nowCellPos.y = pos.y - y;
+                nowCellPos.z = pos.z;
 
-        Random.BuildingDataTemp.UID =
-            plotDataTemp.cropID = cropID;
-        plotDataTemp.cropDays = 0;
-        plotDataTemp.CropInstanceID = instanceID;
-        plotDataTemp.HasCollider = FarmDataManager._Instance.dataManager.GetCropsItemByID(cropID).hasCollider;
-        TryGetNowBuildingDataDic().Add(pos, BuildingDataTemp);
+                if (TryGetNowPlotDataDic().TryGetValue(nowCellPos, out PlotData plotData))
+                {
+                    plotData = new PlotData();
+                    plotData.hasBuilding = true;
+                }
+                else
+                {
+                    PlotData temp = new PlotData();
+                    temp.hasBuilding = true;
+                    TryGetNowPlotDataDic().Add(nowCellPos,temp);
+                }
+            }
+        }
 
+        return BuildingDataTemp;
     }
 
     private int CreatBuildingUID()

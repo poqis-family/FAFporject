@@ -8,6 +8,8 @@ public class BuildingData
     public BuildingEnum.buildingType buildingType;
     public SceneEnum.Scenes buildingScene;
     public bool isUpgrading;
+    public int upgradeDays;
     public Vector3Int pos;
     public int nowLevel;
+
 }

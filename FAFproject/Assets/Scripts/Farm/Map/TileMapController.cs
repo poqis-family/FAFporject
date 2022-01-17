@@ -34,7 +34,17 @@ public class TileMapController : MonoBehaviour
    {
        if (inBuildMode)
        {
-           buildCheck(2);
+           GameObject buildSprite = GameObject.Find("Map");
+           Vector3 screenPos = Camera.main.WorldToScreenPoint(buildSprite.transform.position); //获取Screen坐标系Z的距离
+           Vector3 mousePos = Input.mousePosition;
+           mousePos.z = screenPos.z; //修改鼠标的屏幕坐标的Z的数值
+           Vector3 mouseWorldPos = Vector3Int.FloorToInt(Camera.main.ScreenToWorldPoint(mousePos)); //获取鼠标的世界坐标
+           
+           buildCheck(2,mouseWorldPos);
+           if (Input.GetMouseButtonDown(0))
+           {
+               setBuilding(mouseWorldPos,2);
+           }
        }
    }
 
@@ -261,7 +271,7 @@ public class TileMapController : MonoBehaviour
 
     #region 建筑相关
 
-    public void buildCheck(int buildingID)
+    public void buildCheck(int buildingID,Vector3 mouseWorldPos)
     {
         //删除上一帧的建筑区域
         if (FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell") != null)
@@ -272,19 +282,13 @@ public class TileMapController : MonoBehaviour
             }
         }
 
-        GameObject buildSprite = GameObject.Find("Map");
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(buildSprite.transform.position); //获取Screen坐标系Z的距离
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = screenPos.z; //修改鼠标的屏幕坐标的Z的数值
-        Vector3 mouseWorldPos = Vector3Int.FloorToInt(Camera.main.ScreenToWorldPoint(mousePos)); //获取鼠标的世界坐标
-
         GameObject buildCell = (GameObject) Resources.Load("Prefabs/Objects/BuildCell");
-        var temp = FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID);
+        var buildingItem = FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID);
         //绘制建筑区域大小
         noBuildBlock = true;
-        for (int x = 0; x < temp.size[0]; x++)
+        for (int x = 0; x < buildingItem.size[0]; x++)
         {
-            for (int y = 0; y < temp.size[1]; y++)
+            for (int y = 0; y < buildingItem.size[1]; y++)
             {
                 buildCell = Instantiate(buildCell);
                 buildCell.transform.parent = GameObject.Find("BuildingSub").transform;
@@ -315,12 +319,12 @@ public class TileMapController : MonoBehaviour
 
     public void setBuilding(Vector3 pos, int buildingID)
     {
-        // addBuildingData()
-       GameObject gameObject= creatBuildingObject();
-        // changeBuildingSprite(gameObject)
-        // changeBuildingPos()
+        GameObject gameObject = creatBuildingObject();
+        BuildingData buildingDataTemp= FarmDataManager._Instance.addBuildingData(Vector3Int.FloorToInt(pos),buildingID,gameObject.GetInstanceID());
+        changeBuildingSprite(gameObject, buildingDataTemp);
+         changeBuildingPosTo(gameObject,Vector3Int.FloorToInt(pos));
         // setBuildingCollider() 
-
+        inBuildMode = false;
     }
     
     private GameObject creatBuildingObject()
@@ -330,22 +334,21 @@ public class TileMapController : MonoBehaviour
         cropObject.transform.parent=GameObject.Find("BuildingSub").transform;
         return cropObject;
     }
-    public void changeBuildingSprite(GameObject BuildingObject,int buildingID)
+    public void changeBuildingSprite(GameObject targetBuildingObject,BuildingData buildingDataTemp)
     {
-        BuildingItem buildingItem = FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID);
-        string buildingName=buildingItem.
-        Sprite sprites = Resources.Load("StardewValley/TileSheets21/Crops./")
-        Sprite sprite=null;
-        foreach (var VARIABLE in sprites)
-        {
-            if (VARIABLE.name==tileName)
-            {
-                sprite = VARIABLE;
-            }
-        }
-        BuildingObject.GetComponent<SpriteRenderer>().sprite = sprite;
+        BuildingItem buildingItem = FarmDataManager._Instance.dataManager.GetBuildingItemByID((int)buildingDataTemp.buildingType);
+        string SpriteName = buildingItem.SpriteName[buildingDataTemp.nowLevel];
+        Sprite sprites = Resources.Load("Map/Buildings/"+SpriteName,typeof(Sprite))as Sprite;
+        targetBuildingObject.GetComponent<SpriteRenderer>().sprite = sprites;
     }
     
+    private void changeBuildingPosTo(GameObject buildingObject, Vector3Int pos)
+    {
+        Vector3 posVector3 = pos;
+        posVector3.x += 0.5f;
+        posVector3.y += 0.5f;
+        buildingObject.transform.position = posVector3;
+    }
     #endregion
 
 }

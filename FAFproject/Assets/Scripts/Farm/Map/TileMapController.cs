@@ -71,6 +71,14 @@ public class TileMapController : MonoBehaviour
    
     public bool CheckArable(Vector3Int pos)
     {
+
+        FarmDataManager._Instance.TryGetNowPlotDataDic().TryGetValue(pos, out PlotData plotData);
+        if (plotData != null && plotData.isBlocked)
+        {
+            Debug.LogError("plot is blocked");
+            return false;
+        }
+        
         TileBase arableTile = arableTM.GetTile(pos);
         TileBase plowTile = plowTM.GetTile(pos);
         if (ReferenceEquals(arableTile,null))
@@ -108,6 +116,12 @@ public class TileMapController : MonoBehaviour
 
     public bool CheckWaterable(Vector3Int pos)
     {
+        FarmDataManager._Instance.TryGetNowPlotDataDic().TryGetValue(pos, out PlotData plotData);
+        if (plotData != null && plotData.isBlocked)
+        {
+            Debug.LogError("plot is blocked");
+            return false;
+        }
         
         TileBase plowTile = plowTM.GetTile(pos);
         if (ReferenceEquals(plowTile,null))
@@ -133,6 +147,13 @@ public class TileMapController : MonoBehaviour
 
     public bool CheckSownable(Vector3Int pos)
     {
+        FarmDataManager._Instance.TryGetNowPlotDataDic().TryGetValue(pos, out PlotData plotData);
+        if (plotData != null && plotData.isBlocked)
+        {
+            Debug.LogError("plot is blocked");
+            return false;
+        }
+        
         TileBase Plowtile = plowTM.GetTile(pos);
         if (ReferenceEquals(Plowtile,null))//检查是不是没耕地
         {
@@ -274,13 +295,7 @@ public class TileMapController : MonoBehaviour
     public void buildCheck(int buildingID,Vector3 mouseWorldPos)
     {
         //删除上一帧的建筑区域
-        if (FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell") != null)
-        {
-            foreach (var VARIABLE in FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell"))
-            {
-                Destroy(VARIABLE);
-            }
-        }
+        DelBuildCell();
 
         GameObject buildCell = (GameObject) Resources.Load("Prefabs/Objects/BuildCell");
         var buildingItem = FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID);
@@ -320,11 +335,13 @@ public class TileMapController : MonoBehaviour
     public void setBuilding(Vector3 pos, int buildingID)
     {
         GameObject gameObject = creatBuildingObject();
+        pos.y -= FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID).size[1] - 1;//建筑的pos需以左下角为标准点
         BuildingData buildingDataTemp= FarmDataManager._Instance.addBuildingData(Vector3Int.FloorToInt(pos),buildingID,gameObject.GetInstanceID());
         changeBuildingSprite(gameObject, buildingDataTemp);
-         changeBuildingPosTo(gameObject,Vector3Int.FloorToInt(pos));
+        changeBuildingPosTo(gameObject, Vector3Int.FloorToInt(pos), buildingDataTemp);
         // setBuildingCollider() 
         inBuildMode = false;
+        DelBuildCell();
     }
     
     private GameObject creatBuildingObject()
@@ -342,13 +359,24 @@ public class TileMapController : MonoBehaviour
         targetBuildingObject.GetComponent<SpriteRenderer>().sprite = sprites;
     }
     
-    private void changeBuildingPosTo(GameObject buildingObject, Vector3Int pos)
+    private void changeBuildingPosTo(GameObject buildingObject, Vector3Int pos,BuildingData buildingDataTemp)
     {
         Vector3 posVector3 = pos;
-        posVector3.x += 0.5f;
-        posVector3.y += 0.5f;
         buildingObject.transform.position = posVector3;
     }
+
+    private void DelBuildCell()
+    {
+        //删除上一帧的建筑区域
+        if (FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell") != null)
+        {
+            foreach (var VARIABLE in FindChild.FindTheChildren(GameObject.Find("BuildingSub"), "BuildCell"))
+            {
+                Destroy(VARIABLE);
+            }
+        }
+    }
+
     #endregion
 
 }

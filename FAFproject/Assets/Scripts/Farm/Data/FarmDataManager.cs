@@ -205,6 +205,7 @@ public class FarmDataManager
         BuildingDataTemp.buildingScene = FarmSceneManager._Instance.nowScene;
         BuildingDataTemp.isUpgrading=true;
         BuildingDataTemp.upgradeDays = 0;
+        BuildingDataTemp.instanceID = instanceID;
         
         TryGetNowBuildingDataDic().Add(randomUID,BuildingDataTemp);
         
@@ -215,23 +216,24 @@ public class FarmDataManager
                 
                 Vector3Int nowCellPos=new Vector3Int();
                 nowCellPos.x = pos.x + x;
-                nowCellPos.y = pos.y - y;
+                nowCellPos.y = pos.y + y;
                 nowCellPos.z = pos.z;
 
                 if (TryGetNowPlotDataDic().TryGetValue(nowCellPos, out PlotData plotData))
                 {
                     plotData = new PlotData();
-                    plotData.hasBuilding = true;
+                    plotData.isBlocked = true;
                 }
                 else
                 {
                     PlotData temp = new PlotData();
-                    temp.hasBuilding = true;
+                    temp.isBlocked = true;
                     TryGetNowPlotDataDic().Add(nowCellPos,temp);
                 }
             }
         }
 
+        Dictionary<Vector3Int,PlotData> ttt= TryGetNowPlotDataDic();
         return BuildingDataTemp;
     }
 

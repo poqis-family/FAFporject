@@ -205,7 +205,7 @@ public class FarmDataManager
         BuildingDataTemp.buildingScene = FarmSceneManager._Instance.nowScene;
         BuildingDataTemp.isUpgrading=true;
         BuildingDataTemp.upgradeDays = 0;
-        BuildingDataTemp.instanceID = instanceID;
+        BuildingDataTemp.buildingInstanceID = instanceID;
         
         TryGetNowBuildingDataDic().Add(randomUID,BuildingDataTemp);
         

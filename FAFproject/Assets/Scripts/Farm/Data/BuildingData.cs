@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildingData
 {
-    public int instanceID;
+    public int buildingInstanceID;
     public BuildingEnum.buildingType buildingType;
     public SceneEnum.Scenes buildingScene;
     public bool isUpgrading;

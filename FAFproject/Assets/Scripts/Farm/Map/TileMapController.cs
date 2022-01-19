@@ -195,53 +195,82 @@ public class TileMapController : MonoBehaviour
     /// </summary>
     public void RefreshTilemap()
     {
-        if (FarmDataManager._Instance.mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,out Dictionary<Vector3Int, PlotData> plotData))
+
+
+        if (FarmDataManager._Instance.mainData.ScenePlotDic.TryGetValue(FarmSceneManager._Instance.nowScene,
+            out Dictionary<Vector3Int, PlotData> plotData) && plotData.Count != 0)
         {
-            if (plotData.Count==0)
-            {
-                return;
-            }
-        }
-        else return;
+            
+            var plowTileBase = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
+            var waterTileBase = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
 
-        var plowTileBase = Resources.Load("Tiles/Test/grounds/PlowTile", typeof(TileBase));
-        var waterTileBase = Resources.Load("Tiles/Test/grounds/WateringTile", typeof(TileBase));
-
-        foreach (var plot in FarmDataManager._Instance.TryGetNowPlotDataDic())
-        {
-            if (plot.Value.IsPlowed)
+            foreach (var plot in FarmDataManager._Instance.TryGetNowPlotDataDic())
             {
-                plowTM.SetTile(plot.Key, plowTileBase as TileBase);
-            }
-            else
-            {
-                plowTM.SetTile(plot.Key, null);
-            }
-
-            if (plot.Value.IsWatered)
-            {
-                waterTM.SetTile(plot.Key, waterTileBase as TileBase);
-            }
-            else
-            {
-                waterTM.SetTile(plot.Key, null);
-            }
-
-            if (plot.Value.cropID != 0)
-            {
-                GameObject nowCropObject = EditorUtility.InstanceIDToObject(plot.Value.CropInstanceID) as GameObject;
-                if (nowCropObject!=null)//如果已有实例
+                if (plot.Value.IsPlowed)
                 {
-                    changeCropObjectSprite(nowCropObject,plot.Value.CropTileName);
-                    setCropObjectCollider(nowCropObject,plot.Value.cropID);
+                    plowTM.SetTile(plot.Key, plowTileBase as TileBase);
                 }
                 else
                 {
-                    GameObject cropObject= creatCropObject();
-                    changeCropObjectSprite(cropObject,plot.Value.CropTileName);
-                    changeCropObjectPosTo(cropObject,plot.Key);
-                    setCropObjectCollider(cropObject,plot.Value.cropID);
-                    plot.Value.CropInstanceID = cropObject.GetInstanceID();
+                    plowTM.SetTile(plot.Key, null);
+                }
+
+                if (plot.Value.IsWatered)
+                {
+                    waterTM.SetTile(plot.Key, waterTileBase as TileBase);
+                }
+                else
+                {
+                    waterTM.SetTile(plot.Key, null);
+                }
+
+                if (plot.Value.cropID != 0)
+                {
+                    GameObject nowCropObject =
+                        EditorUtility.InstanceIDToObject(plot.Value.CropInstanceID) as GameObject;
+                    if (nowCropObject != null) //如果已有实例
+                    {
+                        changeCropObjectSprite(nowCropObject, plot.Value.CropTileName);
+                        setCropObjectCollider(nowCropObject, plot.Value.cropID);
+                    }
+                    else
+                    {
+                        GameObject cropObject = creatCropObject();
+                        changeCropObjectSprite(cropObject, plot.Value.CropTileName);
+                        changeCropObjectPosTo(cropObject, plot.Key);
+                        setCropObjectCollider(cropObject, plot.Value.cropID);
+                        plot.Value.CropInstanceID = cropObject.GetInstanceID();
+                    }
+                }
+            }
+        }
+
+        
+        if (FarmDataManager._Instance.mainData.SceneBuildingDic.TryGetValue(FarmSceneManager._Instance.nowScene,
+            out Dictionary<int, BuildingData> buildingData) && buildingData.Count != 0)
+        {
+            foreach (var buildingDic in FarmDataManager._Instance.TryGetNowBuildingDataDic())
+            {
+
+                GameObject buildingObject =
+                    EditorUtility.InstanceIDToObject(buildingDic.Value.buildingInstanceID) as GameObject;
+
+                BuildingData buildingDataTemp = buildingDic.Value;
+                if (buildingObject != null) //如果已有实例
+                {
+                    changeBuildingSprite(buildingObject, buildingDataTemp);
+                    setBuildingCollider(buildingObject, buildingDataTemp);
+                    changeBuildingPosTo(buildingObject, Vector3Int.FloorToInt(buildingDataTemp.pos), buildingDataTemp);
+                }
+                else
+                {
+                    buildingObject = creatBuildingObject();
+
+                    GameObject cropObject = creatCropObject();
+                    changeBuildingSprite(buildingObject, buildingDataTemp);
+                    setBuildingCollider(buildingObject, buildingDataTemp);
+                    changeBuildingPosTo(buildingObject, Vector3Int.FloorToInt(buildingDataTemp.pos), buildingDataTemp);
+                    buildingDic.Value.buildingInstanceID = cropObject.GetInstanceID();
                 }
             }
         }
@@ -313,10 +342,11 @@ public class TileMapController : MonoBehaviour
                 cellpos.y = mouseWorldPos.y - y + 0.5f;
                 cellpos.z = mouseWorldPos.z;
 
-                FarmDataManager._Instance.TryGetNowPlotDataDic()
-                    .TryGetValue(Vector3Int.FloorToInt(cellpos), out PlotData plotData);
+                FarmDataManager._Instance.TryGetNowPlotDataDic().TryGetValue(Vector3Int.FloorToInt(cellpos), out PlotData plotData);
+                
                 if (BuildableTM.GetTile(Vector3Int.FloorToInt(cellpos)) == null ||
-                    (plotData != null && plotData.cropID != 0)) //不可建造  或  plot上有数据且有植物
+                    (plotData != null && plotData.cropID != 0) ||
+                    (plotData != null && plotData.isBlocked)) //不可建造  或  plot上有数据且有植物  或  plot上存在阻挡
                 {
                     buildCell.GetComponent<SpriteRenderer>().sprite = unbuildableSprite;
                     noBuildBlock = false;
@@ -334,12 +364,14 @@ public class TileMapController : MonoBehaviour
 
     public void setBuilding(Vector3 pos, int buildingID)
     {
-        GameObject gameObject = creatBuildingObject();
+        GameObject buildingObject = creatBuildingObject();
+        
         pos.y -= FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID).size[1] - 1;//建筑的pos需以左下角为标准点
-        BuildingData buildingDataTemp= FarmDataManager._Instance.addBuildingData(Vector3Int.FloorToInt(pos),buildingID,gameObject.GetInstanceID());
-        changeBuildingSprite(gameObject, buildingDataTemp);
-        changeBuildingPosTo(gameObject, Vector3Int.FloorToInt(pos), buildingDataTemp);
-        // setBuildingCollider() 
+        BuildingData buildingDataTemp= FarmDataManager._Instance.addBuildingData(Vector3Int.FloorToInt(pos),buildingID,buildingObject.GetInstanceID());
+        
+        changeBuildingSprite(buildingObject, buildingDataTemp); 
+        changeBuildingPosTo(buildingObject, Vector3Int.FloorToInt(pos), buildingDataTemp);
+        setBuildingCollider(buildingObject,buildingDataTemp);
         inBuildMode = false;
         DelBuildCell();
     }
@@ -365,6 +397,21 @@ public class TileMapController : MonoBehaviour
         buildingObject.transform.position = posVector3;
     }
 
+    private void setBuildingCollider(GameObject buildingObject,BuildingData buildingDataTemp)
+    {
+        buildingObject.GetComponent<BoxCollider2D>().size=new Vector2(
+            FarmDataManager._Instance.dataManager.GetBuildingItemByID((int) buildingDataTemp.buildingType).size[0],
+            FarmDataManager._Instance.dataManager.GetBuildingItemByID((int) buildingDataTemp.buildingType).size[1]);
+        buildingObject.GetComponent<BoxCollider2D>().offset=new Vector2(
+            (float)FarmDataManager._Instance.dataManager.GetBuildingItemByID((int) buildingDataTemp.buildingType).size[0] / 2,
+            (float)FarmDataManager._Instance.dataManager.GetBuildingItemByID((int) buildingDataTemp.buildingType).size[1] / 2);
+        
+         buildingObject.GetComponent<CircleCollider2D>().radius = 0.34f;
+         buildingObject.GetComponent<CircleCollider2D>().offset=new Vector2(
+             FarmDataManager._Instance.dataManager.GetBuildingItemByID((int) buildingDataTemp.buildingType).entranceOffset[0],
+             FarmDataManager._Instance.dataManager.GetBuildingItemByID((int) buildingDataTemp.buildingType).entranceOffset[1]);
+    }
+    
     private void DelBuildCell()
     {
         //删除上一帧的建筑区域

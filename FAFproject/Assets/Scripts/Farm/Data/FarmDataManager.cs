@@ -308,7 +308,7 @@ public class FarmDataManager
             plot.Value.IsWatered = false;//清空浇水状态
         }
         ReplenishPlayerHPAndVitality();
-        FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Home);
+        FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.PlayerHome);
         SaveData();
     }
     

@@ -41,9 +41,9 @@ public class TileMapController : MonoBehaviour
            Vector3 mouseWorldPos = Vector3Int.FloorToInt(Camera.main.ScreenToWorldPoint(mousePos)); //获取鼠标的世界坐标
            
            buildCheck(2,mouseWorldPos);
-           if (Input.GetMouseButtonDown(0))
+           if (Input.GetMouseButtonDown(0) && noBuildBlock)
            {
-               setBuilding(mouseWorldPos,2);
+               setBuilding(mouseWorldPos, 2);
            }
        }
    }
@@ -264,7 +264,7 @@ public class TileMapController : MonoBehaviour
                 }
                 else
                 {
-                    buildingObject = creatBuildingObject();
+                    buildingObject = creatBuildingObject(buildingDataTemp.buildingType);
 
                     GameObject cropObject = creatCropObject();
                     changeBuildingSprite(buildingObject, buildingDataTemp);
@@ -364,7 +364,8 @@ public class TileMapController : MonoBehaviour
 
     public void setBuilding(Vector3 pos, int buildingID)
     {
-        GameObject buildingObject = creatBuildingObject();
+        BuildingEnum.buildingType buildingTypeName= (BuildingEnum.buildingType) FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID).buildingTypeID;
+        GameObject buildingObject = creatBuildingObject(buildingTypeName);
         
         pos.y -= FarmDataManager._Instance.dataManager.GetBuildingItemByID(buildingID).size[1] - 1;//建筑的pos需以左下角为标准点
         BuildingData buildingDataTemp= FarmDataManager._Instance.addBuildingData(Vector3Int.FloorToInt(pos),buildingID,buildingObject.GetInstanceID());
@@ -376,12 +377,14 @@ public class TileMapController : MonoBehaviour
         DelBuildCell();
     }
     
-    private GameObject creatBuildingObject()
+    private GameObject creatBuildingObject(BuildingEnum.buildingType buildingTypeName)
     {
-        GameObject cropObject = (GameObject)Resources.Load("Prefabs/Objects/BuildingObject");
-        cropObject=Instantiate(cropObject);
-        cropObject.transform.parent=GameObject.Find("BuildingSub").transform;
-        return cropObject;
+        GameObject buildingObject = (GameObject)Resources.Load("Prefabs/Objects/BuildingObject");
+        buildingObject=Instantiate(buildingObject);
+        buildingObject.transform.parent=GameObject.Find("BuildingSub").transform;
+
+        buildingObject.name = buildingTypeName.ToString();
+        return buildingObject;
     }
     public void changeBuildingSprite(GameObject targetBuildingObject,BuildingData buildingDataTemp)
     {

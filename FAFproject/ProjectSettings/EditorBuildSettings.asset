@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/FarmStart.unity
     guid: d613bfa28cf6b5342bf8e06bd3be524f
   - enabled: 1
-    path: Assets/Scenes/Home.unity
+    path: Assets/Scenes/PlayerHome.unity
     guid: 98aff2ac499d02446a1b601da966f5fd
+  - enabled: 1
+    path: Assets/Scenes/Henhouse.unity
+    guid: 86dd182625952cb47a2970df050cd4b3
   m_configObjects: {}

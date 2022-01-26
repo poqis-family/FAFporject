@@ -39,16 +39,13 @@ public class Player : MonoBehaviour
     {
         if (FarmSceneManager._Instance.startLoaded == false)
         {
-            if (other.name=="PlayersHome")
+
+            if (SceneEnum.Scenes.TryParse(other.name, out SceneEnum.Scenes sceneName) && other.isTrigger)
             {
                 if (Input.GetMouseButton(0))
                 {
-                    FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Home);
+                    FarmSceneManager._Instance.SceneJump(sceneName);
                 }
-            } 
-            if (other.name=="ExitToFarm")
-            {
-                FarmSceneManager._Instance.SceneJump(SceneEnum.Scenes.Farm);
             }
         }
     }

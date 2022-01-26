@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0}
+  animator: {fileID: 0}
 --- !u!1 &7965253163788132089
 GameObject:
   m_ObjectHideFlags: 0

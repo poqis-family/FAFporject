@@ -7,6 +7,6 @@ public class BuildingEnum
     public enum buildingType
     {
         PlayerHome=1,
-        henhouse=2,
+        Henhouse=2,
     }
 }
